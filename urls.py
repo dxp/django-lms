@@ -7,7 +7,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # Example:
-    (r'^reimbursements/', include('pleaseignore.reimbursements.urls')),
+    (r'^', include('intranet.springboard.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     (r'^admin/doc/', include('django.contrib.admindocs.urls')),
@@ -17,7 +17,6 @@ urlpatterns = patterns('',
 )
 
 if settings.DEBUG:
-    print("HERE")
     urlpatterns += patterns('',
                             (r'^media/(?P<path>.*)$', 'django.views.static.serve',
                              {'document_root': settings.MEDIA_ROOT,

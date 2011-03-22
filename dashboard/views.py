@@ -1,1 +1,0 @@
-from django_utils import render_to_response
