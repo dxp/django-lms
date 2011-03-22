@@ -3,7 +3,7 @@ from django.conf import settings
 from django.contrib.auth.models import Group
 
 class IntranetApplication(models.Model):
-    icon = models.ImageField(upload_to = settings.MEDIA_ROOT + '/images')
+    icon = models.ImageField(upload_to = 'images')
     url = models.URLField()
     title = models.CharField(max_length = '255')
     groups = models.ManyToManyField(Group, verbose_name = 'Groups', blank=True)

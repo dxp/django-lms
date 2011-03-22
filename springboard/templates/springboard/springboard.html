@@ -1,4 +1,15 @@
 {% extends "html_base.html" %}
 {% block main %}
-Stuff
+<div id="springboard_outer">
+  <div id="springboard">
+    {% for application in applications %}
+    <div class="springboard_icon">
+      <a href="{{ application.url }}">
+	<img src="{{ MEDIA_URL }}{{ application.icon.url }}"><br>
+	{{ application.title }}
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+</div>
 {% endblock main %}

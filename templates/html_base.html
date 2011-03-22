@@ -41,12 +41,15 @@
 </head>
 
 <body>
+  <header>
+    <img src="{{ MEDIA_URL }}/images/seeid.gif">
+    <div class="right">
+      {{ user.first_name }} {{ user.last_name }}
+    </div>
+  </header>
 
-  <div id="container">
-    <header>
-
-    </header>
-    <div id="main" role="main" class="span-24 last">
+  <div class="container">
+   <div id="main" role="main" class="span-24 last">
       {% block main %}
       {% endblock main %}
     </div>
