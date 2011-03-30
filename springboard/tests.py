@@ -1,23 +1,12 @@
-"""
-This file demonstrates two different styles of tests (one doctest and one
-unittest). These will both pass when you run "manage.py test".
+from django.utils import unittest
+from django.test.client import Client
+from django.core.urlresolvers import reverse
 
-Replace these with more appropriate tests for your application.
-"""
+import test_utils
 
-from django.test import TestCase
+class SpringboardTest(test_utils.AuthenticatedTest):
+    def test_display_code(self):
+        response = self.c.get(reverse('springboard'))
+        self.failUnlessEqual(response.status_code, 200)
 
-class SimpleTest(TestCase):
-    def test_basic_addition(self):
-        """
-        Tests that 1 + 1 always equals 2.
-        """
-        self.failUnlessEqual(1 + 1, 2)
-
-__test__ = {"doctest": """
-Another way to test that 1 + 1 is equal to 2.
-
->>> 1 + 1 == 2
-True
-"""}
 

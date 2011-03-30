@@ -1,3 +1,27 @@
+html {
+    height: 100%;
+}
+
+body {
+    background: #EEE;
+    height: 97%;
+}
+
+#header {
+    margin: 5px;
+}
+
+#header img {
+    max-height: 50px;
+}
+
+#main-container {
+    margin-top: 15px;
+    background: #FFF;
+    border: 1px solid #ccc;
+    height: 100%;
+}
+
 #springboard_outer {
     margin-top: 100px;
 }
@@ -15,4 +39,46 @@
 
 .springboard_icon img {
     width:40px;
+}
+
+#content {
+    margin: 10px 15px;
+}
+
+.button, input[type=submit], input[type=button], .submit-row input {
+    background: white url(../images/nav-bg.gif) bottom repeat-x;
+    padding: 3px 5px;
+    color: black;
+    border: 1px solid #bbb;
+    border-color: #ddd #aaa #aaa #ddd;
+}
+
+.button:active, input[type=submit]:active, input[type=button]:active {
+    background-image: url(../images/nav-bg-reverse.gif);
+    background-position: top;
+}
+
+.button[disabled], input[type=submit][disabled], input[type=button][disabled] {
+    background-image: url(../images/nav-bg.gif);
+    background-position: bottom;
+    opacity: 0.4;
+}
+
+.button.default, input[type=submit].default, .submit-row input.default {
+    border: 2px solid #5b80b2;
+    background: #7CA0C7 url(../images/default-bg.gif) bottom repeat-x;
+    font-weight: bold;
+    color: white;
+    float: right;
+}
+
+.button.default:active, input[type=submit].default:active {
+    background-image: url(../images/default-bg-reverse.gif);
+    background-position: top;
+}
+
+.button[disabled].default, input[type=submit][disabled].default, input[type=button][disabled].default {
+    background-image: url(../images/default-bg.gif);
+    background-position: bottom;
+    opacity: 0.4;
 }
