@@ -24,7 +24,6 @@
 
 
   <!-- CSS: implied media="all" -->
-  <link rel="stylesheet" href="{{ STATIC_URL }}/css/style.css?v=2">
   <!-- Framework CSS -->
   <link rel="stylesheet" href="{{ STATIC_URL }}/css/blueprint/screen.css" type="text/css" media="screen, projection" />
   <link rel="stylesheet" href="{{ STATIC_URL }}/css/blueprint/print.css" type="text/css" media="print" />
@@ -37,30 +36,37 @@
 
   <!-- All JavaScript at the bottom, except for Modernizr which enables HTML5 elements & feature detects -->
   <script src="{{ STATIC_URL }}/js/libs/modernizr-1.7.min.js"></script>
+  <link rel="stylesheet" href="{{ STATIC_URL }}/css/style.css?v=2">
 {% block css %}
 {% endblock css %}
 
 </head>
 
 <body class="{% block bodyclass %}{% endblock bodyclass %}">
-  <div class="container" id="main-container">
-  <header>
-    <div id="header">
-      <img src="{{ STATIC_URL }}/images/seeid.gif">
-      <div class="right">
-	{{ user.first_name }} {{ user.last_name }}
-      </div>
+  <div id="wrapper">
+    <div class="container">
+      <header>
+	<div id="header" class="span-24 last">
+	  <a href="{% url springboard %}"><img id="logo" src="{{ STATIC_URL }}/images/seeidlogomediumdark.png"></a>
+	  {% if user.is_authenticated %}
+	  <div class="userbox">
+	    {{ user.first_name }} {{ user.last_name }} | Account Settings | <a href="{% url logout %}">Log Out</a>
+	  </div>
+	  {% endif %}
+	</div>
+      </header>
     </div>
-  </header>
-  <div id="main" role="main" class="span-24 last">
-    {% block content %}
-    {% endblock content %}
-  </div>
-  <footer>
 
-  </footer>
-  </div> <!--! end of #container -->
-
+    <div class="container" id="main-container">
+      <div id="main" role="main" class="span-24 last">
+	{% block content %}
+	{% endblock content %}
+      </div>
+      <footer>
+	
+      </footer>
+    </div> <!--! end of #container -->
+  </div> <!-- end of #wrapper -->
 
   <!-- JavaScript at the bottom for fast page loading -->
 

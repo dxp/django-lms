@@ -11,10 +11,6 @@
 }
 
 
-body.login {
-    background: #eee;
-}
-
 .login #login-container {
     background: white;
     border: 1px solid #ccc;
@@ -78,7 +74,7 @@ body.login {
     font-size: 18px;
     margin: 8px 0;
     font-weight: normal;
-    color: #f4f379;
+    color: #eee;
 }
 
 #branding h2 {

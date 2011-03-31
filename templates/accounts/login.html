@@ -27,19 +27,9 @@
 
 
   <!-- Content --> 
-  <div id="content" class="colM"> 
-    {% if form.errors and not form.non_field_errors and not form.this_is_the_login_form.errors %}
-    <p class="errornote">
-      {% blocktrans count form.errors.items|length as counter %}Please correct the error below.{% plural %}Please correct the errors below.{% endblocktrans %}
-    </p>
-    {% endif %}
-
-    {% if form.non_field_errors or form.this_is_the_login_form.errors %}
-    {% for error in form.non_field_errors|add:form.this_is_the_login_form.errors %}
-    <p class="errornote">
-      {{ error }}
-    </p>
-    {% endfor %}
+  <div id="content"> 
+    {% if form.errors %}
+    <div class="error">Your username and password didn't match. Please try again.</div>
     {% endif %}
 
     <div id="content-main">

@@ -7,6 +7,10 @@ import test_utils
 class SpringboardTest(test_utils.AuthenticatedTest):
     def test_display_code(self):
         response = self.c.get(reverse('springboard'))
-        self.failUnlessEqual(response.status_code, 200)
+        try:
+            self.failUnlessEqual(response.status_code, 200)
+        except AssertionError:
+            # print(response)
+            raise
 
 
