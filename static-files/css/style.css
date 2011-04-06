@@ -47,14 +47,17 @@ a:hover {
 }
 
 #springboard {
-    width: 30%;
+    width: 440px;
     margin: auto;
     text-align: center;
 }
 
 .springboard_icon {
+    float: left;
     text-align: center;
-    width: 70px;
+    width: 100px;
+    padding: 5px;
+    padding-bottom: 30px;
 }
 
 .springboard_icon img {

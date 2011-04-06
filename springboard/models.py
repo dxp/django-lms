@@ -4,7 +4,7 @@ from django.contrib.auth.models import Group
 
 class IntranetApplication(models.Model):
     icon = models.ImageField(upload_to = 'images')
-    url = models.URLField()
+    url = models.CharField(max_length = '255')
     title = models.CharField(max_length = '255')
     groups = models.ManyToManyField(Group, verbose_name = 'Groups', blank=True)
 

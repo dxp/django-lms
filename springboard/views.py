@@ -10,8 +10,10 @@ class SpringBoard(ListView):
 
     def get_queryset(self):
         # Check the groups the user is allowed to see
-        applications = []
+        applications = IntranetApplication.objects.none()
         for group in self.request.user.groups.all():
-            applications = applications or group.intranetapplication_set.all()
+            applications = applications | group.intranetapplication_set.all()
+
+        applications = applications | IntranetApplication.objects.filter(groups=None)
 
         return applications
