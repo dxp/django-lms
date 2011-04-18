@@ -19,13 +19,13 @@ class SpringboardTest(test_utils.AuthenticatedTest):
     def test_display_icon(self):
         here = os.path.dirname( os.path.abspath(__file__) )
         f = open(here + '/test_files/test_icon.png')
-        application = IntranetApplication(url = '/admin', title='Admin')
+        application = IntranetApplication(url = '/test', title='Test')
         application.save()
         application.icon.save('test_icon.png', File(f))
         
         response = self.c.get(reverse('springboard'))
         try:
-            self.assertContains(response, 'Admin')
+            self.assertContains(response, 'Test')
         except:
             print(response)
             raise
