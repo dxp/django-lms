@@ -12,17 +12,17 @@ Installation
 
 The settings files included I've setup using the [layout](http://blog.zacharyvoase.com/2010/02/03/django-project-conventions/) suggested by Zachary Voase.
 
-``````````````````````````
-SITE_ROOT/
-|-- bin/      # Part of the virtualenv
-|-- cache/    # A filesystem-based cache
-|-- db/       # Store SQLite files in here (during development)
-|-- include/  # Part of the virtualenv
-|-- lib/      # Part of the virtualenv
-|-- log/      # Log files
-|-- pid/      # PID files
-|-- share/    # Part of the virtualenv
-|-- sock/     # UNIX socket files
-|-- tmp/      # Temporary files
-`-- uploads/  # Site uploads
-``````````````````````````
+    ``````````````````````````
+    SITE_ROOT/
+    |-- bin/      # Part of the virtualenv
+    |-- cache/    # A filesystem-based cache
+    |-- db/       # Store SQLite files in here (during development)
+    |-- include/  # Part of the virtualenv
+    |-- lib/      # Part of the virtualenv
+    |-- log/      # Log files
+    |-- pid/      # PID files
+    |-- share/    # Part of the virtualenv
+    |-- sock/     # UNIX socket files
+    |-- tmp/      # Temporary files
+    `-- uploads/  # Site uploads
+    ``````````````````````````
