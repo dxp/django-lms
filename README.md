@@ -12,7 +12,6 @@ Installation
 
 The settings files included I've setup using the [layout](http://blog.zacharyvoase.com/2010/02/03/django-project-conventions/) suggested by Zachary Voase.
 
-    ``````````````````````````
     SITE_ROOT/
     |-- bin/      # Part of the virtualenv
     |-- cache/    # A filesystem-based cache
@@ -25,4 +24,3 @@ The settings files included I've setup using the [layout](http://blog.zacharyvoa
     |-- sock/     # UNIX socket files
     |-- tmp/      # Temporary files
     `-- uploads/  # Site uploads
-    ``````````````````````````
