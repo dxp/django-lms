@@ -20,3 +20,14 @@ class CoursesTest(test_utils.AuthenticatedTest):
         self.assertEquals(course.section, '001')
         self.assertEquals(course.description, 'Test description of a course')
 
+    def test_view(self):
+        course = Course(title='Test Course', number = '101', section = '001', description = 'Test description of a course')
+        course.save()
+
+        response = self.c.get(reverse('courses:overview', args = [course.id]))
+
+        self.assertEquals(response.context['course'].title, 'Test Course')
+        self.assertEquals(response.context['course'].number, '101')
+        self.assertEquals(response.context['course'].section, '001')
+        self.assertEquals(response.context['course'].description, 'Test description of a course')
+
