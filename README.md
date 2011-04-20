@@ -12,4 +12,4 @@ Installation
 
 The settings files included I've setup using the [layout](http://blog.zacharyvoase.com/2010/02/03/django-project-conventions/) suggested by Zachary Voase.
 
-You'll notice the common.py settings file calls execfile to `../secret_settings.py` I'm curently storing this in the directory above the repo for things such as the secret key. You'll need to supply your own.
+You'll notice the common.py settings file calls execfile to `../secret_settings.py`. I'm curently storing this in the directory above the repo for things such as the secret key. You'll need to supply your own.

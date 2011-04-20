@@ -84,6 +84,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'springboard',
     'intranet_admin',
+    'courses',
     )
 
 STATIC_ROOT = SITE_ROOT + "/static"
