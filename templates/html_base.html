@@ -11,7 +11,7 @@
        Remove this if you use the .htaccess -->
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-  <title>{{ title }}</title>
+  <title>{% block title %}{{ title }}{% endblock title %}</title>
   <meta name="description" content="">
   <meta name="author" content="">
 
@@ -59,8 +59,10 @@
 
     <div class="container" id="main-container">
       <div id="main" role="main" class="span-24 last">
+	<div id="content">
 	{% block content %}
 	{% endblock content %}
+	</div>
       </div>
       <footer>
 	

@@ -1,0 +1,9 @@
+{% extends "courses/course_base.html" %}
+{% block course_content %}
+<div id="course">
+  {{ course.number }} - {{ course.section }}<br>
+  <div id="description">
+    {{ course.description }}
+  </div>
+</div>
+{% endblock course_content %}
