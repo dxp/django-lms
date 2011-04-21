@@ -26,6 +26,20 @@ class SemesterTest(test_utils.AuthenticatedTest):
         semester = Semester(name='Spring', year = '2012', start = datetime.date(2012, 5, 15), end = datetime.date(2012, 1, 1))
         self.assertRaises(ValueError, semester.save, ())
         
+    def test_listing(self):
+        semester = Semester(name='Spring', year = '2012', start = datetime.date(2012, 1, 1), end = datetime.date(2012, 5, 15))
+        semester.save()
+
+        course = Course(title='Test Course', number = '101', section = '001', description = 'Test description of a course', semester = semester)
+        course.save()
+        course = Course(title='Test Course2', number = '101', section = '002', description = 'Test description of a course', semester = semester)
+        course.save()
+        course = Course(title='Test Course3', number = '102', section = '001', description = 'Test description of a course', semester = semester)
+        course.save()
+
+        response = self.c.get(reverse('courses:by_semester', args = [semester.id]))
+        courses = Course.objects.filter(semester = semester)
+        self.assertEquals([course.id for course in response.context['courses']], [course.id for course in courses])
 
 
 class CoursesTest(test_utils.AuthenticatedTest):
