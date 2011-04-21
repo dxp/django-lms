@@ -1,9 +1,9 @@
 {% extends "courses/course_base.html" %}
 {% block course_content %}
 <div id="course">
-  {{ course.number }} - {{ course.section }}<br>
+  <span class="course-sub-info">{{ course.number }} - {{ course.section }}: {{ course.semester.name }} {{ course.semester.year }}</span>
   <div id="description">
-    {{ course.description }}
+    {{ course.description|safe }}
   </div>
 </div>
 {% endblock course_content %}

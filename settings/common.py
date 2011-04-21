@@ -45,7 +45,7 @@ USE_L10N = True
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
-MEDIA_URL = '/media'
+MEDIA_URL = '/media/'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -85,6 +85,7 @@ INSTALLED_APPS = (
     'springboard',
     'intranet_admin',
     'courses',
+    'tinymce',
     )
 
 STATIC_ROOT = SITE_ROOT + "/static"
@@ -101,3 +102,8 @@ STATICFILES_DIRS = (
 ADMIN_MEDIA_PREFIX = STATIC_URL + '/admin/'
 
 LOGIN_REDIRECT_URL = '/'
+
+#FIXME: This is a workaround with a bug in django-tinymce
+import tinymce
+TINYMCE_JS_URL = '%stiny_mce/tiny_mce.js' % STATIC_URL
+STATICFILES_DIRS += (os.path.join(os.path.dirname(tinymce.__file__), 'media'),)
