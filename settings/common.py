@@ -107,3 +107,14 @@ LOGIN_REDIRECT_URL = '/'
 import tinymce
 TINYMCE_JS_URL = '%stiny_mce/tiny_mce.js' % STATIC_URL
 STATICFILES_DIRS += (os.path.join(os.path.dirname(tinymce.__file__), 'media'),)
+
+TINYMCE_DEFAULT_CONFIG = {
+    'theme': "advanced",
+    'height': "400",
+    'theme_advanced_buttons1' : "bold,italic,underline, strikethrough,link, separator,justifyleft, justifycenter,justifyright,  justifyfull, separator,help",
+    'theme_advanced_buttons2': "",
+    'theme_advanced_buttons3': "",
+    'theme_advanced_buttons4': "",
+    'theme_advanced_toolbar_location' : "top",
+    'theme_advanced_toolbar_align' : "left",
+    }
