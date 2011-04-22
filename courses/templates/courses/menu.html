@@ -6,6 +6,6 @@
   <li><a href="resources">Resources</a></li> 
   <li><a href="assigments">Assignments</a></li> 
   <li><a href="assigments">Members</a></li> 
-  {% iffaculty %}<li class="right"><a href="{% url courses:admin course.id %}" class="{% course_menu_active 'courses:admin' %}">Admin</a></li>{% endiffaculty %} 
+  {% ifcoursefaculty %}<li class="right"><a href="{% url courses:admin course.id %}" class="{% course_menu_active 'courses:admin' %}">Admin</a></li>{% endifcoursefaculty %} 
  </ul>
 </div>

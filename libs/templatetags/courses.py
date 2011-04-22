@@ -26,10 +26,10 @@ def iffaculty(parser, token):
     """
     nodelist = parser.parse(('endiffaculty',))
     parser.delete_first_token()
-    return GroupCheckNode(nodelist)
+    return FacultyCheckNode(nodelist)
 
 
-class GroupCheckNode(template.Node):
+class FacultyCheckNode(template.Node):
     def __init__(self, nodelist):
         self.nodelist = nodelist
     def render(self, context):
@@ -42,4 +42,31 @@ class GroupCheckNode(template.Node):
             return ''
         if group in user.groups.all():
             return self.nodelist.render(context)
+        return ''
+
+@register.tag()
+def ifcoursefaculty(parser, token):
+    """ Check to see if the currently logged in user is faculty for this course
+
+    """
+    nodelist = parser.parse(('endifcoursefaculty',))
+    parser.delete_first_token()
+    return FacultyCourseCheckNode(nodelist)
+
+
+class FacultyCourseCheckNode(template.Node):
+    def __init__(self, nodelist):
+        self.nodelist = nodelist
+    def render(self, context):
+        user = resolve_variable('user', context)
+        course = resolve_variable('course', context)
+        if not user.is_authenticated:
+            return ''
+        try:
+            group = Group.objects.get(name='Faculty')
+        except Group.DoesNotExist:
+            return ''
+        if group in user.groups.all():
+            if course in user.course_set.all():
+                return self.nodelist.render(context)
         return ''
