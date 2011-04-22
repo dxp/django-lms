@@ -43,6 +43,7 @@ class CourseDropPage(RedirectView):
     Gets the current semester and redirects to its page
     '''
     url = None
+    permanent = False
 
     def get_redirect_url(self, **kwargs):
         semesters = Semester.objects.filter(start__lt = datetime.date.today(), end__gt = datetime.date.today())
