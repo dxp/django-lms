@@ -1,6 +1,8 @@
+import datetime
+from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
 from libs.django_utils import render_to_response
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView, ListView, RedirectView
 from courses.models import Course, Semester
 
 class CourseOverview(DetailView):
@@ -35,3 +37,17 @@ class BySemesterList(ListView):
         context = super(BySemesterList, self).get_context_data(**kwargs)
         context['semester'] = self.semester
         return context
+
+class CourseDropPage(RedirectView):
+    '''
+    Gets the current semester and redirects to its page
+    '''
+    url = None
+
+    def get_redirect_url(self, **kwargs):
+        semesters = Semester.objects.filter(start__lt = datetime.date.today(), end__gt = datetime.date.today())
+        if not semesters:
+            raise ValueError, "No current semester"
+        semester = semesters[0]
+        url = reverse('courses:by_semester', kwargs={'pk':semester.id})
+        return url
