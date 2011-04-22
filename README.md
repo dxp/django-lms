@@ -11,14 +11,39 @@ Installation
 ------------
 
 - Create a virtual environment. I prefer using --no-site-packages as it keeps everything cleaner.
-`virtualenv --no-site-packages intranet`
 
-- Go into that directory `cd intranet`
+ `virtualenv --no-site-packages intranet`
+
+- Go into that directory
+
+  `cd intranet`
+
+- Activate the environment
+
+ `source bin/activate`
+
 - Clone the repo
-`git clone git@github.com:emperorcezar/ID-Intranet.git intranet`
 
+ `git clone git@github.com:emperorcezar/ID-Intranet.git intranet`
 
-The settings files included I've setup using the [layout](http://blog.zacharyvoase.com/2010/02/03/django-project-conventions/) suggested by Zachary Voase.
+- Use the requirements file in the repo
 
-You'll notice the common.py settings file calls execfile to `../secret_settings.py`. I'm curently storing this in the directory above the repo for things such as the secret key. You'll need to supply your own.
+ `pip install -r intranet/requirements.txt`
 
+- The settings files included I've setup using the [layout](http://blog.zacharyvoase.com/2010/02/03/django-project-conventions/) suggested by Zachary Voase.
+
+ You'll notice the common.py settings file calls execfile to `../secret_settings.py`. I'm curently storing this in the directory above the repo for things such as the secret key. You'll need to supply your own.
+
+- Create the directory for the database (for development) or edit `settings/common.py` to setup the database of your choosing
+
+ `mkdir db/`
+
+- Sync the database
+
+ `python manage.py syncdb --settings=settings.development`
+
+- Run the dev server
+
+ `python manage.py runserver --settings=settings.development`
+
+The application is now installed. You'll notice that the springboard show no Icons. Since these are customizable, you'll need to set them yourself. I hope to change this soon, to set some defaults. This can be done from the admin.
