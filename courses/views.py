@@ -14,6 +14,7 @@ class CourseOverview(DetailView):
         context['request'] = self.request
         return context
 
+# TODO: Check if user is faculty
 class CourseAdmin(DetailView):
     context_object_name = "course"
     template_name = "courses/overview.html"
