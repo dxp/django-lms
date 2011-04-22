@@ -1,4 +1,4 @@
-from django_utils import render_to_response
+from libs.django_utils import render_to_response
 from django.views.generic import ListView
 from springboard.models import IntranetApplication
 from django.contrib.auth.decorators import login_required

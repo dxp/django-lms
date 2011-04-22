@@ -1,8 +1,11 @@
+{% load navigation %}
+
 <div class="pagehead">
   <ul class="tabs"> 
-  <li><a href="overview" class="selected">Overview</a></li> 
+  <li><a href="{% url courses:overview course.id %}" class="{% course_menu_active 'courses:overview' %}">Overview</a></li> 
   <li><a href="resources">Resources</a></li> 
   <li><a href="assigments">Assignments</a></li> 
   <li><a href="assigments">Members</a></li> 
+  <li class="right"><a href="{% url courses:admin course.id %}" class="{% course_menu_active 'courses:admin' %}">Admin</a></li> 
  </ul>
 </div>

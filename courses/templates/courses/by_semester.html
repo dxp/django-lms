@@ -1,0 +1,9 @@
+{% extends "html_base.html" %}
+{% block title %}{{ semester }}{% endblock title %}
+{% block content %}
+<div id="course-list">
+  {% for course in courses %}
+  <a href="{% url courses:overview course.id %}">{{ course.title }}</a><br>
+  {% endfor %}
+</div>
+{% endblock content %}

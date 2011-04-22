@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404
-from django_utils import render_to_response
+from libs.django_utils import render_to_response
 from django.views.generic import DetailView, ListView
 from courses.models import Course, Semester
 
@@ -8,6 +8,18 @@ class CourseOverview(DetailView):
     template_name = "courses/overview.html"
 
     queryset = Course.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super(CourseOverview, self).get_context_data(**kwargs)
+        context['request'] = self.request
+        return context
+
+class CourseAdmin(DetailView):
+    context_object_name = "course"
+    template_name = "courses/overview.html"
+
+    queryset = Course.objects.all()
+
 
 class BySemesterList(ListView):
     context_object_name = "courses"
