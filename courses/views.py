@@ -26,7 +26,7 @@ class CourseOverview(DetailView):
         course = self.get_object()
 
         if course.private:
-            if not request.user in course.faculty.all() or not request.user in course.members.all():
+            if request.user not in course.faculty.all() and request.user not in course.members.all():
                 raise exceptions.PermissionDenied
 
         return super(CourseOverview, self).dispatch(request, *args, **kwargs)

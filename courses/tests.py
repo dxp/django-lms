@@ -71,5 +71,18 @@ class CoursesTest(test_utils.AuthenticatedTest):
 
         response = self.c.get(reverse('courses:overview', args = [self.course.id]))
         self.assertEquals(response.status_code, 403)
+
+        # Test membership
+        self.course.members.add(self.user)
+        response = self.c.get(reverse('courses:overview', args = [self.course.id]))
+        self.assertEquals(response.status_code, 200)
+        self.course.members.remove(self.user)
+
+        # Test Faculty
+        self.course.faculty.add(self.user)
+        response = self.c.get(reverse('courses:overview', args = [self.course.id]))
+        self.assertEquals(response.status_code, 200)
+        self.course.faculty.remove(self.user)
+
         self.course.private = False
         self.course.save()
