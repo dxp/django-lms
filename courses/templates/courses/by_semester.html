@@ -2,8 +2,26 @@
 {% block title %}{{ semester }}{% endblock title %}
 {% block content %}
 <div id="course-list">
-  {% for course in courses %}
-  <a href="{% url courses:overview course.id %}">{{ course.title }}</a><br>
-  {% endfor %}
+  <h1>Courses for {{ semester }}</h1>
+  <table>
+    <thead>
+      <tr>
+	<th class="course-number">Number</th>
+	<th class="course-section">Section</th>
+	<th class="course-title">Title</th>
+	<th class="course-instructor">Instructor</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for course in courses %}
+      <tr class="course-list-entry">
+	<td class="course-number">{{ course.number }}</td>
+	<td class="course-section">{{ course.section }}</td>
+	<td class="course-title"><a href="{% url courses:overview course.id %}">{{ course.title }}</a></td>
+	<td class="course-instructor">{{ course.faculty.all|join:", " }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 </div>
 {% endblock content %}

@@ -18,6 +18,10 @@ a:hover {
     color: #0099FF;
 }
 
+h1 {
+    font-size: 2.5em;
+}
+
 #logo {
     margin-top: 8px;
 }
@@ -161,4 +165,25 @@ ul.nav.logged_out,.userbox{background:#f5f5f5;filter:progid:DXImageTransform.Mic
 h1.course-title {
     margin-bottom: 0.3em;
     font-size: 2.5em;
+}
+
+#course-list {
+    font-size: 1.25em;
+}
+
+#course-list th{
+    background: #fff;
+    border-bottom: 1px solid #eee;
+}
+
+#course-list .course-number {
+    width:50px;
+}
+
+#course-list .course-section {
+    width:50px;
+}
+
+#course-list .course-instructor {
+    text-align: right;
 }
