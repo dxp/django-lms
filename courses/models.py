@@ -23,6 +23,7 @@ class Course(models.Model):
     description = tinymce_models.HTMLField()
     semester = models.ForeignKey(Semester)
     faculty = models.ManyToManyField(User)
+    private = models.BooleanField(default=False, blank=True)
 
     def __unicode__(self):
         return "%s: %s %s" % (self.title, self.semester.name, self.semester.year)

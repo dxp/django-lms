@@ -2,8 +2,10 @@ import datetime
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
 from libs.django_utils import render_to_response
-from django.views.generic import DetailView, ListView, RedirectView
+from django.views.generic import DetailView, ListView, RedirectView, UpdateView
+
 from courses.models import Course, Semester
+from courses.forms import CourseAdminForm
 
 class CourseOverview(DetailView):
     context_object_name = "course"
@@ -17,11 +19,20 @@ class CourseOverview(DetailView):
         return context
 
 # TODO: Check if user is faculty
-class CourseAdmin(DetailView):
-    context_object_name = "course"
-    template_name = "courses/overview.html"
+class CourseAdmin(UpdateView):
+    form_class = CourseAdminForm
+    template_name = "courses/admin.html"
 
     queryset = Course.objects.all()
+
+    def get_success_url(self):
+        course = self.get_object()
+        return reverse('courses:admin', kwargs={'pk':course.id})
+
+    def get_context_data(self, **kwargs):
+        context = super(CourseAdmin, self).get_context_data(**kwargs)
+        context['request'] = self.request
+        return context
 
 
 class BySemesterList(ListView):
