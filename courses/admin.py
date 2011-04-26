@@ -7,7 +7,7 @@ from django.contrib.admin.widgets import FilteredSelectMultiple
 from courses.models import Course, Semester
 
 class CourseAdminForm(ModelForm):
-    faculty = ModelMultipleChoiceField(queryset = Group.objects.get(name = 'Faculty').user_set.all(),
+    faculty = ModelMultipleChoiceField(queryset = Group.objects.get_or_create(name = 'Faculty')[0].user_set.all(),
                                        required = False,
                                        widget = FilteredSelectMultiple("Faculty", False) )
     class Meta:

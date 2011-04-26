@@ -9,7 +9,7 @@ from django.core.files import File
 
 from springboard.models import IntranetApplication
 
-import test_utils
+import libs.test_utils as test_utils
 
 class SpringboardTest(test_utils.AuthenticatedTest):
     def test_display_code(self):

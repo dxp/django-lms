@@ -3,6 +3,7 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
 from libs.django_utils import render_to_response
 from django.views.generic import DetailView, ListView, RedirectView, UpdateView
+from django.core import exceptions
 
 from courses.models import Course, Semester
 from courses.forms import CourseAdminForm
@@ -17,6 +18,18 @@ class CourseOverview(DetailView):
         context = super(CourseOverview, self).get_context_data(**kwargs)
         context['request'] = self.request
         return context
+
+    # Overriding the dispatch to check visibility
+    def dispatch(self, request, *args, **kwargs):
+        # set the kwargs so we can get the object
+        self.kwargs = kwargs
+        course = self.get_object()
+
+        if course.private:
+            if not request.user in course.faculty.all() or not request.user in course.members.all():
+                raise exceptions.PermissionDenied
+
+        return super(CourseOverview, self).dispatch(request, *args, **kwargs)
 
 # TODO: Check if user is faculty
 class CourseAdmin(UpdateView):

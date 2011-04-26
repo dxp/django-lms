@@ -10,7 +10,7 @@ from django.core.files import File
 
 from courses.models import Course, Semester
 
-import test_utils
+import libs.test_utils as test_utils
 
 class SemesterTest(test_utils.AuthenticatedTest):
     def test_create(self):
@@ -43,28 +43,33 @@ class SemesterTest(test_utils.AuthenticatedTest):
 
 
 class CoursesTest(test_utils.AuthenticatedTest):
-    def test_create(self):
-        semester = Semester(name='Spring', year = '2012', start = datetime.date(2012, 1, 1), end = datetime.date(2012, 5, 1))
-        semester.save()
+    def setUp(self):
+        super(CoursesTest, self).setUp()
+        self.semester = Semester(name='Spring', year = '2012', start = datetime.date(2012, 1, 1), end = datetime.date(2012, 5, 1))
+        self.semester.save()
+        self.course = Course(title='Test Course', number = '101', section = '001', description = 'Test description of a course', semester = self.semester)
+        self.course.save()
+        
 
-        course = Course(title='Test Course', number = '101', section = '001', description = 'Test description of a course', semester = semester)
-        course.save()
-        self.assertEquals(course.title, 'Test Course')
-        self.assertEquals(course.number, '101')
-        self.assertEquals(course.section, '001')
-        self.assertEquals(course.description, 'Test description of a course')
+    def test_create(self):
+        self.assertEquals(self.course.title, 'Test Course')
+        self.assertEquals(self.course.number, '101')
+        self.assertEquals(self.course.section, '001')
+        self.assertEquals(self.course.description, 'Test description of a course')
 
     def test_view(self):
-        semester = Semester(name='Spring', year = '2012', start = datetime.date(2012, 1, 1), end = datetime.date(2012, 5, 1))
-        semester.save()
-
-        course = Course(title='Test Course', number = '101', section = '001', description = 'Test description of a course', semester = semester)
-        course.save()
-
-        response = self.c.get(reverse('courses:overview', args = [course.id]))
+        response = self.c.get(reverse('courses:overview', args = [self.course.id]))
 
         self.assertEquals(response.context['course'].title, 'Test Course')
         self.assertEquals(response.context['course'].number, '101')
         self.assertEquals(response.context['course'].section, '001')
         self.assertEquals(response.context['course'].description, 'Test description of a course')
 
+    def test_access(self):
+        self.course.private = True
+        self.course.save()
+
+        response = self.c.get(reverse('courses:overview', args = [self.course.id]))
+        self.assertEquals(response.status_code, 403)
+        self.course.private = False
+        self.course.save()

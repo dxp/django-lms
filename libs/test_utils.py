@@ -15,6 +15,8 @@ class AuthenticatedTest(django.test.TestCase):
         user.set_password('test123')
         user.save()
 
+        self.user = user
+
         # login
         response = self.c.post('/accounts/login/', {'username': 'test', 'password': 'test123', 'next': '/'})
 
