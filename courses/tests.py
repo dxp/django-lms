@@ -41,6 +41,21 @@ class SemesterTest(test_utils.AuthenticatedTest):
         courses = Course.objects.filter(semester = semester)
         self.assertEquals([course.id for course in response.context['courses']], [course.id for course in courses])
 
+    def test_active(self):
+        one_day = datetime.timedelta(1)
+        one_week = datetime.timedelta(7)
+        semester = Semester(name='Spring', year = '2012', start = datetime.date.today() - one_day, end = datetime.date.today() + one_day)
+        semester.save()
+
+        self.assertEquals(semester.active(), True)
+
+        semester.start = datetime.date.today() + one_day
+        semester.end = datetime.date.today() + one_week
+        semester.save()
+
+        self.assertEquals(semester.active(), False)
+        
+
 
 class CoursesTest(test_utils.AuthenticatedTest):
     def setUp(self):

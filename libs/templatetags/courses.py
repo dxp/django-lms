@@ -68,3 +68,31 @@ class FacultyCourseCheckNode(template.Node):
             if course in user.course_set.all():
                 return self.nodelist.render(context)
         return ''
+
+@register.tag()
+def ifpossiblemember(parser, token):
+    """
+    Check to see if the current user can be a member of the course.
+    This is seperate from just being 'is student' because there is possible expansion to TAs, research fellows, etc.
+
+    """
+    nodelist = parser.parse(('endifpossiblemember',))
+    parser.delete_first_token()
+    return PossibleMemberCheckNode(nodelist)
+
+
+class PossibleMemberCheckNode(template.Node):
+    def __init__(self, nodelist):
+        self.nodelist = nodelist
+    def render(self, context):
+        user = resolve_variable('user', context)
+        course = resolve_variable('course', context)
+        if not user.is_authenticated:
+            return ''
+        try:
+            group = Group.objects.get(name='Student')
+        except Group.DoesNotExist:
+            return ''
+        if group in user.groups.all():
+            return self.nodelist.render(context)
+        return ''

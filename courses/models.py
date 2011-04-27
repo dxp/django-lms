@@ -1,3 +1,4 @@
+import datetime
 from django.db import models
 from django.contrib.auth.models import Group, User
 from tinymce import models as tinymce_models
@@ -7,6 +8,9 @@ class Semester(models.Model):
     year = models.IntegerField()
     start = models.DateField()
     end = models.DateField()
+
+    def active(self):
+        return self.start < datetime.date.today() and self.end > datetime.date.today()
 
     def save(self, *args, **kwargs):
         if self.start > self.end:

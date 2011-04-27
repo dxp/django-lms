@@ -2,7 +2,9 @@ import datetime
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
 from libs.django_utils import render_to_response
-from django.views.generic import DetailView, ListView, RedirectView, UpdateView
+from libs.class_views import JSONResponseMixin
+from django.views.generic import DetailView, ListView, RedirectView, UpdateView, View
+from django.views.generic.detail import SingleObjectMixin
 from django.core import exceptions
 
 from courses.models import Course, Semester
@@ -17,6 +19,10 @@ class CourseOverview(DetailView):
     def get_context_data(self, **kwargs):
         context = super(CourseOverview, self).get_context_data(**kwargs)
         context['request'] = self.request
+    
+        # Check if user is a member
+        context['is_member'] = self.request.user in context['course'].members.all()
+        
         return context
 
     # Overriding the dispatch to check visibility
@@ -76,3 +82,19 @@ class CourseDropPage(RedirectView):
         semester = semesters[0]
         url = reverse('courses:by_semester', kwargs={'pk':semester.id})
         return url
+
+class ToggleMembership(View, SingleObjectMixin, JSONResponseMixin):
+    queryset = Course.objects.all()
+    http_method_names = ['post']
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+
+        if request.user in self.object.members.all():
+            self.object.members.remove(request.user)
+            status = "removed"
+        else:
+            self.object.members.add(request.user)
+            status = "added"
+        context = {'status':status}
+        return self.render_to_response(context)

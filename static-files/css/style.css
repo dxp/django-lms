@@ -208,3 +208,11 @@ h1.course-title {
 #course-admin-tools form li label{
     font-weight: normal;
 }
+
+.button.call-to-action {
+    background: #4183C4;
+    color: #eee;
+    text-shadow: 1px 1px 0 #555;
+    border: 1px solid #BBB;
+    border-color: #36c #36c #36c #36c;
+}
