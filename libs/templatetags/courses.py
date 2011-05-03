@@ -65,7 +65,7 @@ class FacultyCourseCheckNode(template.Node):
         except Group.DoesNotExist:
             return ''
         if group in user.groups.all():
-            if course in user.course_set.all():
+            if user in course.faculty.all():
                 return self.nodelist.render(context)
         return ''
 
