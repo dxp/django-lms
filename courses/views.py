@@ -3,12 +3,12 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
 from libs.django_utils import render_to_response
 from libs.class_views import JSONResponseMixin
-from django.views.generic import DetailView, ListView, RedirectView, UpdateView, View
+from django.views.generic import DetailView, ListView, RedirectView, UpdateView, CreateView, View
 from django.views.generic.detail import SingleObjectMixin
 from django.core import exceptions
 
-from courses.models import Course, Semester
-from courses.forms import CourseAdminForm
+from courses.models import Course, Semester, Assignment
+from courses.forms import CourseAdminForm, NewAssignmentForm
 
 class CourseOverview(DetailView):
     context_object_name = "course"
@@ -98,3 +98,31 @@ class ToggleMembership(View, SingleObjectMixin, JSONResponseMixin):
             status = "added"
         context = {'status':status}
         return self.render_to_response(context)
+
+class NewCourseAssignment(CreateView):
+    model = Assignment
+    form_class = NewAssignmentForm
+    template_name = "courses/new_assignment.html"
+
+    def get_initial(self):
+        '''
+        Overriding this method to set the course id for the form
+        '''
+        return {'course': self.kwargs['pk']}
+
+    def get_success_url(self):
+        course = Course.objects.get(pk = self.kwargs['pk'])
+        return reverse('courses:overview', kwargs={'pk':course.id})
+
+    def get_context_data(self, **kwargs):
+        context = super(NewCourseAssignment, self).get_context_data(**kwargs)
+        context['request'] = self.request
+        context['course'] = Course.objects.get(pk = self.kwargs['pk'])
+        
+        return context
+
+    def form_valid(self, form):
+        self.object = form.save(commit = False)
+        self.object.course = Course.objects.get(pk = self.kwargs['pk'])
+        self.object.save()
+        return super(NewCourseAssignment, self).form_valid(form)

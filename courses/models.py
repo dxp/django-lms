@@ -38,3 +38,12 @@ class Course(models.Model):
             'tiny_mce/tiny_mce.js',
             '/appmedia/admin/js/textareas.js',
             ),
+
+class Assignment(models.Model):
+    course = models.ForeignKey(Course)
+    title = models.CharField(max_length = 200)
+    description = models.TextField()
+    due_date = models.DateField(null = True)
+
+    def __unicode__(self):
+        return unicode(self.title)

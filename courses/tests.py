@@ -66,6 +66,10 @@ class CoursesTest(test_utils.AuthenticatedTest):
         self.course.save()
         
 
+    def tearDown(self):
+        self.course.delete()
+        self.semester.delete()
+
     def test_create(self):
         self.assertEquals(self.course.title, 'Test Course')
         self.assertEquals(self.course.number, '101')
@@ -101,3 +105,30 @@ class CoursesTest(test_utils.AuthenticatedTest):
 
         self.course.private = False
         self.course.save()
+
+class AssignmentTest(test_utils.AuthenticatedTest):
+    def setUp(self):
+        super(AssignmentTest, self).setUp()
+        self.semester = Semester(name='Spring', year = '2012', start = datetime.date(2012, 1, 1), end = datetime.date(2012, 5, 1))
+        self.semester.save()
+        self.course = Course(title='Test Course', number = '101', section = '001', description = 'Test description of a course', semester = self.semester)
+        self.course.save()
+
+    def tearDown(self):
+        super(AssignmentTest, self).tearDown()
+        self.course.delete()
+        self.semester.delete()
+
+    def test_create(self):
+        # Test we get the form
+        response = self.c.get(reverse('courses:new_assignment', kwargs = {'pk':self.course.id}))
+        self.assertEquals(response.status_code, 200)
+
+        one_day = datetime.timedelta(1)
+        one_week = datetime.timedelta(7)
+        response = self.c.post(reverse('courses:new_assignment', kwargs = {'pk':self.course.id}), {'course':self.course.id,
+                                                                                            'title':'Test Assignment',
+                                                                                            'description':'Test of the description <b>HERE</b>',
+                                                                                            'due_date': (datetime.date.today() + one_week).isoformat()})
+
+        self.assertEquals(response.status_code, 200)

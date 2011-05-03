@@ -216,3 +216,5 @@ h1.course-title {
     border: 1px solid #BBB;
     border-color: #36c #36c #36c #36c;
 }
+
+form tbody tr:nth-child(even) td, form tbody tr.even td {background:#fff;}
