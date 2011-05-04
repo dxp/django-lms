@@ -244,3 +244,11 @@ form tbody tr:nth-child(even) td, form tbody tr.even td {background:#fff;}
 p + p {
     text-indent: 0em; 
 }
+
+form input[type="text"] {
+    width: 400px;
+}
+
+form th {
+    vertical-align: top;
+}

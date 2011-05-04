@@ -126,6 +126,17 @@ class NewCourseAssignment(CreateView):
         self.object.save()
         return super(NewCourseAssignment, self).form_valid(form)
 
+    # Overriding the dispatch to check visibility
+    def dispatch(self, request, *args, **kwargs):
+        # set the kwargs so we can get the object
+        self.kwargs = kwargs
+        course = Course.objects.get(pk = self.kwargs['pk'])
+
+        if request.user not in course.faculty.all():
+                raise exceptions.PermissionDenied
+
+        return super(NewCourseAssignment, self).dispatch(request, *args, **kwargs)
+
 class AssignmentList(ListView):
     context_object_name = "assignments"
     template_name = "courses/assignement_list.html"
