@@ -1,0 +1,18 @@
+{% extends "html_base.html" %}
+{% block title %}Assignements for {{ course }}{% endblock title %}
+
+{% block content %}
+
+<h1>Assignments for {{ course }}</h1>
+<div id="assignment-list">
+  {% for assignment in assignments %}
+  <div class="assignment-overview">
+    <div class="assignment-title"><a href="#">{{ assignment.title }}</a></div>
+    <div class="assignment-due-date">{{ assignment.due_date }}</div>
+    <div class="assignment-description">{{ assignment.description|safe|truncatewords_html:100 }}
+  </div>
+  {% endfor %}
+</div>
+{% endblock content %}
+
+

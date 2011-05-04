@@ -62,7 +62,6 @@ class BySemesterList(ListView):
         self.semester = get_object_or_404(Semester, pk=self.kwargs['pk'])
         return self.semester.course_set.all()
 
-    
     def get_context_data(self, **kwargs):
         context = super(BySemesterList, self).get_context_data(**kwargs)
         context['semester'] = self.semester
@@ -112,7 +111,7 @@ class NewCourseAssignment(CreateView):
 
     def get_success_url(self):
         course = Course.objects.get(pk = self.kwargs['pk'])
-        return reverse('courses:overview', kwargs={'pk':course.id})
+        return reverse('courses:assignments', kwargs={'pk':course.id})
 
     def get_context_data(self, **kwargs):
         context = super(NewCourseAssignment, self).get_context_data(**kwargs)
@@ -126,3 +125,16 @@ class NewCourseAssignment(CreateView):
         self.object.course = Course.objects.get(pk = self.kwargs['pk'])
         self.object.save()
         return super(NewCourseAssignment, self).form_valid(form)
+
+class AssignmentList(ListView):
+    context_object_name = "assignments"
+    template_name = "courses/assignement_list.html"
+
+    def get_queryset(self):
+        self.course = get_object_or_404(Course, pk=self.kwargs['pk'])
+        return self.course.assignment_set.all()
+
+    def get_context_data(self, **kwargs):
+        context = super(AssignmentList, self).get_context_data(**kwargs)
+        context['course'] = self.course
+        return context

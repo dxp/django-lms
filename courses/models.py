@@ -42,7 +42,7 @@ class Course(models.Model):
 class Assignment(models.Model):
     course = models.ForeignKey(Course)
     title = models.CharField(max_length = 200)
-    description = models.TextField()
+    description = tinymce_models.HTMLField()
     due_date = models.DateField(null = True)
 
     def __unicode__(self):
