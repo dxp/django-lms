@@ -8,7 +8,7 @@ from django.core.urlresolvers import reverse
 from django.conf import settings
 from django.core.files import File
 
-from courses.models import Course, Semester
+from courses.models import Course, Semester, Assignment
 
 import libs.test_utils as test_utils
 
@@ -120,6 +120,10 @@ class AssignmentTest(test_utils.AuthenticatedTest):
         self.semester.delete()
 
     def test_create(self):
+        # Add client user as faculty member
+        self.course.faculty.add(self.user)
+        self.course.save()
+
         # Test we get the form
         response = self.c.get(reverse('courses:new_assignment', kwargs = {'pk':self.course.id}))
         self.assertEquals(response.status_code, 200)
@@ -132,3 +136,24 @@ class AssignmentTest(test_utils.AuthenticatedTest):
                                                                                             'due_date': (datetime.date.today() + one_week).isoformat()})
 
         self.assertEquals(response.status_code, 302)
+
+        # Remove user
+        self.course.faculty.remove(self.user)
+
+
+    def test_list(self):
+        one_week = datetime.timedelta(7)
+        assignment = Assignment(course = self.course, title = "Test Assignment", description = 'Test of the description <b>HERE</b>', due_date = (datetime.date.today() + one_week).isoformat())
+        assignment.save()
+
+        # Add client user as faculty member
+        self.course.faculty.add(self.user)
+        self.course.save()
+        
+        response = self.c.get(reverse('courses:assignments', kwargs = {'pk':self.course.id}))
+
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(response.context['assignments'][0], assignment)
+
+        # Remove user
+        self.course.faculty.remove(self.user)
