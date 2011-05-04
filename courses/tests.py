@@ -131,4 +131,4 @@ class AssignmentTest(test_utils.AuthenticatedTest):
                                                                                             'description':'Test of the description <b>HERE</b>',
                                                                                             'due_date': (datetime.date.today() + one_week).isoformat()})
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEquals(response.status_code, 302)
