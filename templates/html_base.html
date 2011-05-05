@@ -50,7 +50,7 @@
   <div id="wrapper">
     <div class="container">
       <header>
-	<div id="header" class="span-24 last">
+	<div id="header" class="span-48 last">
 	  <a href="{% url springboard %}"><img id="logo" src="{{ STATIC_URL }}/images/seeidlogomediumdark.png"></a>
 	  {% if user.is_authenticated %}
 	  <div class="userbox">
@@ -62,7 +62,7 @@
     </div>
 
     <div class="container" id="main-container">
-      <div id="main" role="main" class="span-24 last">
+      <div id="main" role="main" class="span-46 prepend-1 last">
 	<div id="content">
 	{% block content %}
 	{% endblock content %}
@@ -79,8 +79,10 @@
   <!-- Grab Google CDN's jQuery, with a protocol relative URL; fall back to local if necessary -->
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.js"></script>
   <script>window.jQuery || document.write("<script src='js/libs/jquery-1.5.1.min.js'>\x3C/script>")</script>
-    <script type="text/javascript" src="http://use.typekit.com/jfk1slq.js"></script>
-    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+  {% if TYPEKIT_URL %}
+  <script type="text/javascript" src="{{ TYPEKIT_URL }}"></script>
+  <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+  {% endif %}
  <!--[if lt IE 7 ]>
     <script src="js/libs/dd_belatedpng.js"></script>
     <script>DD_belatedPNG.fix("img, .png_bg"); // Fix any <img> or .png_bg bg-images. Also, please read goo.gl/mZiyb </script>

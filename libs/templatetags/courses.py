@@ -7,7 +7,8 @@ register = template.Library()
 
 @register.simple_tag(takes_context=True)
 def course_menu_active(context, url):
-    if context['request'].path in reverse(url, kwargs={'pk': context['course'].id}):
+    print reverse(url, kwargs={'pk': context['course'].id})
+    if reverse(url, kwargs={'pk': context['course'].id}) in context['request'].path:
         return "selected"
     return ""
 

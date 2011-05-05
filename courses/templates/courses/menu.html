@@ -4,7 +4,7 @@
   <ul class="tabs"> 
   <li><a href="{% url courses:overview course.id %}" class="{% course_menu_active 'courses:overview' %}">Overview</a></li> 
   <li><a href="resources">Resources</a></li> 
-  <li><a href="{% url courses:assignments course.id %}">Assignments</a></li> 
+  <li><a href="{% url courses:assignments course.id %}" class="{% course_menu_active 'courses:assignments' %}">Assignments</a></li> 
   <li><a href="assigments">Members</a></li> 
   {% ifcoursefaculty %}<li class="right"><a href="{% url courses:admin course.id %}" class="{% course_menu_active 'courses:admin' %}">Admin</a></li>{% endifcoursefaculty %} 
  </ul>
