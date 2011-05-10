@@ -253,7 +253,7 @@ form th {
 }
 
 .toolbox {
-    min-height: 300px;
+    min-height: 200px;
     background-color: #EFEFEF;
     border: 1px solid #DDD;
     -webkit-border-radius: 5px;
@@ -272,7 +272,6 @@ form th {
 }
 
 .toolbox a{
-    float:left;
     height:34px;
     line-height:26px;
     font-size:16px;

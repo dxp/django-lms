@@ -126,7 +126,7 @@ class NewCourseAssignment(CreateView):
         self.object.save()
         return super(NewCourseAssignment, self).form_valid(form)
 
-    # Overriding the dispatch to check visibility
+    # Overriding the dispatch to check permissions
     def dispatch(self, request, *args, **kwargs):
         # set the kwargs so we can get the object
         self.kwargs = kwargs
