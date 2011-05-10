@@ -219,7 +219,7 @@ form tbody tr:nth-child(even) td, form tbody tr.even td {background:#fff;}
     border-top: 1px solid #BEDCE7;
 }
 
-.assignment-overview {
+#assignment-list .assignment-overview {
     border-bottom: 1px solid #BEDCE7;
     border-left: 1px solid #BEDCE7;
     border-right: 1px solid #BEDCE7;

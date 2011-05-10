@@ -5,7 +5,7 @@
 <div id="assignment-list">
     {% for assignment in assignments %}
     <div class="assignment-overview">
-      <div class="assignment-title san-serif"><a href="#">{{ assignment.title }}</a></div>
+      <div class="assignment-title san-serif"><a href="{% url courses:assignment_overview assignment.id %}">{{ assignment.title }}</a></div>
       <div class="assignment-due-date">{{ assignment.due_date }}</div>
       <div class="assignment-description">
 	{{ assignment.description|safe|truncatewords_html:100 }}

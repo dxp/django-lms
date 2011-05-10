@@ -150,3 +150,32 @@ class AssignmentList(ListView):
         context['request'] = self.request
         context['course'] = self.course
         return context
+
+class AssignmentOverview(DetailView):
+    context_object_name = "assignment"
+    template_name = "courses/assignment_overview.html"
+
+    queryset = Assignment.objects.all()
+
+    def get_template_names(self):
+        return self.template_name
+    
+
+    def get_context_data(self, **kwargs):
+        context = super(AssignmentOverview, self).get_context_data(**kwargs)
+        context['request'] = self.request
+        context['course'] = self.get_object().course
+    
+        return context
+
+    # Overriding the dispatch to check visibility
+    def dispatch(self, request, *args, **kwargs):
+        # set the kwargs so we can get the object
+        self.kwargs = kwargs
+        course = self.get_object().course
+
+        if course.private:
+            if request.user not in course.faculty.all() and request.user not in course.members.all():
+                raise exceptions.PermissionDenied
+
+        return super(AssignmentOverview, self).dispatch(request, *args, **kwargs)
