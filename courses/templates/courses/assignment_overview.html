@@ -1,0 +1,18 @@
+{% extends "courses/assignment_base.html" %}
+{% load courses %}
+
+{% block page_title %}<span class="san-serif">{{ assignment.title }}</span>{% endblock page_title %}
+{% block assignment_content %}
+<div id="assignment">
+  <div class="assignment-overview">
+   <div class="assignment-due-date">{{ assignment.due_date }}</div>
+    <div class="assignment-description">
+      {{ assignment.description|safe }}
+    </div>
+  </div>
+</div>
+{% endblock assignment_content %}
+
+{% block tools %}
+<a href="#">Submit solution</a>
+{% endblock tools %}
