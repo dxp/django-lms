@@ -1,5 +1,5 @@
 from django import forms
-from courses.models import Course, Assignment
+from courses.models import Course, Assignment, AssignmentSubmission
 
 class CourseAdminForm(forms.ModelForm):
     private = forms.ChoiceField(label = "Visibility",
@@ -16,3 +16,8 @@ class NewAssignmentForm(forms.ModelForm):
     class Meta:
         model = Assignment
         exclude = ('course',)
+
+class SubmitAssignmentForm(forms.ModelForm):
+    class Meta:
+        model = AssignmentSubmission
+        exclude = ('assignment','user')

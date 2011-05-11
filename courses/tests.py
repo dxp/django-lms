@@ -157,3 +157,27 @@ class AssignmentTest(test_utils.AuthenticatedTest):
 
         # Remove user
         self.course.faculty.remove(self.user)
+
+    def test_submit(self):
+        # Add client user as faculty member
+        self.course.faculty.add(self.user)
+        self.course.save()
+
+        one_week = datetime.timedelta(7)
+        response = self.c.post(reverse('courses:new_assignment', kwargs = {'pk':self.course.id}), {'course':self.course.id,
+                                                                                            'title':'Test Assignment',
+                                                                                            'description':'Test of the description <b>HERE</b>',
+                                                                                            'due_date': (datetime.date.today() + one_week).isoformat()})
+
+        # Remove user
+        self.course.faculty.remove(self.user)
+
+        self.course.members.add(self.user)
+
+        assignment = Assignment.objects.get(course = self.course, title = 'Test Assignment')
+
+        # Test submitting solution
+        response = self.c.post(reverse('courses:submit_assignment', kwargs = {'pk':assignment.id}), {'link':'http://www.example.com',
+                                                                                                     'notes':'Test notes.',})
+
+        self.assertEquals(response.status_code, 302)

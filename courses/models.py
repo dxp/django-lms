@@ -50,6 +50,14 @@ class Assignment(models.Model):
 
 class AssignmentSubmission(models.Model):
     user = models.ForeignKey(User)
+    assignment = models.ForeignKey(Assignment)
     link = models.URLField(blank = True)
     file = models.FileField(upload_to = 'photos/%Y/%m/%d', blank = True)
     notes = models.TextField(blank = True)
+
+    def __unicode__(self):
+        if self.link:
+            return self.link
+        elif self.file:
+            return self.file.name
+    

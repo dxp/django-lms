@@ -7,8 +7,8 @@ from django.views.generic import DetailView, ListView, RedirectView, UpdateView,
 from django.views.generic.detail import SingleObjectMixin
 from django.core import exceptions
 
-from courses.models import Course, Semester, Assignment
-from courses.forms import CourseAdminForm, NewAssignmentForm
+from courses.models import Course, Semester, Assignment, AssignmentSubmission
+from courses.forms import CourseAdminForm, NewAssignmentForm, SubmitAssignmentForm
 
 class CourseOverview(DetailView):
     context_object_name = "course"
@@ -165,6 +165,9 @@ class AssignmentOverview(DetailView):
         context = super(AssignmentOverview, self).get_context_data(**kwargs)
         context['request'] = self.request
         context['course'] = self.get_object().course
+
+        # Get any submissions the member has submitted
+        context['submissions'] = AssignmentSubmission.objects.filter(user = self.request.user, assignment = self.get_object())
     
         return context
 
@@ -179,3 +182,44 @@ class AssignmentOverview(DetailView):
                 raise exceptions.PermissionDenied
 
         return super(AssignmentOverview, self).dispatch(request, *args, **kwargs)
+
+class SubmitAssignment(CreateView):
+    model = AssignmentSubmission
+    form_class = SubmitAssignmentForm
+    template_name = "courses/submit_assignment.html"
+
+    def get_initial(self):
+        '''
+        Overriding this method to set the assignment id for the form
+        '''
+        return {'course': self.kwargs['pk']}
+
+    def get_success_url(self):
+        assignment = Assignment.objects.get(pk = self.kwargs['pk'])
+        return reverse('courses:assignment_overview', kwargs={'pk':assignment.id})
+
+    def get_context_data(self, **kwargs):
+        context = super(SubmitAssignment, self).get_context_data(**kwargs)
+        context['request'] = self.request
+        context['assignment'] = Assignment.objects.get(pk = self.kwargs['pk'])
+        context['course'] = context['assignment'].course
+
+        return context
+
+    def form_valid(self, form):
+        self.object = form.save(commit = False)
+        self.object.assignment = Assignment.objects.get(pk = self.kwargs['pk'])
+        self.object.user = self.request.user
+        self.object.save()
+        return super(SubmitAssignment, self).form_valid(form)
+
+    # Overriding the dispatch to check permissions
+    def dispatch(self, request, *args, **kwargs):
+        # set the kwargs so we can get the object
+        self.kwargs = kwargs
+        assignment = Assignment.objects.get(pk = self.kwargs['pk'])
+
+        if request.user not in assignment.course.members.all():
+                raise exceptions.PermissionDenied
+
+        return super(SubmitAssignment, self).dispatch(request, *args, **kwargs)

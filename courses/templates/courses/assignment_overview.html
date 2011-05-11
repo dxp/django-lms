@@ -11,8 +11,18 @@
     </div>
   </div>
 </div>
+
+{% if submissions %}
+<h3>Your submitted solutions</h3>
+{% for submission in submissions %}
+<div class="submission">
+  {{ submission }}
+</div>
+{% endfor %}
+{% endif %}
+
 {% endblock assignment_content %}
 
 {% block tools %}
-{% ifcoursemember %}<a href="#">Submit solution</a>{% endifcoursemember %}
+{% ifcoursemember %}<a href="{% url courses:submit_assignment assignment.id %}">Submit solution</a>{% endifcoursemember %}
 {% endblock tools %}
