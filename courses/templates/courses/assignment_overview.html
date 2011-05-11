@@ -14,5 +14,5 @@
 {% endblock assignment_content %}
 
 {% block tools %}
-<a href="#">Submit solution</a>
+{% ifcoursemember %}<a href="#">Submit solution</a>{% endifcoursemember %}
 {% endblock tools %}

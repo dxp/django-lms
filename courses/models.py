@@ -47,3 +47,9 @@ class Assignment(models.Model):
 
     def __unicode__(self):
         return unicode(self.title)
+
+class AssignmentSubmission(models.Model):
+    user = models.ForeignKey(User)
+    link = models.URLField(blank = True)
+    file = models.FileField(upload_to = 'photos/%Y/%m/%d', blank = True)
+    notes = models.TextField(blank = True)

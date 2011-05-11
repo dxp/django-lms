@@ -285,8 +285,12 @@ form th {
 }
 
 .toolbox a:hover {
+    border-bottom: 1px solid #003c7b;
+    background-image: -moz-linear-gradient(left, #167fe8, #003c7b);
+    background-image: -webkit-gradient(linear, left center, right center, from(#167fe8), to(#003c7b));
+    /* box-shadow: 0 0 3px 1px rgba(0,0,0,0.75); */
     color:#fff;
-    background-color:#4183C4;
+    /* background-color:#4183C4; */
     text-decoration:none;
     text-shadow:1px 1px 0 rgba(0,0,0,0.7);
 }
