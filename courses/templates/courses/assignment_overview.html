@@ -16,7 +16,13 @@
 <h3>Your submitted solutions</h3>
 {% for submission in submissions %}
 <div class="submission">
-  {{ submission }}
+  &nbsp;
+  <div class="right">
+    <a class="button delete" href="#" id="submission_{{ submission.id }}">Delete</a>
+  </div>
+  <div class="left">
+    {{ submission }}
+  </div>
 </div>
 {% endfor %}
 {% endif %}
@@ -26,3 +32,36 @@
 {% block tools %}
 {% ifcoursemember %}<a href="{% url courses:submit_assignment assignment.id %}">Submit solution</a>{% endifcoursemember %}
 {% endblock tools %}
+
+{% block js %}
+
+$(document).ready(function(){
+    {% for submission in submissions %}
+        $('#submission_{{ submission.id }}').data('submission', '{{ submission.id }}');
+    {% endfor %}
+
+    $('.submission .delete').hide();
+    $('.submission').hover(
+	function(){
+	    $('.delete', this).fadeIn(100);
+            $(this).css('background-color', '#d5edf8');
+	},
+	function(){
+	    $('.delete', this).fadeOut(100);
+            $(this).css('background-color', 'transparent');
+	}
+    );
+
+    $('.submission .delete').click(function(){
+	if (confirm('Delete submission?')){
+	    var delete_return = $.post('{% url courses:delete_submission %}', 
+		   {id: $(this).data('submission')},
+		   function(data){
+		       window.location = data
+		   });
+	}
+    });
+
+});
+
+{% endblock js %}
