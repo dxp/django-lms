@@ -303,3 +303,15 @@ form th {
 .right {
     float: right;
 }
+
+.submission .delete {
+    margin-left: 15px;
+}
+
+.submission {
+    padding: 5px;
+    font-size: 1.25em;
+    border-bottom: 1px solid #ccc;
+    clear: both;
+    height: 20px;
+}

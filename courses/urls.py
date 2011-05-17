@@ -7,7 +7,8 @@ from courses.views import (CourseOverview,
                            NewCourseAssignment,
                            AssignmentList,
                            AssignmentOverview,
-                           SubmitAssignment,)
+                           SubmitAssignment,
+                           DeleteSubmission,)
 from django.contrib.auth.decorators import login_required
 
 urlpatterns = patterns('courses.views',
@@ -17,6 +18,7 @@ urlpatterns = patterns('courses.views',
                        url('^(?P<pk>\d+)/assignments/$', login_required(AssignmentList.as_view()), name = 'assignments'), 
                        url('^assignment/(?P<pk>\d+)/overview/$', login_required(AssignmentOverview.as_view()), name = 'assignment_overview'),
                        url('^(?P<pk>\d+)/assignments/submit/$', login_required(SubmitAssignment.as_view()), name = 'submit_assignment'),
+                       url('^assignment_submission/delete/$', login_required(DeleteSubmission.as_view()), name = 'delete_submission'),
                        url('^(?P<pk>\d+)/toggle-membership/$', login_required(ToggleMembership.as_view()), name = 'toggle-membership'),
                        url('^semester/(?P<pk>\d+)/$', login_required(BySemesterList.as_view()), name = 'by_semester'),
                        url('^$', login_required(CourseDropPage.as_view()), name = 'drop_page'),

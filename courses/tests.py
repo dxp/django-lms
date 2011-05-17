@@ -8,9 +8,12 @@ from django.core.urlresolvers import reverse
 from django.conf import settings
 from django.core.files import File
 
-from courses.models import Course, Semester, Assignment
+from courses.models import Course, Semester, Assignment, AssignmentSubmission
 
 import libs.test_utils as test_utils
+
+one_week = datetime.timedelta(7)
+one_day = datetime.timedelta(1)
 
 class SemesterTest(test_utils.AuthenticatedTest):
     def test_create(self):
@@ -42,8 +45,6 @@ class SemesterTest(test_utils.AuthenticatedTest):
         self.assertEquals([course.id for course in response.context['courses']], [course.id for course in courses])
 
     def test_active(self):
-        one_day = datetime.timedelta(1)
-        one_week = datetime.timedelta(7)
         semester = Semester(name='Spring', year = '2012', start = datetime.date.today() - one_day, end = datetime.date.today() + one_day)
         semester.save()
 
@@ -128,8 +129,6 @@ class AssignmentTest(test_utils.AuthenticatedTest):
         response = self.c.get(reverse('courses:new_assignment', kwargs = {'pk':self.course.id}))
         self.assertEquals(response.status_code, 200)
 
-        one_day = datetime.timedelta(1)
-        one_week = datetime.timedelta(7)
         response = self.c.post(reverse('courses:new_assignment', kwargs = {'pk':self.course.id}), {'course':self.course.id,
                                                                                             'title':'Test Assignment',
                                                                                             'description':'Test of the description <b>HERE</b>',
@@ -142,7 +141,6 @@ class AssignmentTest(test_utils.AuthenticatedTest):
 
 
     def test_list(self):
-        one_week = datetime.timedelta(7)
         assignment = Assignment(course = self.course, title = "Test Assignment", description = 'Test of the description <b>HERE</b>', due_date = (datetime.date.today() + one_week).isoformat())
         assignment.save()
 
@@ -162,8 +160,6 @@ class AssignmentTest(test_utils.AuthenticatedTest):
         # Add client user as faculty member
         self.course.faculty.add(self.user)
         self.course.save()
-
-        one_week = datetime.timedelta(7)
         response = self.c.post(reverse('courses:new_assignment', kwargs = {'pk':self.course.id}), {'course':self.course.id,
                                                                                             'title':'Test Assignment',
                                                                                             'description':'Test of the description <b>HERE</b>',
@@ -181,3 +177,23 @@ class AssignmentTest(test_utils.AuthenticatedTest):
                                                                                                      'notes':'Test notes.',})
 
         self.assertEquals(response.status_code, 302)
+
+        self.course.members.remove(self.user)
+
+    def test_delete_submission(self):
+        # We overrode the delete, so we should be testing it
+        self.course.members.add(self.user)
+
+        assignment = Assignment(course = self.course, title = "Test Assignment", description = 'Test of the description <b>HERE</b>', due_date = (datetime.date.today() + one_week).isoformat())
+        assignment.save()
+
+        submission = AssignmentSubmission(user = self.user, assignment = assignment, link = "http://www.example.com", notes = "Test notes.")
+        submission.save()
+
+        s_id = submission.id
+
+        response = self.c.post(reverse('courses:delete_submission'), {'id': submission.id})
+
+        self.assertEquals(response.content, reverse('courses:assignment_overview', kwargs = {'pk': assignment.id}))
+
+        self.assertRaises(AssignmentSubmission.DoesNotExist, AssignmentSubmission.objects.get, pk = s_id)

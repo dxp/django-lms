@@ -3,9 +3,10 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
 from libs.django_utils import render_to_response
 from libs.class_views import JSONResponseMixin
-from django.views.generic import DetailView, ListView, RedirectView, UpdateView, CreateView, View
+from django.views.generic import DetailView, ListView, RedirectView, UpdateView, CreateView, View, DeleteView
 from django.views.generic.detail import SingleObjectMixin
 from django.core import exceptions
+from django.http import HttpResponse
 
 from courses.models import Course, Semester, Assignment, AssignmentSubmission
 from courses.forms import CourseAdminForm, NewAssignmentForm, SubmitAssignmentForm
@@ -223,3 +224,32 @@ class SubmitAssignment(CreateView):
                 raise exceptions.PermissionDenied
 
         return super(SubmitAssignment, self).dispatch(request, *args, **kwargs)
+
+class DeleteSubmission(DeleteView):
+    template_name = "courses/delete_submission.html"
+
+    queryset = AssignmentSubmission.objects.all()
+
+    def get_success_url(self):
+        return reverse('courses:assignment_overview', kwargs={'pk':self.assignment.id})
+
+    def get_context_data(self, **kwargs):
+        context = super(DeleteSubmission, self).get_context_data(**kwargs)
+        context['request'] = self.request
+        return context
+
+    # Here we set the pk into the kwargs because we're calling this by ajax. We can't reverse the url on the client side because we don't have the id until it's clicked
+    def get_object(self, queryset=None):
+        self.kwargs['pk'] = self.request.POST.get('id', None)
+
+        # Set the old assignment here so I know where to redirect to
+        return super(DeleteSubmission, self).get_object(queryset)
+
+    # Override delete so we save the old object. Return the url to redirect to
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.assignment = self.object.assignment
+        self.object.delete()
+
+        return HttpResponse(self.get_success_url())
+
