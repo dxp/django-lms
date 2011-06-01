@@ -49,7 +49,7 @@ class Assignment(models.Model):
         return unicode(self.title)
 
 class AssignmentSubmission(models.Model):
-    user = models.ForeignKey(User)
+    users = models.ManyToManyField(User, related_name = 'submitters')
     assignment = models.ForeignKey(Assignment)
     link = models.URLField(blank = True)
     file = models.FileField(upload_to = 'photos/%Y/%m/%d', blank = True)

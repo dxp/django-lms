@@ -175,7 +175,6 @@ class AssignmentTest(test_utils.AuthenticatedTest):
         # Test submitting solution
         response = self.c.post(reverse('courses:submit_assignment', kwargs = {'pk':assignment.id}), {'link':'http://www.example.com',
                                                                                                      'notes':'Test notes.',})
-
         self.assertEquals(response.status_code, 302)
 
         self.course.members.remove(self.user)
@@ -187,7 +186,9 @@ class AssignmentTest(test_utils.AuthenticatedTest):
         assignment = Assignment(course = self.course, title = "Test Assignment", description = 'Test of the description <b>HERE</b>', due_date = (datetime.date.today() + one_week).isoformat())
         assignment.save()
 
-        submission = AssignmentSubmission(user = self.user, assignment = assignment, link = "http://www.example.com", notes = "Test notes.")
+        submission = AssignmentSubmission(assignment = assignment, link = "http://www.example.com", notes = "Test notes.")
+        submission.save()
+        submission.users.add(self.user)
         submission.save()
 
         s_id = submission.id

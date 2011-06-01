@@ -168,7 +168,7 @@ class AssignmentOverview(DetailView):
         context['course'] = self.get_object().course
 
         # Get any submissions the member has submitted
-        context['submissions'] = AssignmentSubmission.objects.filter(user = self.request.user, assignment = self.get_object())
+        context['submissions'] = AssignmentSubmission.objects.filter(submitter = self.request.user, assignment = self.get_object())
     
         return context
 
@@ -210,8 +210,8 @@ class SubmitAssignment(CreateView):
     def form_valid(self, form):
         self.object = form.save(commit = False)
         self.object.assignment = Assignment.objects.get(pk = self.kwargs['pk'])
-        self.object.user = self.request.user
         self.object.save()
+        self.object.users.add(self.request.user)
         return super(SubmitAssignment, self).form_valid(form)
 
     # Overriding the dispatch to check permissions

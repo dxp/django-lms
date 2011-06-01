@@ -20,4 +20,4 @@ class NewAssignmentForm(forms.ModelForm):
 class SubmitAssignmentForm(forms.ModelForm):
     class Meta:
         model = AssignmentSubmission
-        exclude = ('assignment','user')
+        exclude = ('assignment','users')
