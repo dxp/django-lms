@@ -1,0 +1,14 @@
+{% extends "courses/course_base.html" %}
+{% load courses %}
+
+{% block course_content %}
+<div id="course">
+  <span class="course-sub-info">{{ course.number }} - {{ course.section }}: {{ course.semester.name }} {{ course.semester.year }}</span>
+ 
+  <div id="members">
+   {% for person in course.members.all %}
+     {% include "person_box.html" %}
+   {% endfor %}
+  </div>
+</div>
+{% endblock course_content %}

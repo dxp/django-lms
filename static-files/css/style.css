@@ -274,7 +274,7 @@ form th {
 .toolbox a{
     height:34px;
     line-height:26px;
-    font-size:16px;
+    font-size:1.1em;
     color:#666;
     text-shadow:1px 1px 0 rgba(255,255,255,0.7);
     display: block;
@@ -314,4 +314,31 @@ form th {
     border-bottom: 1px solid #ccc;
     clear: both;
     height: 20px;
+}
+
+.person-box {
+    width: 500px;
+    height: 75px;
+    padding: 5px;
+    margin: 5px;
+    background-color: #ccc;
+}
+
+.person-box .profile-image {
+    float:left
+}
+
+.person-box .profile-image img {
+    height: 75px;
+    width: 75px;
+    padding-right: 10px;
+    vertical-align: top;
+}
+
+.person-box .name {
+    font-size: 1.5em;
+}
+
+.person-box .name a {
+    text-decoration: none;
 }
