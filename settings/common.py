@@ -95,7 +95,7 @@ INSTALLED_APPS = (
     'courses',
     'tinymce',
     'libs',
-    'profiles',
+    'basic.profiles',
     )
 
 STATIC_ROOT = SITE_ROOT + "/static"
