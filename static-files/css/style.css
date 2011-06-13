@@ -260,13 +260,13 @@ form th {
     -moz-border-radius: 5px;
     text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.7);
     line-height: 26px;
-    font-size: 14px;
+    font-size: 1.05em;
 }
 
 .toolbox-header{
     border-bottom: 1px solid #ccc;
     line-height: 35px;
-    font-size: 22px;
+    font-size: 1.25em;
     text-align: center;
     background-color: #cecece
 }
@@ -341,4 +341,13 @@ form th {
 
 .person-box .name a {
     text-decoration: none;
+}
+
+.menu-triangle {
+    font-size: 0.6em;
+    color: #4183C4;
+}
+
+.jd_menu_hover_toolbar .menu-triangle {
+    color: #0099FF;
 }

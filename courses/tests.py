@@ -198,3 +198,38 @@ class AssignmentTest(test_utils.AuthenticatedTest):
         self.assertEquals(response.content, reverse('courses:assignment_overview', kwargs = {'pk': assignment.id}))
 
         self.assertRaises(AssignmentSubmission.DoesNotExist, AssignmentSubmission.objects.get, pk = s_id)
+
+    def test_team_submit(self):
+        if not self.users:
+            self.extra_users()
+
+        # Add client user as faculty member
+        self.course.faculty.add(self.user)
+        self.course.save()
+        response = self.c.post(reverse('courses:new_assignment', kwargs = {'pk':self.course.id}), {'course':self.course.id,
+                                                                                            'title':'Test Assignment',
+                                                                                            'description':'Test of the description <b>HERE</b>',
+                                                                                            'due_date': (datetime.date.today() + one_week).isoformat()})
+
+        # Remove user
+        self.course.faculty.remove(self.user)
+
+        self.course.members.add(self.user)
+
+        for user in self.users:
+            self.course.members.add(user)
+
+        assignment = Assignment.objects.get(course = self.course, title = 'Test Assignment')
+
+        # Test submitting solution
+        response = self.c.post(reverse('courses:team_submit_assignment', kwargs = {'pk':assignment.id}), {'link':'http://www.example.com',
+                                                                                                     'notes':'Test notes.',
+                                                                                                     'users':[user.id for user in self.users]})
+        self.assertEquals(response.status_code, 302)
+
+        self.course.members.remove(self.user)
+
+        for user in self.users:
+            self.course.members.remove(user)
+
+        

@@ -1,5 +1,6 @@
 from django import forms
 from courses.models import Course, Assignment, AssignmentSubmission
+from django.contrib.auth.models import User
 
 class CourseAdminForm(forms.ModelForm):
     private = forms.ChoiceField(label = "Visibility",
@@ -21,3 +22,11 @@ class SubmitAssignmentForm(forms.ModelForm):
     class Meta:
         model = AssignmentSubmission
         exclude = ('assignment','users')
+
+class TeamSubmitAssignmentForm(forms.ModelForm):
+    users = forms.ModelMultipleChoiceField(queryset = User.objects.all(),
+                                           required = False,
+                                           label = 'Team members')
+    class Meta:
+        model = AssignmentSubmission
+        fields = ('users', 'link', 'file', 'notes')

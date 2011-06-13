@@ -1,4 +1,5 @@
 import datetime
+from django import forms
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
 from libs.django_utils import render_to_response
@@ -9,7 +10,7 @@ from django.core import exceptions
 from django.http import HttpResponse
 
 from courses.models import Course, Semester, Assignment, AssignmentSubmission
-from courses.forms import CourseAdminForm, NewAssignmentForm, SubmitAssignmentForm
+from courses.forms import CourseAdminForm, NewAssignmentForm, SubmitAssignmentForm, TeamSubmitAssignmentForm
 
 class CourseOverview(DetailView):
     context_object_name = "course"
@@ -37,6 +38,10 @@ class CourseOverview(DetailView):
                 raise exceptions.PermissionDenied
 
         return super(CourseOverview, self).dispatch(request, *args, **kwargs)
+
+
+class CourseMembers(CourseOverview):
+    template_name = "courses/members.html"
 
 # TODO: Check if user is faculty
 class CourseAdmin(UpdateView):
@@ -168,7 +173,7 @@ class AssignmentOverview(DetailView):
         context['course'] = self.get_object().course
 
         # Get any submissions the member has submitted
-        context['submissions'] = AssignmentSubmission.objects.filter(submitter = self.request.user, assignment = self.get_object())
+        context['submissions'] = AssignmentSubmission.objects.filter(users = self.request.user, assignment = self.get_object())
     
         return context
 
@@ -218,9 +223,9 @@ class SubmitAssignment(CreateView):
     def dispatch(self, request, *args, **kwargs):
         # set the kwargs so we can get the object
         self.kwargs = kwargs
-        assignment = Assignment.objects.get(pk = self.kwargs['pk'])
+        self.assignment = Assignment.objects.get(pk = self.kwargs['pk'])
 
-        if request.user not in assignment.course.members.all():
+        if request.user not in self.assignment.course.members.all():
                 raise exceptions.PermissionDenied
 
         return super(SubmitAssignment, self).dispatch(request, *args, **kwargs)
@@ -253,3 +258,12 @@ class DeleteSubmission(DeleteView):
 
         return HttpResponse(self.get_success_url())
 
+class TeamSubmitAssignment(SubmitAssignment):
+    form_class = TeamSubmitAssignmentForm
+
+    def get_form(self, form_class):
+        form = super(TeamSubmitAssignment, self).get_form(form_class)
+
+        form.fields['users'].queryset =  self.assignment.course.members
+
+        return form

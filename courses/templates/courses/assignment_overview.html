@@ -31,6 +31,7 @@
 
 {% block tools %}
 {% ifcoursemember %}<a href="{% url courses:submit_assignment assignment.id %}">Submit solution</a>{% endifcoursemember %}
+{% ifcoursemember %}<a href="{% url courses:team_submit_assignment assignment.id %}">Submit solution for team</a>{% endifcoursemember %}
 {% endblock tools %}
 
 {% block js %}

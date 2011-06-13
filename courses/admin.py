@@ -4,7 +4,7 @@ from django.forms import ModelForm
 from django.forms import ModelMultipleChoiceField
 from django.contrib.admin.widgets import FilteredSelectMultiple
 
-from courses.models import Course, Semester
+from courses.models import Course, Semester, Assignment, AssignmentSubmission
 
 class CourseAdminForm(ModelForm):
     faculty = ModelMultipleChoiceField(queryset = Group.objects.get_or_create(name = 'Faculty')[0].user_set.all(),
@@ -20,3 +20,5 @@ class CourseAdmin(admin.ModelAdmin):
 
 admin.site.register(Course, CourseAdmin)
 admin.site.register(Semester)
+admin.site.register(Assignment)
+admin.site.register(AssignmentSubmission)

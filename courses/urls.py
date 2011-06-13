@@ -8,16 +8,20 @@ from courses.views import (CourseOverview,
                            AssignmentList,
                            AssignmentOverview,
                            SubmitAssignment,
-                           DeleteSubmission,)
+                           TeamSubmitAssignment,
+                           DeleteSubmission,
+                           CourseMembers,)
 from django.contrib.auth.decorators import login_required
 
 urlpatterns = patterns('courses.views',
                        url('^(?P<pk>\d+)/overview/$', login_required(CourseOverview.as_view()), name = 'overview'),
+                       url('^(?P<pk>\d+)/members/$', login_required(CourseMembers.as_view()), name = 'members'),
                        url('^(?P<pk>\d+)/admin/$', login_required(CourseAdmin.as_view()), name = 'admin'),
                        url('^(?P<pk>\d+)/assignments/new/$', login_required(NewCourseAssignment.as_view()), name = 'new_assignment'),
                        url('^(?P<pk>\d+)/assignments/$', login_required(AssignmentList.as_view()), name = 'assignments'), 
                        url('^assignment/(?P<pk>\d+)/overview/$', login_required(AssignmentOverview.as_view()), name = 'assignment_overview'),
                        url('^(?P<pk>\d+)/assignments/submit/$', login_required(SubmitAssignment.as_view()), name = 'submit_assignment'),
+                       url('^(?P<pk>\d+)/assignments/team_submit/$', login_required(TeamSubmitAssignment.as_view()), name = 'team_submit_assignment'),
                        url('^assignment_submission/delete/$', login_required(DeleteSubmission.as_view()), name = 'delete_submission'),
                        url('^(?P<pk>\d+)/toggle-membership/$', login_required(ToggleMembership.as_view()), name = 'toggle-membership'),
                        url('^semester/(?P<pk>\d+)/$', login_required(BySemesterList.as_view()), name = 'by_semester'),
