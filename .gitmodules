@@ -1,0 +1,3 @@
+[submodule "django-basic-apps"]
+	path = django-basic-apps
+	url = https://github.com/nathanborror/django-basic-apps.git
