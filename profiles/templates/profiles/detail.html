@@ -1,0 +1,7 @@
+{% extends "html_base.html" %}
+{% block title %}Profile for {{ profile.user }}{% endblock title %}
+{% block content %}
+<h1>Profile for {{ profile.user }}</h1>
+<h3>Biography</h3>
+<p>{{ profile.data.biography|safe }}</p>
+{% endblock content %}

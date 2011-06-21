@@ -96,5 +96,8 @@ class Service(models.Model):
 
 def user_post_save(sender, instance, **kwargs):
     profile, new = Profile.objects.get_or_create(user=instance)
+    if new:
+        profile.data = {}
+        profile.save()
 
 models.signals.post_save.connect(user_post_save, sender=User)

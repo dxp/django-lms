@@ -23,13 +23,16 @@ class ProfilesTest(test_utils.AuthenticatedTest):
         assert profile
 
     def test_edit(self):
-        response = self.c.get(reverse('profiles:edit'))
+        response = self.c.get(reverse('profiles:edit', kwargs={'username':self.user.username}))
         self.assertEquals(response.status_code, 200)
 
-        response = self.c.post(reverse('profiles:edit'),
-                               {'biography':'Some test <bold>text</bold',
-                                'resume': open('test_files/test.pdf'),
-                                'mugshot': open('test_file/profile.gif'),
+
+        response = self.c.post(reverse('profiles:edit', kwargs={'username':self.user.username}),
+                               {'biography':'Some test <bold>text</bold>',
+                                'resume': open('profiles/test_files/test.pdf'),
+                                'mugshot': open('profiles/test_files/profile.gif'),
                                 })
+
+        self.assertEquals(response.status_code, 302)
     
     
