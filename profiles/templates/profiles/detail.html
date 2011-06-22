@@ -1,7 +1,25 @@
 {% extends "html_base.html" %}
+{% load util %}
 {% block title %}Profile for {{ profile.user }}{% endblock title %}
 {% block content %}
-<h1>Profile for {{ profile.user }}</h1>
-<h3>Biography</h3>
-<p>{{ profile.data.biography|safe }}</p>
+<div class="container profile-detail">
+ <div class="span-5 profile-image">
+  {% if profile.mugshot %}
+    <img src="{{ profile.mugshot.url }}" alt="profile image">
+  {% else %}
+    <img src="{{ STATIC_URL}}images/profile-empty-head.gif" alt="profile image">
+  {% endif %}
+ </div>
+  <div class="span-41 last profile-text">
+    <h1>Profile for {{ profile.user }}</h1>
+    {% if profile.data.biography %}
+    <h3>Biography</h3>
+    <p>{{ profile.data.biography|safe }}</p>
+    {% endif %}
+    {% if profile.resume %}
+    <h3>Resume</h3>
+    <p><a href="{{ profile.resume.url }}">{{ profile.resume.name|basename }}</a>
+    {% endif %}
+  </div>
+</div>
 {% endblock content %}

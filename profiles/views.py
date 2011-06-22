@@ -16,18 +16,32 @@ class ProfileEdit(FormView):
     template_name = "profiles/edit.html"
 
     def form_valid(self, form):
-        profile = Profile.objects.get(user = self.request.user)
+        profile = self.get_profile()
         form.save(profile)
         return super(ProfileEdit, self).form_valid(form)
 
     def get_success_url(self):
-        profile = Profile.objects.get(user = self.request.user)
+        profile = self.get_profile()
         return reverse('profiles:detail', kwargs={'username':profile.user.username})
 
     def get_context_data(self, **kwargs):
         context = super(ProfileEdit, self).get_context_data(**kwargs)
         context['request'] = self.request
         return context
+
+    def get_profile(self):
+        return Profile.objects.get(user = self.request.user)
+
+    def get_initial(self):
+        """
+        Returns the initial data to use for forms on this view.
+        """
+        profile = self.get_profile()
+        self.initial = {'mugshot': profile.mugshot,
+                   'resume': profile.resume,
+                   'biography': profile.data.get('biography', ''),}
+        return self.initial
+
 
 class ProfileDetail(DetailView):
     template_name = "profiles/detail.html"

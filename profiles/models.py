@@ -18,8 +18,8 @@ class Profile(models.Model):
     )
 
     user = models.ForeignKey(User, unique=True)
-    mugshot = models.FileField(_('mugshot'), upload_to='mugshots', blank=True)
-    resume = models.FileField(_('resume'), upload_to='resumes', blank=True)
+    mugshot = models.FileField(_('mugshot'), upload_to='mugshots/', blank=True)
+    resume = models.FileField(_('resume'), upload_to='resumes/', blank=True)
     data = JSONField(null = True, blank = True)
 
     class Meta:

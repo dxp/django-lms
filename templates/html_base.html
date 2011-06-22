@@ -60,7 +60,7 @@
 	    <ul class="jd_menu" id="user-menu">
 	      <li>{{ user.first_name }} {{ user.last_name }} <span class="menu-triangle">&#x25bc;</span>
 	      <ul>
-	      <li>Edit profile</li>
+	      <li><a href="{% url profiles:edit user %}">Edit profile</a></li>
 	      </ul>
 	      </li>
 	  </ul> | Account Settings | <a href="{% url logout %}">Log Out</a>
