@@ -20,7 +20,6 @@ class CourseOverview(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(CourseOverview, self).get_context_data(**kwargs)
-        context['request'] = self.request
     
         # Check if user is a member
         context['is_member'] = self.request.user in context['course'].members.all()
@@ -54,11 +53,6 @@ class CourseAdmin(UpdateView):
         course = self.get_object()
         return reverse('courses:admin', kwargs={'pk':course.id})
 
-    def get_context_data(self, **kwargs):
-        context = super(CourseAdmin, self).get_context_data(**kwargs)
-        context['request'] = self.request
-        return context
-
 
 class BySemesterList(ListView):
     context_object_name = "courses"
@@ -67,11 +61,6 @@ class BySemesterList(ListView):
     def get_queryset(self):
         self.semester = get_object_or_404(Semester, pk=self.kwargs['pk'])
         return self.semester.course_set.all()
-
-    def get_context_data(self, **kwargs):
-        context = super(BySemesterList, self).get_context_data(**kwargs)
-        context['semester'] = self.semester
-        return context
 
 class CourseDropPage(RedirectView):
     '''
@@ -121,7 +110,6 @@ class NewCourseAssignment(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(NewCourseAssignment, self).get_context_data(**kwargs)
-        context['request'] = self.request
         context['course'] = Course.objects.get(pk = self.kwargs['pk'])
         
         return context
@@ -153,7 +141,6 @@ class AssignmentList(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(AssignmentList, self).get_context_data(**kwargs)
-        context['request'] = self.request
         context['course'] = self.course
         return context
 
@@ -169,7 +156,6 @@ class AssignmentOverview(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(AssignmentOverview, self).get_context_data(**kwargs)
-        context['request'] = self.request
         context['course'] = self.get_object().course
 
         # Get any submissions the member has submitted
@@ -206,7 +192,6 @@ class SubmitAssignment(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(SubmitAssignment, self).get_context_data(**kwargs)
-        context['request'] = self.request
         context['assignment'] = Assignment.objects.get(pk = self.kwargs['pk'])
         context['course'] = context['assignment'].course
 
@@ -240,7 +225,6 @@ class DeleteSubmission(DeleteView):
 
     def get_context_data(self, **kwargs):
         context = super(DeleteSubmission, self).get_context_data(**kwargs)
-        context['request'] = self.request
         return context
 
     # Here we set the pk into the kwargs because we're calling this by ajax. We can't reverse the url on the client side because we don't have the id until it's clicked

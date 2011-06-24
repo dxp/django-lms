@@ -16,7 +16,7 @@ ul.jd_menu a:link,
 ul.jd_menu a:visited
 {
 	text-decoration: none;
-	color: #FFF;
+	color: #000;
 }
 ul.jd_menu li {
 	float: left;

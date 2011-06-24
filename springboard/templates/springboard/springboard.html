@@ -5,7 +5,7 @@
     {% for application in applications %}
     <div class="springboard_icon">
       <a href="{{ application.url }}">
-	<img src="{{ MEDIA_URL }}{{ application.icon.url }}"><br>
+	<img src="{{ application.icon.url }}"><br>
 	{{ application.title }}
       </a>
     </div>
