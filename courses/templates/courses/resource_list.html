@@ -1,0 +1,16 @@
+{% extends "courses/course_base.html" %}
+{% block title %}Resources for {{ course }}{% endblock title %}
+
+{% block course_content %}
+<div id="resource-list">
+    {% for resource in resources %}
+    <div class="resource-overview">
+      <div class="resource-title san-serif"><a href="#">{{ resource.title }}</a></div>
+     <div class="assignment-description">
+	{{ resource.description|safe|truncatewords_html:100 }}
+      </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock course_content %}
+

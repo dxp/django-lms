@@ -8,7 +8,7 @@ from django.core.urlresolvers import reverse
 from django.conf import settings
 from django.core.files import File
 
-from courses.models import Course, Semester, Assignment, AssignmentSubmission
+from courses.models import Course, Semester, Assignment, AssignmentSubmission, Resource
 
 import libs.test_utils as test_utils
 
@@ -232,4 +232,65 @@ class AssignmentTest(test_utils.AuthenticatedTest):
         for user in self.users:
             self.course.members.remove(user)
 
+
+class ResourceTest(test_utils.AuthenticatedTest):
+    def setUp(self):
+        super(ResourceTest, self).setUp()
+        self.semester = Semester(name='Spring', year = '2012', start = datetime.date(2012, 1, 1), end = datetime.date(2012, 5, 1))
+        self.semester.save()
+        self.course = Course(title='Test Course', number = '101', section = '001', description = 'Test description of a course', semester = self.semester)
+        self.course.save()
+
+    def tearDown(self):
+        super(ResourceTest, self).tearDown()
+        self.course.delete()
+        self.semester.delete()
+
+    def test_create(self):
+        # Add client user as faculty member
+        self.course.faculty.add(self.user)
+        self.course.save()
+
+        # Test we get the form
+        response = self.c.get(reverse('courses:resource_create', kwargs = {'pk':self.course.id}))
+        self.assertEquals(response.status_code, 200)
+
+        response = self.c.post(reverse('courses:resource_create', kwargs = {'pk':self.course.id}), {'course':self.course.id,
+                                                                                            'title':'Test Resource',
+                                                                                            'description':'Test of the description <b>HERE</b>',
+                                                                                            'due_date': (datetime.date.today() + one_week).isoformat()})
+
+        self.assertEquals(response.status_code, 302)
+
+        # Remove user
+        self.course.faculty.remove(self.user)
+
+
+    def test_list(self):
+        resource = Resource(course = self.course, title = "Test Resource", description = 'Test of the description <b>HERE</b>', link = 'http://example.com')
+        resource.save()
+
+        # Add client user as faculty member
+        self.course.faculty.add(self.user)
+        self.course.save()
         
+        response = self.c.get(reverse('courses:resources', kwargs = {'pk':self.course.id}))
+
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(response.context['resources'][0], resource)
+
+        # Remove user
+        self.course.faculty.remove(self.user)
+
+    def test_delete_resource(self):
+        # We overrode the delete, so we should be testing it
+        self.course.faculty.add(self.user)
+
+        resource = Resource(course = self.course, title = "Test Resource", description = 'Test of the description <b>HERE</b>', link = 'http://example.com')
+        resource.save()
+        resource_id = resource.id
+
+        response = self.c.post(reverse('courses:delete_resource'), {'id': resource.id})
+
+        self.assertRaises(Resource.DoesNotExist, Resource.objects.get, pk = resource_id)
+

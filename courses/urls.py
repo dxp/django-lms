@@ -10,7 +10,9 @@ from courses.views import (CourseOverview,
                            SubmitAssignment,
                            TeamSubmitAssignment,
                            DeleteSubmission,
-                           CourseMembers,)
+                           CourseMembers,
+                           ResourceList,
+                           NewCourseResource,)
 from django.contrib.auth.decorators import login_required
 
 urlpatterns = patterns('courses.views',
@@ -26,4 +28,8 @@ urlpatterns = patterns('courses.views',
                        url('^(?P<pk>\d+)/toggle-membership/$', login_required(ToggleMembership.as_view()), name = 'toggle-membership'),
                        url('^semester/(?P<pk>\d+)/$', login_required(BySemesterList.as_view()), name = 'by_semester'),
                        url('^$', login_required(CourseDropPage.as_view()), name = 'drop_page'),
+                       # url('^resources/(?P<pk>\d+)/details/$', login_required(.as_view()), name = 'resource_details'),
+                       url('^(?P<pk>\d+)/resources/create/$', login_required(NewCourseResource.as_view()), name = 'resource_create'),
+                       url('^(?P<pk>\d+)/resources/$', login_required(ResourceList.as_view()), name = 'resources'),
+                       # url('^assignment_submission/delete/$', login_required(.as_view()), name = 'resource_delete'),
                        )

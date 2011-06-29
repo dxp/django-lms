@@ -7,8 +7,9 @@
 {% block course_content %}
 <div id="course">
   <span class="course-sub-info">{{ course.number }} - {{ course.section }}: {{ course.semester.name }} {{ course.semester.year }}</span>
- <div id="new-assignment">
-    <form name="new-assignment-form" method="post" action="{% url courses:new_assignment course.id %}">
+<div class="notice">You may add a link and/or a file.</div>
+  <div id="new-assignment">
+    <form name="new-resource-form" method="post" action="{% url courses:resource_create course.id %}">
     <table>
     {{ form }}
     </table>

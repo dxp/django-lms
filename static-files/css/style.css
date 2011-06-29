@@ -236,6 +236,25 @@ form tbody tr:nth-child(even) td, form tbody tr.even td {background:#fff;}
     content: "Due: ";
 }
 
+
+#resource-list {
+    border-top: 1px solid #BEDCE7;
+}
+
+#resource-list .resource-overview {
+    border-bottom: 1px solid #BEDCE7;
+    border-left: 1px solid #BEDCE7;
+    border-right: 1px solid #BEDCE7;
+    padding: 0 .7em .7em .7em;
+    background: #EAF2F5 0 100% repeat-x;
+    overflow: hidden;
+}
+
+.resource-overview .resource-title {
+    font-size: 1.4em;
+}
+
+
 p + p {
     text-indent: 0em; 
 }

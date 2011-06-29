@@ -60,4 +60,14 @@ class AssignmentSubmission(models.Model):
             return self.link
         elif self.file:
             return self.file.name
-    
+
+class Resource(models.Model):
+    course = models.ForeignKey(Course)
+    title = models.CharField(max_length = 200)
+    description = tinymce_models.HTMLField()
+    link = models.URLField(blank = True)
+    file = models.FileField(upload_to = 'photos/%Y/%m/%d', blank = True)
+
+    def __unicode__(self):
+        return self.title
+

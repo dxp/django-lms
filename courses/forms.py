@@ -1,5 +1,5 @@
 from django import forms
-from courses.models import Course, Assignment, AssignmentSubmission
+from courses.models import Course, Assignment, AssignmentSubmission, Resource
 from django.contrib.auth.models import User
 
 class CourseAdminForm(forms.ModelForm):
@@ -30,3 +30,8 @@ class TeamSubmitAssignmentForm(forms.ModelForm):
     class Meta:
         model = AssignmentSubmission
         fields = ('users', 'link', 'file', 'notes')
+
+class NewResourceForm(forms.ModelForm):
+    class Meta:
+        model = Resource
+        exclude = ('course',)

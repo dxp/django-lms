@@ -9,8 +9,8 @@ from django.views.generic.detail import SingleObjectMixin
 from django.core import exceptions
 from django.http import HttpResponse
 
-from courses.models import Course, Semester, Assignment, AssignmentSubmission
-from courses.forms import CourseAdminForm, NewAssignmentForm, SubmitAssignmentForm, TeamSubmitAssignmentForm
+from courses.models import Course, Semester, Assignment, AssignmentSubmission, Resource
+from courses.forms import CourseAdminForm, NewAssignmentForm, SubmitAssignmentForm, TeamSubmitAssignmentForm, NewResourceForm
 
 class CourseOverview(DetailView):
     context_object_name = "course"
@@ -251,3 +251,54 @@ class TeamSubmitAssignment(SubmitAssignment):
         form.fields['users'].queryset =  self.assignment.course.members
 
         return form
+
+class NewCourseResource(CreateView):
+    model = Resource
+    form_class = NewResourceForm
+    template_name = "courses/new_resource.html"
+
+    def get_initial(self):
+        '''
+        Overriding this method to set the course id for the form
+        '''
+        return {'course': self.kwargs['pk']}
+
+    def get_success_url(self):
+        course = Course.objects.get(pk = self.kwargs['pk'])
+        return reverse('courses:resources', kwargs={'pk':course.id})
+
+    def get_context_data(self, **kwargs):
+        context = super(NewCourseResource, self).get_context_data(**kwargs)
+        context['course'] = Course.objects.get(pk = self.kwargs['pk'])
+        
+        return context
+
+    def form_valid(self, form):
+        self.object = form.save(commit = False)
+        self.object.course = Course.objects.get(pk = self.kwargs['pk'])
+        self.object.save()
+        return super(NewCourseResource, self).form_valid(form)
+
+    # Overriding the dispatch to check permissions
+    def dispatch(self, request, *args, **kwargs):
+        # set the kwargs so we can get the object
+        self.kwargs = kwargs
+        course = Course.objects.get(pk = self.kwargs['pk'])
+
+        if request.user not in course.faculty.all():
+                raise exceptions.PermissionDenied
+
+        return super(NewCourseResource, self).dispatch(request, *args, **kwargs)
+
+class ResourceList(ListView):
+    context_object_name = "resources"
+    template_name = "courses/resource_list.html"
+
+    def get_queryset(self):
+        self.course = get_object_or_404(Course, pk=self.kwargs['pk'])
+        return self.course.resource_set.all()
+
+    def get_context_data(self, **kwargs):
+        context = super(ResourceList, self).get_context_data(**kwargs)
+        context['course'] = self.course
+        return context
