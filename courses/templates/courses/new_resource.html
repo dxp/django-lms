@@ -9,7 +9,7 @@
   <span class="course-sub-info">{{ course.number }} - {{ course.section }}: {{ course.semester.name }} {{ course.semester.year }}</span>
 <div class="notice">You may add a link and/or a file.</div>
   <div id="new-assignment">
-    <form name="new-resource-form" method="post" action="{% url courses:resource_create course.id %}">
+    <form name="new-resource-form" method="post" action=".">
     <table>
     {{ form }}
     </table>

@@ -8,7 +8,7 @@
 <div id="course">
   <span class="course-sub-info">{{ course.number }} - {{ course.section }}: {{ course.semester.name }} {{ course.semester.year }}</span>
  <div id="new-assignment">
-    <form name="new-assignment-form" method="post" action="{% url courses:new_assignment course.id %}">
+    <form name="new-assignment-form" method="post" action=".">
     <table>
     {{ form }}
     </table>

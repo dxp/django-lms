@@ -1,0 +1,27 @@
+{% extends "courses/course_base.html" %}
+
+{% load courses %}
+
+{% block course_content %}
+<div class="container">
+  <h2>{% block page_title%}Resources{% endblock page_title %}</h2>
+  <div class="span-36">
+    {% block resource_content %}
+    {% endblock resource_content %}
+  </div>
+  {% ifcoursefaculty %}
+  <div class="span-10 last">
+    <div class="toolbox san-serif">
+      <div class="toolbox-header cap-san-serif">
+	Tools
+      </div>
+      {% block tools %}
+<a href="{% url courses:resource_create course.id %}">New resource</a>
+     {% endblock tools %}
+   </div>
+  </div>
+  {% endifcoursefaculty %}
+</div>
+{% endblock course_content %}
+
+

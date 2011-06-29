@@ -10,7 +10,7 @@ from django.core import exceptions
 from django.http import HttpResponse
 
 from courses.models import Course, Semester, Assignment, AssignmentSubmission, Resource
-from courses.forms import CourseAdminForm, NewAssignmentForm, SubmitAssignmentForm, TeamSubmitAssignmentForm, NewResourceForm
+from courses.forms import CourseAdminForm, AssignmentForm, SubmitAssignmentForm, TeamSubmitAssignmentForm, ResourceForm
 
 class CourseOverview(DetailView):
     context_object_name = "course"
@@ -95,7 +95,7 @@ class ToggleMembership(View, SingleObjectMixin, JSONResponseMixin):
 
 class NewCourseAssignment(CreateView):
     model = Assignment
-    form_class = NewAssignmentForm
+    form_class = AssignmentForm
     template_name = "courses/new_assignment.html"
 
     def get_initial(self):
@@ -254,7 +254,7 @@ class TeamSubmitAssignment(SubmitAssignment):
 
 class NewCourseResource(CreateView):
     model = Resource
-    form_class = NewResourceForm
+    form_class = ResourceForm
     template_name = "courses/new_resource.html"
 
     def get_initial(self):
@@ -302,3 +302,142 @@ class ResourceList(ListView):
         context = super(ResourceList, self).get_context_data(**kwargs)
         context['course'] = self.course
         return context
+
+class ResourceDetails(DetailView):
+    context_object_name = "resource"
+    template_name = "courses/resource_details.html"
+
+    queryset = Resource.objects.all()
+
+    def get_template_names(self):
+        return self.template_name
+    
+
+    def get_context_data(self, **kwargs):
+        context = super(ResourceDetails, self).get_context_data(**kwargs)
+        context['course'] = self.get_object().course
+    
+        return context
+
+    # Overriding the dispatch to check visibility
+    def dispatch(self, request, *args, **kwargs):
+        # set the kwargs so we can get the object
+        self.kwargs = kwargs
+        course = self.get_object().course
+
+        if course.private:
+            if request.user not in course.faculty.all() and request.user not in course.members.all():
+                raise exceptions.PermissionDenied
+
+        return super(ResourceDetails, self).dispatch(request, *args, **kwargs)
+
+class DeleteResource(DeleteView):
+    template_name = "courses/delete_resource.html"
+
+    queryset = Resource.objects.all()
+
+    def get_success_url(self):
+        return reverse('courses:resources', kwargs={'pk':self.course.id})
+
+    def get_context_data(self, **kwargs):
+        context = super(DeleteResource, self).get_context_data(**kwargs)
+        return context
+
+    # Here we set the pk into the kwargs because we're calling this by ajax. We can't reverse the url on the client side because we don't have the id until it's clicked
+    def get_object(self, queryset=None):
+        self.kwargs['pk'] = self.request.POST.get('id', None)
+
+        # Set the old assignment here so I know where to redirect to
+        return super(DeleteResource, self).get_object(queryset)
+
+    # Override delete so we save the old object. Return the url to redirect to
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.course = self.object.course
+        self.object.delete()
+
+        return HttpResponse(self.get_success_url())
+
+class DeleteAssignment(DeleteView):
+    template_name = "courses/delete_assignment.html"
+
+    queryset = Assignment.objects.all()
+
+    def get_success_url(self):
+        return reverse('courses:assignments', kwargs={'pk':self.course.id})
+
+    def get_context_data(self, **kwargs):
+        context = super(DeleteAssignment, self).get_context_data(**kwargs)
+        return context
+
+    # Here we set the pk into the kwargs because we're calling this by ajax. We can't reverse the url on the client side because we don't have the id until it's clicked
+    def get_object(self, queryset=None):
+        self.kwargs['pk'] = self.request.POST.get('id', None)
+
+        # Set the old assignment here so I know where to redirect to
+        return super(DeleteAssignment, self).get_object(queryset)
+
+    # Override delete so we save the old object. Return the url to redirect to
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.course = self.object.course
+        self.object.delete()
+
+        return HttpResponse(self.get_success_url())
+
+
+
+class EditAssignment(UpdateView):
+    template_name = 'courses/new_assignment.html'
+    form_class = AssignmentForm
+    queryset = Assignment.objects.all()
+
+    def get_success_url(self):
+        course = Course.objects.get(pk = self.kwargs['pk'])
+        return reverse('courses:assignments', kwargs={'pk':course.id})
+
+    def get_context_data(self, **kwargs):
+        context = super(EditAssignment, self).get_context_data(**kwargs)
+        context['course'] = self.get_object().course
+        
+        return context
+
+    # Overriding the dispatch to check permissions
+    def dispatch(self, request, *args, **kwargs):
+        # set the kwargs so we can get the object
+        self.kwargs = kwargs
+        course = self.get_object().course
+
+        if request.user not in course.faculty.all():
+                raise exceptions.PermissionDenied
+
+        return super(EditAssignment, self).dispatch(request, *args, **kwargs)
+
+
+class EditResource(UpdateView):
+    template_name = 'courses/new_resource.html'
+    form_class = ResourceForm
+    queryset = Resource.objects.all()
+
+    def get_success_url(self):
+        
+        return reverse('courses:resources', kwargs={'pk':self.object.course.id})
+
+    def get_context_data(self, **kwargs):
+        context = super(EditResource, self).get_context_data(**kwargs)
+        context['course'] = self.get_object().course
+        
+        return context
+
+    # Overriding the dispatch to check permissions
+    def dispatch(self, request, *args, **kwargs):
+        # set the kwargs so we can get the object
+        self.kwargs = kwargs
+        course = self.get_object().course
+
+        if request.user not in course.faculty.all():
+                raise exceptions.PermissionDenied
+
+        return super(EditResource, self).dispatch(request, *args, **kwargs)
+
+

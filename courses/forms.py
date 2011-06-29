@@ -13,7 +13,7 @@ class CourseAdminForm(forms.ModelForm):
         model = Course
         fields = ('private',)
 
-class NewAssignmentForm(forms.ModelForm):
+class AssignmentForm(forms.ModelForm):
     class Meta:
         model = Assignment
         exclude = ('course',)
@@ -31,7 +31,7 @@ class TeamSubmitAssignmentForm(forms.ModelForm):
         model = AssignmentSubmission
         fields = ('users', 'link', 'file', 'notes')
 
-class NewResourceForm(forms.ModelForm):
-    class Meta:
+class ResourceForm(forms.ModelForm):
+   class Meta:
         model = Resource
         exclude = ('course',)

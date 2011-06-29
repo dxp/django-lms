@@ -254,6 +254,19 @@ form tbody tr:nth-child(even) td, form tbody tr.even td {background:#fff;}
     font-size: 1.4em;
 }
 
+.resource-overview .right {
+    margin-top:0.5em;
+}
+
+.resource-overview .resource-description {
+    clear: both;
+    margin-top: 10px;
+}
+
+.resource-details .resource-title {
+    font-size: 3.5em;
+}
+
 
 p + p {
     text-indent: 0em; 

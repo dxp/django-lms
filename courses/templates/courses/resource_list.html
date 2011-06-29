@@ -1,16 +1,16 @@
-{% extends "courses/course_base.html" %}
+{% extends "courses/resource_base.html" %}
 {% block title %}Resources for {{ course }}{% endblock title %}
 
-{% block course_content %}
+{% block resource_content %}
 <div id="resource-list">
     {% for resource in resources %}
     <div class="resource-overview">
-      <div class="resource-title san-serif"><a href="#">{{ resource.title }}</a></div>
-     <div class="assignment-description">
+	<div class="resource-title san-serif"><a href="{% url courses:resource_details resource.id %}">{{ resource.title }}</a></div>
+     <div class="resource-description">
 	{{ resource.description|safe|truncatewords_html:100 }}
       </div>
     </div>
     {% endfor %}
 </div>
-{% endblock course_content %}
+{% endblock resource_content %}
 
