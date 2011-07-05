@@ -1,5 +1,10 @@
 from django.conf.urls.defaults import *
 from django.conf import settings
+from libs.api import UserResource
+from tastypie.api import Api
+
+api = Api(api_name='api')
+api.register(UserResource())
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -10,6 +15,7 @@ urlpatterns = patterns('',
     (r'^courses/', include('courses.urls', namespace="courses", app_name="courses")),
     (r'^profiles/', include('profiles.urls', namespace="profiles", app_name="profiles")),
     (r'^tinymce/', include('tinymce.urls')),
+    (r'^', include(api.urls)),
     url(r'^accounts/login/$', 'django.contrib.auth.views.login', {'template_name': 'accounts/login.html'}, name="login"),
     url(r'^accounts/logout/$', 'django.contrib.auth.views.logout_then_login', name="logout"),
     # Uncomment the admin/doc line below to enable admin documentation:
