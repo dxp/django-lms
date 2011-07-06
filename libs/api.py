@@ -9,4 +9,4 @@ class UserResource(ModelResource):
         resource_name = 'user'
         authentication = BasicAuthentication()
         authorization = DjangoAuthorization()
-
+        excludes = ['password',]
