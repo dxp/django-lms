@@ -394,3 +394,21 @@ form th {
 .jd_menu_hover_toolbar .menu-triangle {
     color: #0099FF;
 }
+
+#alert-list h3.alert-title {padding-left: 25px; 
+			    background: url("/static/images/arrows.png") no-repeat 0 -33px; 
+			    text-decoration:none;
+			    margin-bottom: 0;
+			   }
+#alert-list h3.active {background-position: 0 5px;}
+#alert-list h3.alert-title a {color:inherit; text-decoration:none;}
+
+.intranet-alert {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 5px;
+    background-color: #eee;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
