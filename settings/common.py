@@ -1,9 +1,6 @@
 import sys
 import os
 
-# Import our untracked settings
-execfile('../secret_settings.py')
-
 # Django settings for intranet project.
 
 ## Directories
@@ -91,6 +88,7 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
     'django.contrib.staticfiles',
+    'django_mongodb_engine',
     'springboard',
     'intranet_admin',
     'courses',
@@ -130,3 +128,8 @@ TINYMCE_DEFAULT_CONFIG = {
     'theme_advanced_toolbar_location' : "top",
     'theme_advanced_toolbar_align' : "left",
     }
+
+try:
+    from local_settings import *
+except ImportError, exp:
+    pass
