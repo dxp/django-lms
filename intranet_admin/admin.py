@@ -20,7 +20,7 @@ class MyUserAdmin(UserAdmin):
 
     def change_view(self, request, *args, **kwargs):
         # for non-superuser
-        if request.user.groups.filter(name = 'Admissions').count() and not request.user.is_superuser:
+        if 'Admissions' in request.user.groups and not request.user.is_superuser:
             self.form = AdmissionsAdminForm
             try:
                 self.fieldsets = self.staff_fieldsets

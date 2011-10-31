@@ -65,7 +65,7 @@
     },
     {
         "model" : "profiles.servicetype",
-        "pk" : "4ea9c4fdbb69337f8e0000"9",
+        "pk" : "4ea9c4fdbb69337f8e000009",
         "fields" : {
             "title": "Dopplr",
             "url": "http://www.dopplr.com/traveller/{user}/"
