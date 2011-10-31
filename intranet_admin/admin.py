@@ -1,17 +1,18 @@
 from django.utils.translation import ugettext as _
 from django.contrib import admin
-from django.contrib.auth.models import User
-from django.contrib.auth.models import Group
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.auth.models import User, Group, Permission
 from django.contrib.auth.admin import UserAdmin
 from django.forms import ModelForm
 from django.forms import ModelMultipleChoiceField
 
-class AdmissionsAdminForm(ModelForm):
-    groups = ModelMultipleChoiceField(queryset = Group.objects.exclude(name = 'Admissions'))
-    class Meta:
-        model = User
+from permission_backend_nonrel.admin import NonrelPermissionCustomUserAdmin, NonrelPermissionUserForm
 
-class MyUserAdmin(UserAdmin):
+class AdmissionsAdminForm(NonrelPermissionUserForm):
+	pass
+	#groups = ModelMultipleChoiceField(queryset = Group.objects.exclude(name = 'Admissions'))
+
+class MyUserAdmin(NonrelPermissionCustomUserAdmin):
     staff_fieldsets = (
         (_('Personal info'), {'fields': ('first_name', 'last_name')}),
         # No permissions
@@ -19,8 +20,13 @@ class MyUserAdmin(UserAdmin):
     )
 
     def change_view(self, request, *args, **kwargs):
+	content_type = ContentType.objects.get_for_model(User)
+        perm, created = Permission.objects.get_or_create(name='change_users',
+                                         content_type=content_type,
+                                         codename='change_users')
+
         # for non-superuser
-        if 'Admissions' in request.user.groups and not request.user.is_superuser:
+        if not request.user.is_superuser and request.user.has_perm('auth.change_users'):
             self.form = AdmissionsAdminForm
             try:
                 self.fieldsets = self.staff_fieldsets

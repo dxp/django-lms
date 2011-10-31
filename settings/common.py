@@ -87,6 +87,8 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     'django.contrib.staticfiles',
     'django_mongodb_engine',
+    'djangotoolbox',
+    'permission_backend_nonrel',
     'springboard',
     'intranet_admin',
     'courses',
@@ -95,6 +97,11 @@ INSTALLED_APPS = (
     'profiles',
     'alerts',
     )
+
+AUTHENTICATION_BACKENDS = (
+    'permission_backend_nonrel.backends.NonrelPermissionBackend',
+)
+
 
 STATIC_ROOT = SITE_ROOT + "/static"
 

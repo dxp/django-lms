@@ -1,7 +1,7 @@
 -e git+https://github.com/adieu/django-nonrel.git#egg=intranet
 -e hg+https://bitbucket.org/wkornewald/djangotoolbox#egg=djangotoolbox
 -e git+https://github.com/django-mongodb-engine/mongodb-engine#egg=mongodb-engine
-PIL==1.1.7
+-e git+https://github.com/fhahn/django-permission-backend-nonrel.git#egg=permission_backend_nonrel
 django-tastypie==0.9.9
 django-tinymce==1.5.1a1
 mimeparse==0.1.3
