@@ -134,6 +134,7 @@ TINYMCE_DEFAULT_CONFIG = {
     'theme_advanced_toolbar_align' : "left",
     }
 
+
 try:
     from local_settings import *
 except ImportError, exp:
