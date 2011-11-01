@@ -61,16 +61,15 @@ class MyUserAdmin(NonrelPermissionCustomUserAdmin):
 	
 	self.form = MyUserAdminForm
 
-
-        # for non-superuser
-        if not request.user.is_superuser and request.user.has_perm('auth.change_users') and group.id in user_perm_list.group_fk_list:
-            self.form = AdmissionsAdminForm
-            try:
-                self.fieldsets = self.staff_fieldsets
-                response = UserAdmin.change_view(self, request, *args, **kwargs)
-            finally:
-                # Reset fieldsets to its original value
-                self.fieldsets = UserAdmin.fieldsets
+    # for non-superuser
+    if not request.user.is_superuser and request.user.has_perm('auth.change_users') and group.id in user_perm_list.group_fk_list:
+        self.form = AdmissionsAdminForm
+        try:
+            self.fieldsets = self.staff_fieldsets
+            response = UserAdmin.change_view(self, request, *args, **kwargs)
+        finally:
+            # Reset fieldsets to its original value
+            self.fieldsets = UserAdmin.fieldsets
             return response
         else:
             return UserAdmin.change_view(self, request, *args, **kwargs)
