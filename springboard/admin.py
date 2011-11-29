@@ -17,7 +17,6 @@ class IntranetApplicationAdminForm(forms.ModelForm):
         self.fields['groups'].choices = choices
 
         try:
-            print kwargs["instance"].groups
             self.fields['groups'].initial = kwargs['instance'].groups
         except KeyError:
             self.fields['groups'].initial = list()

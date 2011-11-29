@@ -1,5 +1,6 @@
 import datetime
 from django.db import models
+from djangotoolbox import fields
 from django.contrib.auth.models import Group, User
 from tinymce import models as tinymce_models
 
@@ -26,9 +27,9 @@ class Course(models.Model):
     number = models.CharField(max_length = 10)
     description = tinymce_models.HTMLField()
     semester = models.ForeignKey(Semester)
-    faculty = models.ManyToManyField(User, related_name = 'faculty')
+    faculty = fields.ListField(fields.ForeignKey(User, related_name = 'faculty'))
     private = models.BooleanField(default=False, blank=True)
-    members = models.ManyToManyField(User, related_name = 'members')
+    members = fields.ListField(fields.ForeignKey(User, related_name = 'members'))
 
     def __unicode__(self):
         return "%s: %s %s" % (self.title, self.semester.name, self.semester.year)
@@ -49,7 +50,7 @@ class Assignment(models.Model):
         return unicode(self.title)
 
 class AssignmentSubmission(models.Model):
-    users = models.ManyToManyField(User, related_name = 'submitters')
+    users = fields.ListField(fields.ForeignKey(User, related_name = 'submitters'))
     assignment = models.ForeignKey(Assignment)
     link = models.URLField(blank = True)
     file = models.FileField(upload_to = 'photos/%Y/%m/%d', blank = True)

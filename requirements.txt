@@ -1,4 +1,4 @@
--e git+https://github.com/adieu/django-nonrel.git#egg=intranet
+-e git+https://github.com/adieu/django-nonrel.git#egg=django
 -e hg+https://bitbucket.org/wkornewald/djangotoolbox#egg=djangotoolbox
 -e git+https://github.com/django-mongodb-engine/mongodb-engine#egg=mongodb-engine
 -e git+https://github.com/fhahn/django-permission-backend-nonrel.git#egg=permission_backend_nonrel

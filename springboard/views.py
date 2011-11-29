@@ -12,8 +12,8 @@ class SpringBoard(ListView):
         # Check the groups the user is allowed to see
         applications = IntranetApplication.objects.none()
         for group in self.request.user.group_list:
-            applications = applications | group.intranetapplication_set.all()
+            applications = applications | IntranetApplication.objects.filter(groups=group.id) 
 
-        applications = applications | IntranetApplication.objects.filter(groups=None)
+        applications = applications | IntranetApplication.objects.filter(groups=[])
 
         return applications

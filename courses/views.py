@@ -60,7 +60,8 @@ class BySemesterList(ListView):
 
     def get_queryset(self):
         self.semester = get_object_or_404(Semester, pk=self.kwargs['pk'])
-        return self.semester.course_set.all()
+        courses = Course.object.filter(semester = self.semester)
+        return courses
 
 class CourseDropPage(RedirectView):
     '''
