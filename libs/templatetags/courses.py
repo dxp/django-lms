@@ -32,7 +32,7 @@ class FacultyCheckNode(template.Node):
             group = Group.objects.get(name='Faculty')
         except Group.DoesNotExist:
             return ''
-        if group in user.groups.all():
+        if group in user.group_list:
             return self.nodelist.render(context)
         return ''
 
@@ -58,8 +58,8 @@ class FacultyCourseCheckNode(template.Node):
             group = Group.objects.get(name='Faculty')
         except Group.DoesNotExist:
             return ''
-        if group in user.groups.all():
-            if user in course.faculty.all():
+        if group in user.group_list:
+            if user in course.faculty:
                 return self.nodelist.render(context)
         return ''
 
@@ -87,7 +87,7 @@ class PossibleMemberCheckNode(template.Node):
             group = Group.objects.get(name='Student')
         except Group.DoesNotExist:
             return ''
-        if group in user.groups.all():
+        if group in user.group_list:
             return self.nodelist.render(context)
         return ''
 

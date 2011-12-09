@@ -18,11 +18,18 @@ class CourseAdminForm(ModelForm):
 
     def __init__(self,*args,**kwargs):
         super (CourseAdminForm,self ).__init__(*args,**kwargs)
+
         faculty_group = Group.objects.get_or_create(name = 'Faculty')[0]
         faculty_list = UserPermissionList.objects.filter(group_fk_list = faculty_group.pk)
-        #print User.objects.filter(pk__in = [faculty.user.pk for faculty in faculty_list]).filter(pk__in = [u'4eaef5d7bb6933592e000010'])
         self.fields['faculty'].queryset = User.objects.filter(pk__in = [faculty.user.pk for faculty in faculty_list])
-        #self.fields['client'].queryset = Client.objects.filter(company=company)
+        if self.instance:
+            self.fields['faculty'].initial = self.instance.faculty
+
+        student_group = Group.objects.get_or_create(name = 'Student')[0]
+        student_list = UserPermissionList.objects.filter(group_fk_list = student_group.pk)
+        self.fields['members'].queryset = User.objects.filter(pk__in = [student.user.pk for student in student_list])
+        if self.instance:
+            self.fields['members'].initial = self.instance.members
 
     class Meta:
         model = Course
@@ -33,8 +40,21 @@ class CourseAdmin(admin.ModelAdmin):
      #filter_horizontal = ('faculty',)
      form = CourseAdminForm
 
+     def save_model(self, request, obj, form, change):
+         super(CourseAdmin, self).save_model(request, obj, form, change)
+         try:
+             if len(form.cleaned_data["faculty"]) > 0:
+                 obj.faculty = list(form.cleaned_data["faculty"])
+                 obj.save()
+             if len(form.cleaned_data["members"]) > 0:
+                 obj.members = list(form.cleaned_data["members"])
+                 obj.save()
+         except KeyError:
+             pass
+
+
 admin.site.register(Course, CourseAdmin)
-#admin.site.register(Semester)
+admin.site.register(Semester)
 #admin.site.register(Assignment)
 #admin.site.register(AssignmentSubmission)
 #admin.site.register(Resource)

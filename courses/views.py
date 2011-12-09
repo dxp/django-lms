@@ -8,6 +8,7 @@ from django.views.generic import DetailView, ListView, RedirectView, UpdateView,
 from django.views.generic.detail import SingleObjectMixin
 from django.core import exceptions
 from django.http import HttpResponse
+from django.contrib.auth.models import User
 
 from courses.models import Course, Semester, Assignment, AssignmentSubmission, Resource
 from courses.forms import CourseAdminForm, AssignmentForm, SubmitAssignmentForm, TeamSubmitAssignmentForm, ResourceForm
@@ -22,7 +23,7 @@ class CourseOverview(DetailView):
         context = super(CourseOverview, self).get_context_data(**kwargs)
     
         # Check if user is a member
-        context['is_member'] = self.request.user in context['course'].members.all()
+        context['is_member'] = self.request.user in context['course'].members
         
         return context
 
@@ -33,7 +34,7 @@ class CourseOverview(DetailView):
         course = self.get_object()
 
         if course.private:
-            if request.user not in course.faculty.all() and request.user not in course.members.all():
+            if request.user not in course.faculty and request.user not in course.members:
                 raise exceptions.PermissionDenied
 
         return super(CourseOverview, self).dispatch(request, *args, **kwargs)
@@ -60,7 +61,7 @@ class BySemesterList(ListView):
 
     def get_queryset(self):
         self.semester = get_object_or_404(Semester, pk=self.kwargs['pk'])
-        courses = Course.object.filter(semester = self.semester)
+        courses = Course.objects.filter(semester = self.semester)
         return courses
 
 class CourseDropPage(RedirectView):
@@ -127,7 +128,7 @@ class NewCourseAssignment(CreateView):
         self.kwargs = kwargs
         course = Course.objects.get(pk = self.kwargs['pk'])
 
-        if request.user not in course.faculty.all():
+        if request.user not in course.faculty:
                 raise exceptions.PermissionDenied
 
         return super(NewCourseAssignment, self).dispatch(request, *args, **kwargs)
@@ -171,7 +172,7 @@ class AssignmentOverview(DetailView):
         course = self.get_object().course
 
         if course.private:
-            if request.user not in course.faculty.all() and request.user not in course.members.all():
+            if request.user not in course.faculty and request.user not in course.members:
                 raise exceptions.PermissionDenied
 
         return super(AssignmentOverview, self).dispatch(request, *args, **kwargs)
@@ -201,8 +202,9 @@ class SubmitAssignment(CreateView):
     def form_valid(self, form):
         self.object = form.save(commit = False)
         self.object.assignment = Assignment.objects.get(pk = self.kwargs['pk'])
+        self.object.users.append(self.request.user)
         self.object.save()
-        self.object.users.add(self.request.user)
+
         return super(SubmitAssignment, self).form_valid(form)
 
     # Overriding the dispatch to check permissions
@@ -211,7 +213,7 @@ class SubmitAssignment(CreateView):
         self.kwargs = kwargs
         self.assignment = Assignment.objects.get(pk = self.kwargs['pk'])
 
-        if request.user not in self.assignment.course.members.all():
+        if request.user not in self.assignment.course.members:
                 raise exceptions.PermissionDenied
 
         return super(SubmitAssignment, self).dispatch(request, *args, **kwargs)
@@ -249,7 +251,7 @@ class TeamSubmitAssignment(SubmitAssignment):
     def get_form(self, form_class):
         form = super(TeamSubmitAssignment, self).get_form(form_class)
 
-        form.fields['users'].queryset =  self.assignment.course.members
+        form.fields['users'].queryset =  User.objects.filter(id__in = [user.id for user in self.assignment.course.members])
 
         return form
 
@@ -286,7 +288,7 @@ class NewCourseResource(CreateView):
         self.kwargs = kwargs
         course = Course.objects.get(pk = self.kwargs['pk'])
 
-        if request.user not in course.faculty.all():
+        if request.user not in course.faculty:
                 raise exceptions.PermissionDenied
 
         return super(NewCourseResource, self).dispatch(request, *args, **kwargs)

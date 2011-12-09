@@ -29,7 +29,7 @@ class TeamSubmitAssignmentForm(forms.ModelForm):
                                            label = 'Team members')
     class Meta:
         model = AssignmentSubmission
-        fields = ('users', 'link', 'file', 'notes')
+        fields = ('link', 'file', 'notes')
 
 class ResourceForm(forms.ModelForm):
    class Meta:
