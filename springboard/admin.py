@@ -5,19 +5,15 @@ from django.contrib.admin.widgets import FilteredSelectMultiple
 from springboard.models import IntranetApplication
 
 class IntranetApplicationAdminForm(forms.ModelForm):
-    groups = forms.MultipleChoiceField(required = False, widget = FilteredSelectMultiple("Groups", False))
+    groups = forms.ModelMultipleChoiceField(queryset = Group.objects.all(),
+                                            required = False,
+                                            widget = FilteredSelectMultiple("Groups", False))
 
     def __init__(self, *args, **kwargs):
         super(IntranetApplicationAdminForm, self).__init__(*args, **kwargs)
 
-        group_objs = Group.objects.all()
-        choices = []
-        for group_obj in group_objs:
-            choices.append([group_obj.id, group_obj.name])
-        self.fields['groups'].choices = choices
-
         try:
-            self.fields['groups'].initial = kwargs['instance'].groups
+            self.fields['groups'].initial = self.instance.groups
         except KeyError:
             self.fields['groups'].initial = list()
 
