@@ -1,3 +1,9 @@
-[submodule "jQuery-Collapse"]
-	path = jQuery-Collapse
-	url = https://github.com/danielstocks/jQuery-Collapse
+[submodule "django_compressor"]
+	path = django_compressor
+	url = git://github.com/jezdez/django_compressor.git
+[submodule "bootstrap"]
+	path = bootstrap
+	url = git://github.com/twitter/bootstrap.git
+[submodule "utils"]
+	path = utils
+	url = git://github.com/emperorcezar/Django-utils.git
