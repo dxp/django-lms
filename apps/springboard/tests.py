@@ -8,6 +8,7 @@ from django.conf import settings
 from django.core.files import File
 
 from springboard.models import IntranetApplication
+from alerts.models import Alert
 
 import libs.test_utils as test_utils
 
@@ -26,3 +27,16 @@ class SpringboardTest(test_utils.AuthenticatedTest):
         response = self.c.get(reverse('springboard'))
         self.assertContains(response, 'Test')
 
+
+    def test_alerts(self):
+        alert = Alert.objects.create(sent_by = 'Test',
+                                     sent_to = self.user,
+                                     title = 'Test alert',
+                                     details = 'Stuff, stuff, stuff',
+            )
+
+        response = self.c.get(reverse('springboard'))
+
+        assert(alert in response.context['alerts'])
+
+        

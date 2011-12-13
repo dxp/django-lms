@@ -1,5 +1,13 @@
 {% extends "html_base.html" %}
 {% block content %}
+{% if alerts %}
+<div id="alerts">
+  {% for alert in alerts %}
+    {{ alert.title }}</br>
+  {% endfor %}
+</div>
+{% endif %}
+
 <div id="springboard_outer">
   <div id="springboard">
     {% for application in applications %}
