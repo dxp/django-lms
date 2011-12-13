@@ -1,1 +1,1 @@
-../../../jQuery-Collapse/src/jquery.collapse.js
+../../../libs/jQuery-Collapse/src/jquery.collapse.js
