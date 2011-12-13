@@ -11,10 +11,10 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    (r'^$', include('intranet.springboard.urls')),
-    (r'^courses/', include('courses.urls', namespace="courses", app_name="courses")),
-    (r'^profiles/', include('profiles.urls', namespace="profiles", app_name="profiles")),
-    (r'^alerts/', include('alerts.urls', namespace="alerts", app_name="alerts")),
+    (r'^$', include('apps.springboard.urls')),
+    (r'^courses/', include('apps.courses.urls', namespace="courses", app_name="courses")),
+    (r'^profiles/', include('apps.profiles.urls', namespace="profiles", app_name="profiles")),
+    (r'^alerts/', include('apps.alerts.urls', namespace="alerts", app_name="alerts")),
     (r'^tinymce/', include('tinymce.urls')),
     (r'^', include(api.urls)),
     url(r'^accounts/login/$', 'django.contrib.auth.views.login', {'template_name': 'accounts/login.html'}, name="login"),

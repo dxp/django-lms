@@ -81,21 +81,25 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
-    # Uncomment the next line to enable the admin:
     'django.contrib.admin',
-    # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
     'django.contrib.staticfiles',
+
+    # Third party apps
+
     'django_mongodb_engine',
     'djangotoolbox',
     'permission_backend_nonrel',
-    'springboard',
-    'intranet_admin',
-    'courses',
     'tinymce',
     'libs',
-    'profiles',
-    'alerts',
+    
+    # Local apps
+    
+    'apps.springboard',
+    'apps.intranet_admin',
+    'apps.courses',
+    'apps.profiles',
+    'apps.alerts',
     )
 
 AUTHENTICATION_BACKENDS = (

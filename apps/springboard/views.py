@@ -15,7 +15,5 @@ class SpringBoard(ListView):
             applications = applications | IntranetApplication.objects.filter(groups=group) 
 
         applications = applications | IntranetApplication.objects.filter(groups=[])
-
-        print IntranetApplication.objects.filter(groups=None)
         
         return applications

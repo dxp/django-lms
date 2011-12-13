@@ -24,9 +24,5 @@ class SpringboardTest(test_utils.AuthenticatedTest):
         application.icon.save('test_icon.png', File(f))
         
         response = self.c.get(reverse('springboard'))
-        try:
-            self.assertContains(response, 'Test')
-        except:
-            print(response)
-            raise
+        self.assertContains(response, 'Test')
 

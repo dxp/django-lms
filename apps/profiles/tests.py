@@ -29,8 +29,8 @@ class ProfilesTest(test_utils.AuthenticatedTest):
 
         response = self.c.post(reverse('profiles:edit', kwargs={'username':self.user.username}),
                                {'biography':'Some test <bold>text</bold>',
-                                'resume': open('profiles/test_files/test.pdf'),
-                                'mugshot': open('profiles/test_files/profile.gif'),
+                                'resume': open('apps/profiles/test_files/test.pdf'),
+                                'mugshot': open('apps/profiles/test_files/profile.gif'),
                                 })
 
         self.assertEquals(response.status_code, 302)
