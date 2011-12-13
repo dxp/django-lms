@@ -1,12 +1,12 @@
-[submodule "django_compressor"]
-	path = django_compressor
+[submodule "libs/jQuery-Collapse"]
+    path = libs/jQuery-Collapse
+    url = https://github.com/danielstocks/jQuery-Collapse
+[submodule "libs/django_compressor"]
+	path = libs/django_compressor
 	url = git://github.com/jezdez/django_compressor.git
-[submodule "bootstrap"]
-	path = bootstrap
+[submodule "libs/bootstrap"]
+	path = libs/bootstrap
 	url = git://github.com/twitter/bootstrap.git
-[submodule "utils"]
-	path = utils
+[submodule "libs/utils"]
+	path = libs/utils
 	url = git://github.com/emperorcezar/Django-utils.git
-[submodule "jQuery-Collapse"]
-        path = jQuery-Collapse
-        url = https://github.com/danielstocks/jQuery-Collapse
