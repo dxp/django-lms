@@ -11,4 +11,3 @@ class Alert(models.Model):
     title = models.CharField(max_length = 200)
     details = tinymce_models.HTMLField()
 
-# Create your models here.
