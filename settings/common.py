@@ -12,6 +12,8 @@ SITE_ROOT = os.path.dirname( PROJECT_ROOT )
 
 sys.path.append(SITE_ROOT)
 sys.path.append(PROJECT_ROOT + '/apps')
+sys.path.append(PROJECT_ROOT + '/libs')
+
 MEDIA_ROOT = SITE_ROOT + '/media'
 
 # Local time zone for this installation. Choices can be found here:
