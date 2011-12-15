@@ -112,7 +112,7 @@ AUTHENTICATION_BACKENDS = (
 
 STATIC_ROOT = SITE_ROOT + "/static"
 
-STATIC_URL = "/static"
+STATIC_URL = "/static/"
 
 STATICFILES_DIRS = (
     PROJECT_ROOT + "/static-files",
