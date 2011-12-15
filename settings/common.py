@@ -55,7 +55,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 
-ROOT_URLCONF = 'intranet.urls'
+ROOT_URLCONF = 'django-lms.urls'
 
 TEMPLATE_DIRS = (
     PROJECT_ROOT + "/templates",
@@ -92,11 +92,12 @@ INSTALLED_APPS = (
     'permission_backend_nonrel',
     'tinymce',
     'libs',
+    'compressor',
     
     # Local apps
     
     'apps.springboard',
-    'apps.intranet_admin',
+    'apps.lms_admin',
     'apps.courses',
     'apps.profiles',
     'apps.alerts',
@@ -113,6 +114,13 @@ STATIC_URL = "/static"
 
 STATICFILES_DIRS = (
     PROJECT_ROOT + "/static-files",
+)
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    # other finders..
+    'compressor.finders.CompressorFinder',
 )
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
