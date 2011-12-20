@@ -3,7 +3,7 @@
     url = https://github.com/danielstocks/jQuery-Collapse
 [submodule "libs/bootstrap"]
 	path = libs/bootstrap
-	url = git://github.com/twitter/bootstrap.git
+	url = git://github.com/instituteofdesign/bootstrap.git 
 [submodule "libs/utils"]
 	path = libs/utils
 	url = git://github.com/emperorcezar/Django-utils.git

@@ -10,4 +10,5 @@ class Alert(models.Model):
     modified = models.DateTimeField(auto_now = True)
     title = models.CharField(max_length = 200)
     details = tinymce_models.HTMLField()
+    level = models.CharField(max_length = 200)
 

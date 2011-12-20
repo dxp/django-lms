@@ -1,6 +1,6 @@
 -e git+https://github.com/django-nonrel/django-nonrel.git#egg=django
 -e git+https://github.com/emperorcezar/djangotoolbox.git@develop#egg=djangotoolbox
--e git+https://github.com/django-nonrel/mongodb-engine.git#egg=mongodb-engine
+-e git+https://github.com/emperorcezar/mongodb-engine.git#egg=mongodb-engine
 -e git+https://github.com/django-nonrel/django-permission-backend-nonrel.git#egg=permission_backend_nonrel
 -e git+https://github.com/andresdouglas/django-tastypie.git@nonrel#egg=tastypie
 django-tinymce==1.5.1a1

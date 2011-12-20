@@ -17,7 +17,7 @@ class SpringBoard(ListView):
             applications = applications | IntranetApplication.objects.filter(groups=group) 
 
         applications = applications | IntranetApplication.objects.filter(groups=[])
-        
+
         return applications
 
 

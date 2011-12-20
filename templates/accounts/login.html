@@ -9,7 +9,8 @@
 {% block bodyclass %}login{% endblock bodyclass %}
 
 {% block content %}
-<div class="span-16 push-16 last" id="login-container">
+<div class="row">
+<div class="span6 offset5" id="login-container">
   <!-- Header --> 
   <div id="login-header"> 
     <div id="branding"> 
@@ -45,7 +46,7 @@
 	  <input type="hidden" name="next" value="{{ next }}" />
 	</div>
 	<div class="submit-row">
-	  <label>&nbsp;</label><input type="submit" value="{% trans 'Log in' %}" />
+	  <label>&nbsp;</label><input type="submit" value="{% trans 'Log in' %}" class="btn primary"/>
 	</div>
       </form>
 
@@ -54,5 +55,6 @@
       </script>
     </div>
   </div>
+</div>
 </div>
 {% endblock %}
