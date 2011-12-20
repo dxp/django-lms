@@ -11,3 +11,6 @@ DATABASES = {
         'NAME': 'intranet_test',                      # Or path to database file if using sqlite3.
     }
 }
+
+COMPRESS_ENABLED = True
+COMPRESS_REBUILD_TIMEOUT = 1

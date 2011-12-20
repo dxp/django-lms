@@ -1,7 +1,8 @@
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import Group
-from djangotoolbox.fields import ListField, ForeignKey
+from djangotoolbox.fields import ListField
+from libs.utils.fields import ForeignKey
 
 class IntranetApplication(models.Model):
     icon = models.ImageField(upload_to = 'images')

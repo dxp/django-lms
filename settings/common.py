@@ -12,6 +12,8 @@ SITE_ROOT = os.path.dirname( PROJECT_ROOT )
 
 sys.path.append(SITE_ROOT)
 sys.path.append(PROJECT_ROOT + '/apps')
+sys.path.append(PROJECT_ROOT + '/libs')
+
 MEDIA_ROOT = SITE_ROOT + '/media'
 
 # Local time zone for this installation. Choices can be found here:
@@ -55,7 +57,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 
-ROOT_URLCONF = 'intranet.urls'
+ROOT_URLCONF = 'django-lms.urls'
 
 TEMPLATE_DIRS = (
     PROJECT_ROOT + "/templates",
@@ -79,7 +81,6 @@ INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.admin',
     'django.contrib.admindocs',
@@ -92,11 +93,12 @@ INSTALLED_APPS = (
     'permission_backend_nonrel',
     'tinymce',
     'libs',
+    'compressor',
     
     # Local apps
     
     'apps.springboard',
-    'apps.intranet_admin',
+    'apps.lms_admin',
     'apps.courses',
     'apps.profiles',
     'apps.alerts',
@@ -109,10 +111,21 @@ AUTHENTICATION_BACKENDS = (
 
 STATIC_ROOT = SITE_ROOT + "/static"
 
-STATIC_URL = "/static"
+STATIC_URL = "/static/"
 
 STATICFILES_DIRS = (
     PROJECT_ROOT + "/static-files",
+)
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    # other finders..
+    'compressor.finders.CompressorFinder',
+)
+
+COMPRESS_PRECOMPILERS = (
+    ('text/less', 'lessc {infile} {outfile}'),
 )
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a

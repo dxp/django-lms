@@ -1,5 +1,16 @@
 {% extends "html_base.html" %}
 {% block content %}
+{% if alerts %}
+<div id="alerts" class="info">
+  {% for alert in alerts %}
+  <div class="alert-message {{ alert.level }}" data-alert="alert">
+    <a class="close" href="#">×</a>
+    <p>{{ alert.title }}</p>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
 <div id="springboard_outer">
   <div id="springboard">
     {% for application in applications %}
