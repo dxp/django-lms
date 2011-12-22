@@ -57,7 +57,7 @@
             <a href="{% url springboard %}"><img id="logo" src="{{ STATIC_URL }}/images/seeidlogomediumdark.png"></a>
           </div>
           {% if user.is_authenticated %}
-          <div class="span7 offset8">
+          <div class="span8 offset10">
 	        <div class="userbox">
               <ul class="jd_menu" id="user-menu">
 	            <li><a href="{% url profiles:detail user %}">{{ user.first_name }} {{ user.last_name }}</a> <span class="menu-triangle">&#x25bc;</span>
@@ -73,7 +73,16 @@
       </header>
       
       <div id="main" role="main" class="row">
-	    <div id="content" class="span24">
+        {% if messages %}
+        <div id="messages" class="span24">
+          {% for message in messages %}
+          <div class="alert-message {{ message.tags }}" data-alert="alert">
+            <p>{{ message }}</p>
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+        <div id="content" class="span24">
 	      {% block content %}
 	      {% endblock content %}
 	    </div>
