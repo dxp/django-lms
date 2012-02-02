@@ -1,2 +1,2 @@
 #!/bin/bash
-./devmanage.py test springboard courses profiles
+./devmanage.py test springboard courses profiles alerts

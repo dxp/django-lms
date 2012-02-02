@@ -3,10 +3,7 @@
 {% if alerts %}
 <div id="alerts" class="info">
   {% for alert in alerts %}
-  <div class="alert-message {{ alert.level }}" data-alert="alert">
-    <a class="close" href="#">×</a>
-    <p>{{ alert.title }}</p>
-  </div>
+  {% include "alert.html" %}
   {% endfor %}
 </div>
 {% endif %}

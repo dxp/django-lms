@@ -12,7 +12,7 @@
          Remove this if you use the .htaccess -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-    <title>{% block title %}{{ title }}{% endblock title %}</title>
+    <title>{% block title %}{{ title|default:"Django-lms: Learning Management System" }}{% endblock title %}</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -30,7 +30,7 @@
     {% compress css %}
     <!-- CSS: implied media="all" -->
     <!-- Framework CSS -->
-    <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap/lib/bootstrap.less" type="text/less" media="screen, projection" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap/less/bootstrap.less" type="text/less" media="screen, projection" />
     <link type="text/less" rel="stylesheet" href="{{ STATIC_URL }}css/style.less" charset="utf-8">
     {% endcompress %}
 
@@ -94,10 +94,10 @@
     
     <!-- JavaScript at the bottom for fast page loading -->
 
-    <!-- Grab Google CDN's jQuery, with a protocol relative URL; fall back to local if necessary -->
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.js"></script>
-    <script>window.jQuery || document.write("<script src='{{ STATIC_URL }}/js/libs/jquery-1.5.1.min.js'>\x3C/script>")</script>
-      <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js"></script>
+    <!-- Grab Google CDNs jQuery, with a protocol relative URL; fall back to local if necessary -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script>window.jQuery || document.write("<script src='{{ STATIC_URL }}/js/libs/jquery-1.7.1.min.js'>\x3C/script>")</script>
+      <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
       <script src="{{ STATIC_URL }}/js/libs/jquery.jdMenu.packed.js"></script>
       {% if TYPEKIT_URL %}
       <script type="text/javascript" src="{{ TYPEKIT_URL }}"></script>
@@ -108,12 +108,12 @@
           <script>DD_belatedPNG.fix("img, .png_bg"); // Fix any <img> or .png_bg bg-images. Also, please read goo.gl/mZiyb </script>
           <![endif]-->
 
-      <script type="text/javascript" src="{{ STATIC_URL }}js/libs/bootstrap/bootstrap-alerts.js"></script>
+      <script type="text/javascript" src="{{ STATIC_URL }}js/libs/bootstrap/bootstrap-alert-fixed.js"></script>
 
       {% block extra_libraries %}
       {% endblock extra_libraries %}
       
-      <!-- mathiasbynens.be/notes/async-analytics-snippet Change UA-XXXXX-X to be your site's ID -->
+      <!-- mathiasbynens.be/notes/async-analytics-snippet Change UA-XXXXX-X to be your sites ID -->
       <script>
         var _gaq=[["_setAccount","UA-XXXXX-X"],["_trackPageview"]];
         (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
@@ -122,36 +122,41 @@
       </script>
       <script>
         $('html').ajaxSend(function(event, xhr, settings) {
-        function getCookie(name) {
-        var cookieValue = null;
-        if (document.cookie && document.cookie != '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-                            var cookie = jQuery.trim(cookies[i]);
-                            // Does this cookie string begin with the name we want?
-                            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+            function getCookie(name) {
+                var cookieValue = null;
+                if (document.cookie && document.cookie != '') {
+                    var cookies = document.cookie.split(';');
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = jQuery.trim(cookies[i]);
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) == (name + '=')) {
                             cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
                             break;
-                            }
-                            }
-                            }
-                            return cookieValue;
-                            }
-                            if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
-                            // Only send the token to relative URLs i.e. locally.
-                            xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
-                            }
-                            });
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+            if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                // Only send the token to relative URLs i.e. locally.
+                xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+            }
+        });
 
-                            $(document).ready(function(){
-                            $('ul.jd_menu').jdMenu();
-                            });
-                            $(document).bind('click', function() {
-                            $('ul.jd_menu ul:visible').jdMenuHide();
-                            });
-                            {% block js %}
-                            {% endblock js %}
-                            </script>
+        $(document).ready(function(){
+            $('ul.jd_menu').jdMenu();
+            $('.alert').alert();
+            $('.alert').bind('close', function(){
+                $.post('{% url alerts:acknowledge %}', {pk: $(this).data('id')});
+            });
+        });
+        $(document).bind('click', function() {
+            $('ul.jd_menu ul:visible').jdMenuHide();
+        });
+
+    {% block js %}
+    {% endblock js %}
+    </script>
 
   </body>
 </html>
