@@ -1,16 +1,23 @@
-"""
-This file demonstrates writing tests using the unittest module. These will pass
-when you run "manage.py test".
+from django.core.urlresolvers import reverse
 
-Replace this with more appropriate tests for your application.
-"""
+import libs.test_utils as test_utils
+from alerts.models import Alert
 
-from django.test import TestCase
-
-
-class SimpleTest(TestCase):
-    def test_basic_addition(self):
+class AlertTest(test_utils.AuthenticatedTest):
+    def test_acknowlege(self):
         """
-        Tests that 1 + 1 always equals 2.
+        Tests the user acknowledgeing and deleteing an alert
         """
-        self.assertEqual(1 + 1, 2)
+
+        # Create the alert
+        alert = Alert.objects.create(sent_by = 'Tester',
+                                     sent_to = self.user,
+                                     title = 'Test title',
+                                     details = 'No details',
+                                     level = 'Notice',)
+        
+        self.c.post(reverse('alerts:acknowledge'), {'pk':alert.id})
+
+        with self.assertRaises(Alert.DoesNotExist):
+            Alert.objects.get(id = alert.id)
+        

@@ -29,7 +29,7 @@ class IntranetApplicationAdmin(admin.ModelAdmin):
         super(IntranetApplicationAdmin, self).save_model(request, obj, form, change)
         try:
             if len(form.cleaned_data["groups"]) > 0:
-                obj.groups = form.cleaned_data["groups"]
+                obj.groups = list(form.cleaned_data["groups"])
                 obj.save()
         except KeyError:
             pass

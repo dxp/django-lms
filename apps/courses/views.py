@@ -64,6 +64,13 @@ class BySemesterList(ListView):
         courses = Course.objects.filter(semester = self.semester)
         return courses
 
+    def get_context_data(self, **kwargs):
+        context = super(BySemesterList, self).get_context_data(**kwargs)
+        context['semester'] = self.semester
+        
+        return context
+
+
 class CourseDropPage(RedirectView):
     '''
     Gets the current semester and redirects to its page
