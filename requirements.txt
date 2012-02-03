@@ -10,3 +10,4 @@ python-digest==1.7
 # wsgiref==0.1.2
 pil
 django_compressor
+django-celery

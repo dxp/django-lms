@@ -1,6 +1,9 @@
 import sys
 import os
 
+import djcelery
+djcelery.setup_loader()
+
 # Django settings for intranet project.
 
 ## Directories
@@ -94,6 +97,7 @@ INSTALLED_APPS = (
     'tinymce',
     'libs',
     'compressor',
+    'djcelery',
     
     # Local apps
     
