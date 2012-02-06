@@ -11,3 +11,4 @@ python-digest==1.7
 pil
 django_compressor
 django-celery
+celery-with-mongodb
