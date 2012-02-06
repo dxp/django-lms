@@ -1,6 +1,9 @@
 import sys
 import os
 
+import djcelery
+djcelery.setup_loader()
+
 # Django settings for intranet project.
 
 ## Directories
@@ -94,6 +97,7 @@ INSTALLED_APPS = (
     'tinymce',
     'libs',
     'compressor',
+    'djcelery',
     
     # Local apps
     
@@ -151,6 +155,10 @@ TINYMCE_DEFAULT_CONFIG = {
     'theme_advanced_toolbar_align' : "left",
     }
 
+# Celery config
+
+BROKER_URL = "mongodb://localhost:27017/celery"
+BROKER_VHOST = "/"
 
 try:
     from local_settings import *
