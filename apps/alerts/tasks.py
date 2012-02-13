@@ -1,3 +1,6 @@
+from django.contrib.auth.models import User
+from permission_backend_nonrel.models import UserPermissionList
+
 from celery.decorators import task
 
 @task()
@@ -11,3 +14,17 @@ def alert_userlist(alert, userlist):
         alert.id = None
         alert.sent_to = user
         alert.save()
+
+def alert_groups(alert, groups):
+    """
+    Takes a group or list of groups and send the alert to them
+    """
+    
+    # TODO find a better way to see if groups is iterable and not a string
+    if not getattr(groups, '__iter__', False):
+        groups = [groups]
+
+    for group in groups:
+        userperm_list = UserPermissionList.objects.filter(group_fk_list = group.id)
+        
+        alert_userlist(alert, [u.user for u in userperm_list])
