@@ -1,9 +1,10 @@
 from django import forms
 from django.forms import fields, models, widgets
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.formtools.wizard import FormWizard
 from django.utils.encoding import force_unicode
+from alerts.tasks import alert_groups, alert_userlist
 from alerts.models import Alert
 
 ALERT_CHOICES = (
@@ -20,6 +21,14 @@ class AlertForm1(forms.ModelForm):
 class AlertForm2(forms.Form):
     send_to = forms.ChoiceField(widget = forms.RadioSelect, choices = ALERT_CHOICES)
 
+class UserForm(forms.Form):
+    # TODO setup a filter select 
+    sent_to = forms.ModelChoiceField(queryset = User.objects.all())
+
+class GroupForm(forms.Form):
+    # TODO setup a filter select 
+    sent_to = forms.ModelChoiceField(queryset = Group.objects.all())
+
 
 class AlertCreationWizard(FormWizard):
     """
@@ -30,6 +39,19 @@ class AlertCreationWizard(FormWizard):
         # Python instances don't define __name__ (though functions and classes do).
         # We need to define this, otherwise the call to "update_wrapper" fails:
         return self.__class__.__name__
+
+    def process_step(self, request, form, step):
+        if step == 1:
+            if form.cleaned_data['send_to'] == 'user':
+                self.form_list.pop()
+                self.form_list.append(UserForm)
+            if form.cleaned_data['send_to'] == 'group':
+                self.form_list.pop()
+                self.form_list.append(GroupForm)
+            if form.cleaned_data['send_to'] == 'all':
+                self.form_list.pop()
+
+
 
     def get_template(self, step):
         # Optional: return the template used in rendering this wizard:
@@ -74,7 +96,24 @@ class AlertCreationWizard(FormWizard):
 
         # Send alert
 
-        # Display success message and redirect to changelist:
-        return self._model_admin.response_add(request, employer)
+        alert = Alert(sent_by = data['sent_by'],
+                      title = data['title'],
+                      details = data['details'],
+                      level = data['level'],
+            )
 
-alert_form = AlertCreationWizard([AlertForm1, AlertForm2])
+        if data['send_to'] == 'all':
+            alert_userlist(alert, User.objects.all())
+
+        if data['send_to'] == 'group':
+            alert_groups(alert, data['sent_to'])
+
+        if data['send_to'] == 'user':
+            alert.sent_to = data['sent_to']
+            alert.save()
+
+        
+        # Display success message and redirect to changelist:
+        return self._model_admin.response_add(request, alert)
+
+alert_form = AlertCreationWizard([AlertForm1, AlertForm2, UserForm])

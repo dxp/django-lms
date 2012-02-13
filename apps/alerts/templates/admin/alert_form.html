@@ -3,7 +3,7 @@
 
 {% block content %}
 <div id="content-main">
-    <form {% if form.form.is_multipart %}enctype="multipart/form-data" {% endif %}method="post" action="" id="{{ opts.module_name }}_form">
+    <form {% if form.form.is_multipart %}enctype="multipart/form-data" {% endif %}method="post" action="" id="{{ opts.module_name }}_form">{% csrf_token %}
         <div>
             {% if form.form.errors %}
             <p class="errornote">

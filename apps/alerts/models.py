@@ -9,6 +9,6 @@ class Alert(models.Model):
     created = models.DateTimeField(auto_now_add = True)
     modified = models.DateTimeField(auto_now = True)
     title = models.CharField(max_length = 200)
-    details = tinymce_models.HTMLField()
+    details = tinymce_models.HTMLField(blank = True)
     level = models.CharField(max_length = 200)
 

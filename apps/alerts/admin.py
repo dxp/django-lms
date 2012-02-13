@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.utils.encoding import force_unicode
 from django.utils.functional import update_wrapper
 from alerts.models import Alert
-from testapp.forms import create_employer
+from alerts.forms import alert_form
 
 class AlertAdmin(admin.ModelAdmin):
     def get_urls(self):
@@ -18,7 +18,7 @@ class AlertAdmin(admin.ModelAdmin):
                 wrap(alert_form),
                 name='alert_add')
         )
-        urlpatterns += super(EmployerAdmin, self).get_urls()
+        urlpatterns += super(AlertAdmin, self).get_urls()
         return urlpatterns
 
-admin.site.register(Employer, EmployerAdmin)
+admin.site.register(Alert, AlertAdmin)
