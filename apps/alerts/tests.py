@@ -1,9 +1,11 @@
 from django.core.urlresolvers import reverse
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 
 import libs.test_utils as test_utils
 from alerts.models import Alert
-from alerts.tasks import alert_userlist
+from alerts.tasks import alert_userlist, alert_groups
+
+from permission_backend_nonrel.utils import update_user_groups
 
 class AlertTest(test_utils.AuthenticatedTest):
     def test_acknowlege(self):
@@ -44,3 +46,62 @@ class AlertTest(test_utils.AuthenticatedTest):
 
         self.assertEquals(len(Alert.objects.all()), len(User.objects.all()))
         
+
+    def test_alert_group(self):
+        """
+        Tests the ability of the system to alert a group of users
+        """
+
+        # Create groups
+        group = Group.objects.create(name = 'test1')
+
+        # Create a load of users
+        for i in range(50):
+            user = User.objects.create(username = 'user_%s' %(i))
+            update_user_groups(user, [group])
+
+        for i in range(50, 100):
+            user = User.objects.create(username = 'user_%s' %(i))
+
+
+        alert = Alert(sent_by = 'Tester',
+                      title = 'Test title',
+                      details = 'No details',
+                      level = 'Notice',)
+
+        alert_groups(alert, group)
+        
+        self.assertEquals(len(Alert.objects.all()), 50)
+
+
+    def test_alert_groups(self):
+        """
+        Tests the ability of the system to alert groups of users
+        """
+
+        # Create groups
+        group1 = Group.objects.create(name = 'test1')
+        group2 = Group.objects.create(name = 'test2')
+        
+        # Create a load of users
+        for i in range(25):
+            user = User.objects.create(username = 'user_%s' %(i))
+            update_user_groups(user, [group1])
+
+        for i in range(25, 50):
+            user = User.objects.create(username = 'user_%s' %(i))
+            update_user_groups(user, [group2])
+
+
+        for i in range(50, 100):
+            user = User.objects.create(username = 'user_%s' %(i))
+
+
+        alert = Alert(sent_by = 'Tester',
+                      title = 'Test title',
+                      details = 'No details',
+                      level = 'Notice',)
+
+        alert_groups(alert, [group1, group2])
+        
+        self.assertEquals(len(Alert.objects.all()), 50)

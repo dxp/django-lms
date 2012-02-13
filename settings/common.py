@@ -85,7 +85,6 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.admin',
     'django.contrib.admindocs',
     'django.contrib.staticfiles',
 
@@ -106,6 +105,10 @@ INSTALLED_APPS = (
     'apps.courses',
     'apps.profiles',
     'apps.alerts',
+
+    # Admin comes last so our apps can override some templates
+    'django.contrib.admin',
+
     )
 
 AUTHENTICATION_BACKENDS = (
