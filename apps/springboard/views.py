@@ -24,7 +24,6 @@ class SpringBoard(ListView):
     def get_context_data(self, **kwargs):
         # Temporary message for testing
         from django.contrib import messages
-        messages.add_message(self.request, messages.INFO, 'Hello world.')
 
         # Call the base implementation first to get a context
         context = super(SpringBoard, self).get_context_data(**kwargs)
