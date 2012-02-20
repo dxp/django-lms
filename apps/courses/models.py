@@ -22,6 +22,7 @@ class Semester(models.Model):
     def __unicode__(self):
         return "%s %s" % (self.name, self.year)
 
+
 class Course(models.Model):
     title = models.CharField(max_length = 200)
     section = models.CharField(max_length = 10)
@@ -41,6 +42,7 @@ class Course(models.Model):
             '/appmedia/admin/js/textareas.js',
             ),
 
+
 class Assignment(models.Model):
     course = models.ForeignKey(Course)
     title = models.CharField(max_length = 200)
@@ -49,6 +51,7 @@ class Assignment(models.Model):
 
     def __unicode__(self):
         return unicode(self.title)
+
 
 class AssignmentSubmission(models.Model):
     users = fields.ListField(ForeignKey(User, related_name = 'submitters'))
