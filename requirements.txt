@@ -1,8 +1,9 @@
--e git+https://github.com/django-nonrel/django-nonrel.git#egg=django
--e git+https://github.com/emperorcezar/djangotoolbox.git@develop#egg=djangotoolbox
--e git+https://github.com/emperorcezar/mongodb-engine.git#egg=mongodb-engine
+-e git+https://github.com/django-nonrel/django-nonrel.git@develop#egg=django
+-e git+https://github.com/emperorcezar/djangotoolbox.git@feature/queryemptylists#egg=djangotoolbox
+-e git+https://github.com/django-nonrel/mongodb-engine.git@develop#egg=mongodb-engine
 -e git+https://github.com/django-nonrel/django-permission-backend-nonrel.git#egg=permission_backend_nonrel
 -e git+https://github.com/andresdouglas/django-tastypie.git@nonrel#egg=tastypie
+-e git+https://github.com/emperorcezar/django-recurrence.git#egg=recurrence
 django-mptt
 django-tinymce==1.5.1a1
 mimeparse==0.1.3
