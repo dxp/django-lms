@@ -98,6 +98,7 @@ INSTALLED_APPS = (
     'compressor',
     'djcelery',
     'mptt',
+    'recurrence',
         
     # Local apps
     

@@ -1,9 +1,12 @@
 import datetime
 from django.db import models
-from djangotoolbox import fields
-from libs.utils.fields import ForeignKey
 from django.contrib.auth.models import Group, User
+
+from djangotoolbox import fields
 from tinymce import models as tinymce_models
+import recurrence.fields
+
+from libs.utils.fields import ForeignKey
 
 class Semester(models.Model):
     name = models.CharField(max_length = 200)
@@ -32,6 +35,7 @@ class Course(models.Model):
     faculty = fields.ListField(ForeignKey(User, related_name = 'faculty'))
     private = models.BooleanField(default=False, blank=True)
     members = fields.ListField(ForeignKey(User, related_name = 'members'))
+    schedule = recurrence.fields.RecurrenceField()
 
     def __unicode__(self):
         return "%s: %s %s" % (self.title, self.semester.name, self.semester.year)
