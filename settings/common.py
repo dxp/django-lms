@@ -97,7 +97,9 @@ INSTALLED_APPS = (
     'libs',
     'compressor',
     'djcelery',
-    
+    'mptt',
+    'recurrence',
+        
     # Local apps
     
     'apps.springboard',

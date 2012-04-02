@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from permission_backend_nonrel.models import UserPermissionList
 
-from celery.decorators import task
+from celery.task import task
 
 @task()
 def alert_userlist(alert, userlist):
