@@ -81,7 +81,8 @@ class CourseDropPage(RedirectView):
     def get_redirect_url(self, **kwargs):
         semesters = Semester.objects.filter(start__lt = datetime.date.today(), end__gt = datetime.date.today())
         if not semesters:
-            raise ValueError, "No current semester"
+            # Get the latest semester and use that
+            semesters = Semester.objects.order_by('end')
         semester = semesters[0]
         url = reverse('courses:by_semester', kwargs={'pk':semester.id})
         return url
