@@ -1,5 +1,6 @@
 import datetime
 from django.db import models
+from django.conf import settings
 from django.contrib.auth.models import Group, User
 
 from djangotoolbox import fields
@@ -36,6 +37,10 @@ class Course(models.Model):
     private = models.BooleanField(default=False, blank=True)
     members = fields.ListField(ForeignKey(User, related_name = 'members'))
     schedule = recurrence.fields.RecurrenceField()
+    campus = models.CharField(max_length = 200,
+                              choices = getattr(settings, 'CAMPUSES', [('main', 'Main'),] ),
+        )
+    location = models.CharField(max_length = 200)
 
     def __unicode__(self):
         return "%s: %s %s" % (self.title, self.semester.name, self.semester.year)

@@ -17,7 +17,11 @@ one_day = datetime.timedelta(1)
 
 class SemesterTest(test_utils.AuthenticatedTest):
     def test_create(self):
-        semester = Semester(name='Spring', year = '2012', start = datetime.date(2012, 1, 1), end = datetime.date(2012, 5, 15))
+        semester = Semester(name='Spring',
+                            year = '2012',
+                            start = datetime.date(2012, 1, 1),
+                            end = datetime.date(2012, 5, 15),
+            )
         semester.save()
         self.assertEquals(semester.name, 'Spring')
         self.assertEquals(semester.year, '2012')
@@ -63,7 +67,14 @@ class CoursesTest(test_utils.AuthenticatedTest):
         super(CoursesTest, self).setUp()
         self.semester = Semester(name='Spring', year = '2012', start = datetime.date(2012, 1, 1), end = datetime.date(2012, 5, 1))
         self.semester.save()
-        self.course = Course(title='Test Course', number = '101', section = '001', description = 'Test description of a course', semester = self.semester)
+        self.course = Course(title='Test Course',
+                             number = '101',
+                             section = '001',
+                             description = 'Test description of a course',
+                             semester = self.semester,
+                             campus = 'main',
+                             location = 'Room 101',
+            )
         self.course.save()
         
 
@@ -76,6 +87,8 @@ class CoursesTest(test_utils.AuthenticatedTest):
         self.assertEquals(self.course.number, '101')
         self.assertEquals(self.course.section, '001')
         self.assertEquals(self.course.description, 'Test description of a course')
+        self.assertEquals(self.course.campus, 'main')
+        self.assertEquals(self.course.location, 'Room 101')
 
     def test_view(self):
         response = self.c.get(reverse('courses:overview', args = [self.course.id]))
