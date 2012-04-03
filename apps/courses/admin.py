@@ -1,3 +1,5 @@
+import datetime
+
 from django.contrib import admin
 from django.contrib.auth.models import Group, User
 from django.forms import ModelForm
@@ -22,14 +24,17 @@ class CourseAdminForm(ModelForm):
         faculty_group = Group.objects.get_or_create(name = 'Faculty')[0]
         faculty_list = UserPermissionList.objects.filter(group_fk_list = faculty_group.pk)
         self.fields['faculty'].queryset = User.objects.filter(pk__in = [faculty.user.pk for faculty in faculty_list])
-        if self.instance:
-            self.fields['faculty'].initial = self.instance.faculty
 
         student_group = Group.objects.get_or_create(name = 'Student')[0]
         student_list = UserPermissionList.objects.filter(group_fk_list = student_group.pk)
         self.fields['members'].queryset = User.objects.filter(pk__in = [student.user.pk for student in student_list])
-        if self.instance:
+        if self.instance.id:
+            self.fields['faculty'].initial = self.instance.faculty
             self.fields['members'].initial = self.instance.members
+        else:
+            semesters = Semester.objects.filter(start__lt = datetime.date.today(), end__gt = datetime.date.today())
+            if len(semesters) > 0:
+                self.fields['semester'].initial = semesters[0]
 
     class Meta:
         model = Course
