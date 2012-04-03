@@ -37,6 +37,7 @@ class Course(models.Model):
     private = models.BooleanField(default=False, blank=True)
     members = fields.ListField(ForeignKey(User, related_name = 'members'))
     schedule = recurrence.fields.RecurrenceField()
+    credits = models.DecimalField(max_digits = 3, decimal_places = 1, default = '3.0')
     campus = models.CharField(max_length = 200,
                               choices = getattr(settings, 'CAMPUSES', [('main', 'Main'),] ),
         )

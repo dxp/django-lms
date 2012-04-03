@@ -24,7 +24,7 @@ $(document).ready(function(){
 
 {% block course_content %}
 <div id="course">
-  <span class="course-sub-info">{{ course.number }} - {{ course.section }}: {{ course.semester.name }} {{ course.semester.year }}</span>
+  <span class="course-sub-info">{{ course.number }} - {{ course.section }}: {{ course.semester.name }} {{ course.semester.year }} | {{ course.credits }} credit hours</span>
     {% ifpossiblemember %}
   {% if course.semester.active %}
     {% if not request.user in course.members.all %}

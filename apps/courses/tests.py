@@ -1,6 +1,7 @@
 import sys
 import os
 import datetime
+from decimal import Decimal
 
 from django.utils import unittest
 from django.test.client import Client
@@ -74,6 +75,7 @@ class CoursesTest(test_utils.AuthenticatedTest):
                              semester = self.semester,
                              campus = 'main',
                              location = 'Room 101',
+                             credits = '3.0',
             )
         self.course.save()
         
@@ -89,6 +91,7 @@ class CoursesTest(test_utils.AuthenticatedTest):
         self.assertEquals(self.course.description, 'Test description of a course')
         self.assertEquals(self.course.campus, 'main')
         self.assertEquals(self.course.location, 'Room 101')
+        self.assertEquals(self.course.credits, '3.0')
 
     def test_view(self):
         response = self.c.get(reverse('courses:overview', args = [self.course.id]))
