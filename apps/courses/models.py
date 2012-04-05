@@ -2,6 +2,7 @@ import datetime
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import Group, User
+from django.utils.translation import ugettext as _
 
 from djangotoolbox import fields
 from tinymce import models as tinymce_models
@@ -33,9 +34,10 @@ class Course(models.Model):
     number = models.CharField(max_length = 10)
     description = tinymce_models.HTMLField()
     semester = models.ForeignKey(Semester)
-    faculty = fields.ListField(ForeignKey(User, related_name = 'faculty'))
+    faculty = fields.ListField(ForeignKey(User, related_name = _('Faculty')))
+    teaching_assistants = fields.ListField(ForeignKey(User, related_name = _('Teaching Assistants')))
     private = models.BooleanField(default=False, blank=True)
-    members = fields.ListField(ForeignKey(User, related_name = 'members'))
+    members = fields.ListField(ForeignKey(User, related_name = _('Members')))
     schedule = recurrence.fields.RecurrenceField()
     credits = models.DecimalField(max_digits = 3, decimal_places = 1, default = '3.0')
     campus = models.CharField(max_length = 200,

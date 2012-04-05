@@ -1,4 +1,6 @@
 import datetime
+import itertools
+
 from django import forms
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
@@ -34,7 +36,7 @@ class CourseOverview(DetailView):
         course = self.get_object()
 
         if course.private:
-            if request.user not in course.faculty and request.user not in course.members:
+            if request.user not in itertools.chain(course.faculty, course.members, course.teaching_assistants):
                 raise exceptions.PermissionDenied
 
         return super(CourseOverview, self).dispatch(request, *args, **kwargs)

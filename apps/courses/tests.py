@@ -122,9 +122,19 @@ class CoursesTest(test_utils.AuthenticatedTest):
         response = self.c.get(reverse('courses:overview', args = [self.course.id]))
         self.assertEquals(response.status_code, 200)
         self.course.faculty.remove(self.user)
-        self.course.private = False
         self.course.save()
 
+        # Test TA
+        self.course.teaching_assistants.append(self.user)
+        self.course.save()
+        response = self.c.get(reverse('courses:overview', args = [self.course.id]))
+        self.assertEquals(response.status_code, 200)
+        self.course.teaching_assistants.remove(self.user)
+        self.course.save()
+
+        self.course.private = False
+        self.course.save()
+        
 class AssignmentTest(test_utils.AuthenticatedTest):
     def setUp(self):
         super(AssignmentTest, self).setUp()

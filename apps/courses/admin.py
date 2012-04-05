@@ -5,6 +5,7 @@ from django.contrib.auth.models import Group, User
 from django.forms import ModelForm
 from django.forms import ModelMultipleChoiceField
 from django.contrib.admin.widgets import FilteredSelectMultiple
+from django.utils.translation import ugettext as _
 from permission_backend_nonrel.models import UserPermissionList
 
 from courses.models import Course, Semester, Assignment, AssignmentSubmission, Resource
@@ -13,19 +14,24 @@ from courses.models import Course, Semester, Assignment, AssignmentSubmission, R
 class CourseAdminForm(ModelForm):
     faculty = ModelMultipleChoiceField(queryset = User.objects.none(),
                                        required = False,
-                                       widget = FilteredSelectMultiple("Faculty", False) )
+                                       widget = FilteredSelectMultiple(_("Faculty"), False) )
+
+    teaching_assistants = ModelMultipleChoiceField(queryset = User.objects.all(),
+                                       required = False,
+                                       widget = FilteredSelectMultiple(_("Teaching Assistants"), False) )
+
     members = ModelMultipleChoiceField(queryset = User.objects.none(),
                                        required = False,
-                                       widget = FilteredSelectMultiple("Faculty", False) )
+                                       widget = FilteredSelectMultiple(_("Faculty"), False) )
 
     def __init__(self,*args,**kwargs):
         super (CourseAdminForm,self ).__init__(*args,**kwargs)
 
-        faculty_group = Group.objects.get_or_create(name = 'Faculty')[0]
+        faculty_group = Group.objects.get_or_create(name = _('Faculty'))[0]
         faculty_list = UserPermissionList.objects.filter(group_fk_list = faculty_group.pk)
         self.fields['faculty'].queryset = User.objects.filter(pk__in = [faculty.user.pk for faculty in faculty_list])
 
-        student_group = Group.objects.get_or_create(name = 'Student')[0]
+        student_group = Group.objects.get_or_create(name = _('Student'))[0]
         student_list = UserPermissionList.objects.filter(group_fk_list = student_group.pk)
         self.fields['members'].queryset = User.objects.filter(pk__in = [student.user.pk for student in student_list])
         if self.instance.id:
@@ -38,7 +44,7 @@ class CourseAdminForm(ModelForm):
 
     class Meta:
         model = Course
-        exclude = ('faculty', 'members')
+        exclude = ('faculty', 'members', 'teaching_assistants')
 
 class CourseAdmin(admin.ModelAdmin):
      list_filter = ('semester',)
