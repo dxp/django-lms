@@ -16,7 +16,10 @@ $(document).ready(function(){
 		} else if (data.status == 'removed'){
 		    $('#membership-button').html("Become member");
 		}
-	    }
+	    },
+        error: function(data){
+            console.log(data);
+        }
 	});
     });
 });
@@ -28,9 +31,9 @@ $(document).ready(function(){
     {% ifpossiblemember %}
   {% if course.semester.active %}
     {% if not request.user in course.members.all %}
-      <div class="right"><a id="membership-button" href="#" class="button call-to-action">Become member</a></div>
+      <div class="right"><a id="membership-button" href="#" class="btn btn-primary">Become member</a></div>
     {% else %}
-      <div class="right"><a id="membership-button" href="#" class="button call-to-action">Remove membership</a></div>
+      <div class="right"><a id="membership-button" href="#" class="btn btn-primary">Remove membership</a></div>
     {% endif %}
   {% endif %}
 {% endifpossiblemember %}

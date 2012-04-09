@@ -96,11 +96,13 @@ class ToggleMembership(View, SingleObjectMixin, JSONResponseMixin):
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
 
-        if request.user in self.object.members.all():
+        if request.user in self.object.members:
             self.object.members.remove(request.user)
+            self.object.save()
             status = "removed"
         else:
-            self.object.members.add(request.user)
+            self.object.members.append(request.user)
+            self.object.save()
             status = "added"
         context = {'status':status}
         return self.render_to_response(context)
