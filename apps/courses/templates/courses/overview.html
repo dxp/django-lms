@@ -13,9 +13,13 @@ $(document).ready(function(){
 	    success: function(data){
 		if (data.status == 'added'){
 		    $('#membership-button').html("Remove membership");
+            $("#messages").append($("<div class='alert alert-info' data-alert><a class='close' data-dismiss='alert' href='#'>&times;</a>You have been added to the course</div>"));
 		} else if (data.status == 'removed'){
 		    $('#membership-button').html("Become member");
+            $("#messages").append($("<div class='alert alert-info' data-alert><a class='close' data-dismiss='alert' href='#'>&times;</a>You have been removed from the course</div>"));
 		}
+
+        $('#messages div').alert();
 	    },
         error: function(data){
             console.log(data);
@@ -30,7 +34,7 @@ $(document).ready(function(){
   <span class="course-sub-info">{{ course.number }} - {{ course.section }}: {{ course.semester.name }} {{ course.semester.year }} | {{ course.credits }} credit hours</span>
     {% ifpossiblemember %}
   {% if course.semester.active %}
-    {% if not request.user in course.members.all %}
+    {% if not request.user in course.members %}
       <div class="right"><a id="membership-button" href="#" class="btn btn-primary">Become member</a></div>
     {% else %}
       <div class="right"><a id="membership-button" href="#" class="btn btn-primary">Remove membership</a></div>

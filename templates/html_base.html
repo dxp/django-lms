@@ -73,13 +73,14 @@
       </header>
       
       <div id="main" role="main" class="row">
-        {% if messages %}
+
         <div id="messages" class="span12">
-          {% for message in messages %}
-            {% include "django-message.html" %}
-          {% endfor %}
+          {% if messages %}
+            {% for message in messages %}
+              {% include "django-message.html" %}
+            {% endfor %}
+          {% endif %}
         </div>
-        {% endif %}
         <div id="content" class="span12">
 	      {% block content %}
 	      {% endblock content %}
