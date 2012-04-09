@@ -11,76 +11,82 @@
 }
 
 
-.login #login-container {
+.login {
+  #login {
     background: white;
     border: 1px solid #ccc;
     margin-top: 100px;
-}
+    width: 331px;
+    margin-left: 298px;
+    }
 
-.login #login-content-main {
-    width: 100%;
-}
-
-.login form {
+  form {
     margin-top: 1em;
-}
+    }
 
-.login .form-row {
+  .form-row {
     padding: 4px 0;
     float: left;
     width: 100%;
-}
+    
+    label {
+      float: left;
+      width: 7.4em;
+      padding-right: 0.5em;
+      line-height: 2em;
+      text-align: right;
+      font-size: 1em;
+      color: #333;
+      }
+    
+    #id_username, #id_password {
+      width: 14em;
+      }
+    }
 
-.login .form-row label {
-    float: left;
-    width: 7.4em;
-    padding-right: 0.5em;
-    line-height: 2em;
-    text-align: right;
-    font-size: 1em;
-    color: #333;
-}
-
-.login .form-row #id_username, .login .form-row #id_password {
-    width: 14em;
-}
-
-.login span.help {
+  span.help {
     font-size: 10px;
     display: block;
-}
+    }
 
-.login .submit-row {
+  .submit-row {
     clear: both;
-    padding: 1em 0 0 7.5em;
-}
-
-#login-header {
+    padding: 0 0 0 102px;
+    }
+  
+  #login-header {
     background: #417690;
     color: #ffc;
     overflow: hidden;
-}
+    
+    a:link {
+      color: white;
+      }
+  
+    a:hover {
+      text-decoration: underline;
+      }
+    }
+  }
 
-#login-header a:link, #header a:visited {
+
+#header a:visited {
     color: white;
-}
+  }
 
-#login-header a:hover {
-    text-decoration: underline;
-}
-
-#branding h1 {
+#branding{
+  h1 {
     padding: 0 10px;
     font-size: 18px;
     margin: 8px 0;
     font-weight: normal;
     color: #eee;
-}
-
-#branding h2 {
+    }
+  h2 {
     padding: 0 10px;
     font-size: 14px;
     margin: -8px 0 8px 0;
     font-weight: normal;
     color: #ffc;
-}
+    }
+  }
