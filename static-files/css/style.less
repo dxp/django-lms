@@ -1,4 +1,6 @@
 @siteWidth: 940px;
+@tableYellow: #FCFCDC;
+
 
 html {
     height: 100%;
@@ -238,25 +240,48 @@ h1.course-title {
 }
 
 #course-list {
-    font-size: 1.25em;
-}
+  font-size: 1.25em;
 
-#course-list th{
+  @headerpadding: 0 1em 0 0;
+  @cellpadding: 0.5em 1em 0.5em 0;
+
+  h1 {
+    font-size: 1em;
+    }
+
+  .odd td {
+    background-color: @tableYellow;
+    }
+
+  table {
+    min-width: 600px;
+    width:auto !important; 
+    }
+
+  th {
     background: #fff;
     border-bottom: 1px solid #eee;
-}
+    text-align: left;
+    padding: @cellpadding;
+    }
 
-#course-list .course-number {
+  td {
+    padding: @cellpadding;
+    vertical-align: middle;
+    }
+
+  .course-number {
     width:50px;
-}
+    }
 
-#course-list .course-section {
+  .course-section {
     width:50px;
-}
+    }
 
-#course-list .course-instructor {
+  .course-instructor {
     text-align: right;
-}
+    }
+  }
 
 #course-admin-tools form li {
     list-style: none;

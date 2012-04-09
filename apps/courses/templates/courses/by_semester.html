@@ -14,11 +14,11 @@
     </thead>
     <tbody>
       {% for course in courses %}
-      <tr class="course-list-entry">
-	<td class="course-number">{{ course.number }}</td>
-	<td class="course-section">{{ course.section }}</td>
-	<td class="course-title"><a href="{% url courses:overview course.id %}">{{ course.title }}</a></td>
-	<td class="course-instructor">{{ course.faculty.all|join:", " }}</td>
+      <tr class="course-list-entry {% cycle 'even' 'odd' %}">
+        <td class="course-number">{{ course.number }}</td>
+        <td class="course-section">{{ course.section }}</td>
+        <td class="course-title"><a href="{% url courses:overview course.id %}">{{ course.title }}</a></td>
+        <td class="course-instructor">{{ course.faculty.all|join:", " }}</td>
       </tr>
       {% endfor %}
     </tbody>
