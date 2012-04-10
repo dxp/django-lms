@@ -81,6 +81,11 @@
             {% endfor %}
           {% endif %}
         </div>
+        <div id="breadcrumbs" class="span12">
+          {% for breadcrumb in request.breadcrumbs %}
+          <a href="{{ breadcrumb.url }}">{{ breadcrumb.name }}</a>{% if not forloop.last %} >> {% endif %}
+          {% endfor %}
+        </div>
         <div id="content" class="span12">
 	      {% block content %}
 	      {% endblock content %}

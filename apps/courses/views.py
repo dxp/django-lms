@@ -5,6 +5,7 @@ from django import forms
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
 from libs.django_utils import render_to_response
+from libs.class_views import BreadCrumbMixin
 from libs.class_views import JSONResponseMixin
 from django.views.generic import DetailView, ListView, RedirectView, UpdateView, CreateView, View, DeleteView
 from django.views.generic.detail import SingleObjectMixin
@@ -15,7 +16,8 @@ from django.contrib.auth.models import User
 from courses.models import Course, Semester, Assignment, AssignmentSubmission, Resource
 from courses.forms import CourseAdminForm, AssignmentForm, SubmitAssignmentForm, TeamSubmitAssignmentForm, ResourceForm
 
-class CourseOverview(DetailView):
+class CourseOverview(BreadCrumbMixin, DetailView):
+    name = "Course overview"
     context_object_name = "course"
     template_name = "courses/overview.html"
 
@@ -46,7 +48,8 @@ class CourseMembers(CourseOverview):
     template_name = "courses/members.html"
 
 # TODO: Check if user is faculty
-class CourseAdmin(UpdateView):
+class CourseAdmin(BreadCrumbMixin, UpdateView):
+    name = "Course admin"
     form_class = CourseAdminForm
     template_name = "courses/admin.html"
 
@@ -57,7 +60,8 @@ class CourseAdmin(UpdateView):
         return reverse('courses:admin', kwargs={'pk':course.id})
 
 
-class BySemesterList(ListView):
+class BySemesterList(BreadCrumbMixin, ListView):
+    name = "Courses by semester"
     context_object_name = "courses"
     template_name = "courses/by_semester.html"
 
@@ -107,7 +111,8 @@ class ToggleMembership(View, SingleObjectMixin, JSONResponseMixin):
         context = {'status':status}
         return self.render_to_response(context)
 
-class NewCourseAssignment(CreateView):
+class NewCourseAssignment(BreadCrumbMixin, CreateView):
+    name = "New Assignment"
     model = Assignment
     form_class = AssignmentForm
     template_name = "courses/new_assignment.html"
@@ -145,7 +150,8 @@ class NewCourseAssignment(CreateView):
 
         return super(NewCourseAssignment, self).dispatch(request, *args, **kwargs)
 
-class AssignmentList(ListView):
+class AssignmentList(BreadCrumbMixin, ListView):
+    name = "Assignment list"
     context_object_name = "assignments"
     template_name = "courses/assignement_list.html"
 
@@ -158,7 +164,8 @@ class AssignmentList(ListView):
         context['course'] = self.course
         return context
 
-class AssignmentOverview(DetailView):
+class AssignmentOverview(DetailView, BreadCrumbMixin):
+    name = "Assignment overview"
     context_object_name = "assignment"
     template_name = "courses/assignment_overview.html"
 
@@ -189,7 +196,8 @@ class AssignmentOverview(DetailView):
 
         return super(AssignmentOverview, self).dispatch(request, *args, **kwargs)
 
-class SubmitAssignment(CreateView):
+class SubmitAssignment(BreadCrumbMixin, CreateView):
+    name = "Submit assignment"
     model = AssignmentSubmission
     form_class = SubmitAssignmentForm
     template_name = "courses/submit_assignment.html"
@@ -230,7 +238,8 @@ class SubmitAssignment(CreateView):
 
         return super(SubmitAssignment, self).dispatch(request, *args, **kwargs)
 
-class DeleteSubmission(DeleteView):
+class DeleteSubmission(BreadCrumbMixin, DeleteView):
+    name = "Delete assignment submission"
     template_name = "courses/delete_submission.html"
 
     queryset = AssignmentSubmission.objects.all()
@@ -258,6 +267,7 @@ class DeleteSubmission(DeleteView):
         return HttpResponse(self.get_success_url())
 
 class TeamSubmitAssignment(SubmitAssignment):
+    name = "Submit assignment for team"
     form_class = TeamSubmitAssignmentForm
 
     def get_form(self, form_class):
@@ -267,7 +277,8 @@ class TeamSubmitAssignment(SubmitAssignment):
 
         return form
 
-class NewCourseResource(CreateView):
+class NewCourseResource(BreadCrumbMixin, CreateView):
+    name = "New course resource"
     model = Resource
     form_class = ResourceForm
     template_name = "courses/new_resource.html"
@@ -305,7 +316,8 @@ class NewCourseResource(CreateView):
 
         return super(NewCourseResource, self).dispatch(request, *args, **kwargs)
 
-class ResourceList(ListView):
+class ResourceList(BreadCrumbMixin, ListView):
+    name = "Resource list"
     context_object_name = "resources"
     template_name = "courses/resource_list.html"
 
@@ -318,7 +330,8 @@ class ResourceList(ListView):
         context['course'] = self.course
         return context
 
-class ResourceDetails(DetailView):
+class ResourceDetails(BreadCrumbMixin, DetailView):
+    name = "Resource details"
     context_object_name = "resource"
     template_name = "courses/resource_details.html"
 
@@ -346,7 +359,8 @@ class ResourceDetails(DetailView):
 
         return super(ResourceDetails, self).dispatch(request, *args, **kwargs)
 
-class DeleteResource(DeleteView):
+class DeleteResource(BreadCrumbMixin, DeleteView):
+    name = "Delete resource"
     template_name = "courses/delete_resource.html"
 
     queryset = Resource.objects.all()
@@ -373,7 +387,8 @@ class DeleteResource(DeleteView):
 
         return HttpResponse(self.get_success_url())
 
-class DeleteAssignment(DeleteView):
+class DeleteAssignment(BreadCrumbMixin, DeleteView):
+    name = "Delete assignment"
     template_name = "courses/delete_assignment.html"
 
     queryset = Assignment.objects.all()
@@ -402,7 +417,8 @@ class DeleteAssignment(DeleteView):
 
 
 
-class EditAssignment(UpdateView):
+class EditAssignment(BreadCrumbMixin, UpdateView):
+    name = "Edit assignment"
     template_name = 'courses/new_assignment.html'
     form_class = AssignmentForm
     queryset = Assignment.objects.all()
@@ -429,7 +445,8 @@ class EditAssignment(UpdateView):
         return super(EditAssignment, self).dispatch(request, *args, **kwargs)
 
 
-class EditResource(UpdateView):
+class EditResource(BreadCrumbMixin, UpdateView):
+    name = "Edit resource"
     template_name = 'courses/new_resource.html'
     form_class = ResourceForm
     queryset = Resource.objects.all()

@@ -1,6 +1,12 @@
 from django import http
 from django.utils import simplejson as json
 
+class BreadCrumbMixin(object):
+    def dispatch(self, request, *args, **kwargs):
+        request.breadcrumbs(self.name, request.path_info)
+        return super(BreadCrumbMixin, self).dispatch(request, *args, **kwargs)
+
+
 class JSONResponseMixin(object):
     def render_to_response(self, context):
         "Returns a JSON response containing 'context' as payload"
