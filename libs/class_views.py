@@ -1,11 +1,25 @@
 from django import http
 from django.utils import simplejson as json
 
+from breadcrumbs import Breadcrumb
+
 class BreadCrumbMixin(object):
+    def __init__(self, *args, **kwargs):
+        self.breadcrumbs = []
+    
     def dispatch(self, request, *args, **kwargs):
-        request.breadcrumbs(self.name, request.path_info)
+        """
+        Give the breadcrumbs the current page
+        """
+        self.breadcrumbs.append(Breadcrumb(self.name, '#'))
         return super(BreadCrumbMixin, self).dispatch(request, *args, **kwargs)
 
+    def render_to_response(self, context, **response_kwargs):
+        """
+        Adds the breadcrumbs to the render
+        """
+        context.update({'breadcrumbs':self.breadcrumbs})
+        return super(BreadCrumbMixin, self).render_to_response(context, **response_kwargs)
 
 class JSONResponseMixin(object):
     def render_to_response(self, context):
