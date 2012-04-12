@@ -13,6 +13,8 @@ from django.core import exceptions
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 
+from breadcrumbs import Breadcrumb
+
 from courses.models import Course, Semester, Assignment, AssignmentSubmission, Resource
 from courses.forms import CourseAdminForm, AssignmentForm, SubmitAssignmentForm, TeamSubmitAssignmentForm, ResourceForm
 
@@ -37,6 +39,8 @@ class CourseOverview(BreadCrumbMixin, DetailView):
         self.kwargs = kwargs
         course = self.get_object()
 
+        self.breadcrumbs.insert(0, Breadcrumb(unicode(course.semester), reverse('courses:by_semester', kwargs={'pk': course.semester.id})))
+
         if course.private:
             if request.user not in itertools.chain(course.faculty, course.members, course.teaching_assistants):
                 raise exceptions.PermissionDenied
@@ -46,6 +50,12 @@ class CourseOverview(BreadCrumbMixin, DetailView):
 
 class CourseMembers(CourseOverview):
     template_name = "courses/members.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        self.kwargs = kwargs
+        course = self.get_object()
+        self.breadcrumbs.insert(0, Breadcrumb(unicode(course), reverse('courses:overview', kwargs={'pk': course.id})))
+        return super(CourseMembers, self).dispatch(request, *args, **kwargs)
 
 # TODO: Check if user is faculty
 class CourseAdmin(BreadCrumbMixin, UpdateView):
@@ -145,6 +155,8 @@ class NewCourseAssignment(BreadCrumbMixin, CreateView):
         self.kwargs = kwargs
         course = Course.objects.get(pk = self.kwargs['pk'])
 
+        self.breadcrumbs.insert(0, Breadcrumb(unicode(course), reverse('courses:overview', kwargs={'pk': course.id})))
+
         if request.user not in course.faculty:
                 raise exceptions.PermissionDenied
 
@@ -162,6 +174,9 @@ class AssignmentList(BreadCrumbMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super(AssignmentList, self).get_context_data(**kwargs)
         context['course'] = self.course
+
+        self.breadcrumbs.insert(0, Breadcrumb(unicode(self.course), reverse('courses:overview', kwargs={'pk': self.course.id})))
+
         return context
 
 class AssignmentOverview(DetailView, BreadCrumbMixin):
@@ -189,6 +204,8 @@ class AssignmentOverview(DetailView, BreadCrumbMixin):
         # set the kwargs so we can get the object
         self.kwargs = kwargs
         course = self.get_object().course
+
+        self.breadcrumbs.insert(0, Breadcrumb(unicode(course), reverse('courses:overview', kwargs={'pk': course.id})))
 
         if course.private:
             if request.user not in course.faculty and request.user not in course.members:
@@ -232,6 +249,10 @@ class SubmitAssignment(BreadCrumbMixin, CreateView):
         # set the kwargs so we can get the object
         self.kwargs = kwargs
         self.assignment = Assignment.objects.get(pk = self.kwargs['pk'])
+
+        course = self.assignment.course
+        
+        self.breadcrumbs.insert(0, Breadcrumb(unicode(course), reverse('courses:overview', kwargs={'pk': course.id})))
 
         if request.user not in self.assignment.course.members:
                 raise exceptions.PermissionDenied
@@ -328,6 +349,9 @@ class ResourceList(BreadCrumbMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super(ResourceList, self).get_context_data(**kwargs)
         context['course'] = self.course
+
+        self.breadcrumbs.insert(0, Breadcrumb(unicode(self.course), reverse('courses:overview', kwargs={'pk': self.course.id})))
+
         return context
 
 class ResourceDetails(BreadCrumbMixin, DetailView):
@@ -352,6 +376,8 @@ class ResourceDetails(BreadCrumbMixin, DetailView):
         # set the kwargs so we can get the object
         self.kwargs = kwargs
         course = self.get_object().course
+
+        self.breadcrumbs.insert(0, Breadcrumb(unicode(course), reverse('courses:overview', kwargs={'pk': course.id})))
 
         if course.private:
             if request.user not in course.faculty.all() and request.user not in course.members.all():

@@ -9,6 +9,17 @@ from django.utils.safestring import mark_safe
 from django.utils.text import force_unicode 
 import sys
 
+class Singleton(object):
+    _instance = None
+    def __new__(cls, *args, **kwargs):
+        if not cls._instance:
+            cls._instance = super(Singleton, cls).__new__(
+                                cls, *args, **kwargs)
+        return cls._instance
+
+class Breadcrumbs(Singleton, list):
+    pass
+
 class Breadcrumb(object):
     """
     Breadcrumb can have methods to customize breadcrumb object, Breadcrumbs

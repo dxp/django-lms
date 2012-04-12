@@ -1,12 +1,17 @@
 from django import http
 from django.utils import simplejson as json
 
-from breadcrumbs import Breadcrumb
+from breadcrumbs import Breadcrumb, Breadcrumbs
 
 class BreadCrumbMixin(object):
     def __init__(self, *args, **kwargs):
-        self.breadcrumbs = []
-    
+        self.breadcrumbs = getattr(self, 'breadcrumbs', False)
+
+        if not self.breadcrumbs:
+            self.breadcrumbs = Breadcrumbs()
+
+        return super(BreadCrumbMixin, self).__init__(*args, **kwargs)
+
     def dispatch(self, request, *args, **kwargs):
         """
         Give the breadcrumbs the current page

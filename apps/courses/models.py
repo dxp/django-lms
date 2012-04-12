@@ -46,7 +46,7 @@ class Course(models.Model):
     location = models.CharField(max_length = 200)
 
     def __unicode__(self):
-        return "%s: %s %s" % (self.title, self.semester.name, self.semester.year)
+        return "%s" % (self.title)
 
     class Admin:
         js = (
