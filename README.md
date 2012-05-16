@@ -1,4 +1,4 @@
-ID Intranet (needs a better name)
+Django-lms
 =================================
 
 After ten years of use, we are looking to replace our old intranet here at ID (www.id.iit.edu). There are many options out there, but almost all of them are too heavy weight for us. Being a Django shop, we looked for a Django course management / intranet system. Couldn't find one. That is where this project was born.
@@ -10,25 +10,27 @@ If you're interested in helping, please drop me a line at cezar@id.iit.edu
 Installation
 ------------
 
-- Create a virtual environment. I prefer using --no-site-packages as it keeps everything cleaner.
+- Create a project directory
 
- `virtualenv --no-site-packages intranet`
+ `mkdir django-lms`
+ 
+ `cd django-lms`
 
-- Go into that directory
+- Create a virtual environment.
 
-  `cd intranet`
+ `virtualenv venv`
 
 - Activate the environment
 
- `source bin/activate`
+ `source venv/bin/activate`
 
 - Clone the repo
 
- `git clone git@github.com:emperorcezar/ID-Intranet.git intranet`
+ `git clone git@github.com:emperorcezar/django-lms.git`
 
 - Use the requirements file in the repo
 
- `pip install -r intranet/requirements.txt`
+ `pip install -r django-lms/requirements.txt`
 
 - The settings files included I've setup using the [layout](http://blog.zacharyvoase.com/2010/02/03/django-project-conventions/) suggested by Zachary Voase.
 
