@@ -1,2 +1,2 @@
 #!/bin/sh
-./devmanage.py runserver 0:8000
+./devmanage.py runserver 0:8000 --werkzeug

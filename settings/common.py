@@ -81,7 +81,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "libs.context_processors.settings",
     )
 
-INSTALLED_APPS = (
+INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -112,7 +112,7 @@ INSTALLED_APPS = (
     # Admin comes last so our apps can override some templates
     'django.contrib.admin',
 
-    )
+    ]
 
 AUTHENTICATION_BACKENDS = (
     'permission_backend_nonrel.backends.NonrelPermissionBackend',
