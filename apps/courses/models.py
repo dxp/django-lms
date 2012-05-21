@@ -72,6 +72,9 @@ class AssignmentSubmission(models.Model):
     file = models.FileField(upload_to = 'photos/%Y/%m/%d', blank = True)
     notes = models.TextField(blank = True)
 
+    submitted = models.DateTimeField(auto_now_add = True)
+    modified = models.DateTimeField(auto_now_add = True, auto_now = True)
+
     def __unicode__(self):
         if self.link:
             return self.link

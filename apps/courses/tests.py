@@ -208,6 +208,21 @@ class AssignmentTest(test_utils.AuthenticatedTest):
 
         self.course.members.remove(self.user)
 
+    def test_late(self):
+        self.assignment = Assignment(course = self.course,
+                                     title = 'Test Assignment',
+                                     description = 'Test',
+                                     due_date = (datetime.date.today() - one_week).isoformat()
+            )
+
+        self.assignment.save()
+
+        self.submission = AssignmentSubmission(assignment = self.assignment,
+                                               link = 'http://example.com')
+        self.submission.save()
+        
+
+
     def test_delete_submission(self):
         # We overrode the delete, so we should be testing it
         self.course.members.append(self.user)
