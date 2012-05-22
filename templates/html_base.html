@@ -51,37 +51,39 @@
 
   <body class="{% block bodyclass %}{% endblock bodyclass %}">
     <div class="container">
-      <header>
-	    <div id="header" class="row">
-          <div class="span3">
-            <a href="{% url springboard %}"><img id="logo" src="{{ STATIC_URL }}/images/seeidlogomediumdark.png"></a>
-          </div>
-          {% if user.is_authenticated %}
-          <div class="span4 offset5">
-	        <div class="userbox">
-              <ul class="jd_menu" id="user-menu">
-	            <li><a href="{% url profiles:detail user %}">{{ user.first_name }} {{ user.last_name }}</a> <span class="menu-triangle">&#x25bc;</span>
-	              <ul>
-	                <li><a href="{% url profiles:edit user %}">Edit profile</a></li>
-	              </ul>
-	            </li>
-	          </ul> | Account Settings | <a href="{% url logout %}">Log Out</a>
-	        </div>
-          </div>
-	      {% endif %}
-	    </div>
-      </header>
-      
+      <div class="row">
+        <header>
+          <div id="header">
+            <div class="span3" id="logo-container">
+              <a href="{% url springboard %}"><img id="logo" src="{{ STATIC_URL }}/images/seeidlogomediumdark.png"></a>
+            </div>
+            {% if user.is_authenticated %}
+            <div class="span4 offset5" id="userbox">
+	          <div class="userbox">
+                <ul class="jd_menu" id="user-menu">
+	              <li><a href="{% url profiles:detail user %}">{{ user.first_name }} {{ user.last_name }}</a> <span class="menu-triangle">&#x25bc;</span>
+	                <ul>
+	                  <li><a href="{% url profiles:edit user %}">Edit profile</a></li>
+	                </ul>
+	              </li>
+	            </ul> | Account Settings | <a href="{% url logout %}">Log Out</a>
+	          </div>
+            </div>
+	        {% endif %}
+	      </div>
+        </header>
+      </div>
       <div id="main" role="main" class="row">
-
         <div id="messages" class="span12">
           {% if messages %}
-            {% for message in messages %}
-              {% include "django-message.html" %}
-            {% endfor %}
+          {% for message in messages %}
+          {% include "django-message.html" %}
+          {% endfor %}
           {% endif %}
         </div>
-        {% if breadcrumbs|length > 1 %}
+      </div>
+      {% if breadcrumbs|length > 1 %}
+      <div class="row">
         <div id="breadcrumbs" class="span12">
           {% for breadcrumb in breadcrumbs %}
           {% if breadcrumb.url != '#' %}
@@ -93,81 +95,86 @@
           {% endfor %}
         </div>
         {% endif %}
-        <div id="content" class="span12">
+      </div>
+    </div>
+    <div class="container" id="content">
+      <div class="row">
+        <div class="span12">
 	      {% block content %}
 	      {% endblock content %}
 	    </div>
       </div>
     </div>
-    <!-- <footer> -->
-	  
-      <!-- </footer> -->
-    
-    <!-- JavaScript at the bottom for fast page loading -->
 
-    <!-- Grab Google CDNs jQuery, with a protocol relative URL; fall back to local if necessary -->
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script>window.jQuery || document.write("<script src='{{ STATIC_URL }}/js/libs/jquery-1.7.1.min.js'>\x3C/script>")</script>
-      <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
-      <script src="{{ STATIC_URL }}/js/libs/jquery.jdMenu.packed.js"></script>
-      {% if TYPEKIT_URL %}
-      <script type="text/javascript" src="{{ TYPEKIT_URL }}"></script>
-      <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
-      {% endif %}
-      <!--[if lt IE 7 ]>
-          <script src="js/libs/dd_belatedpng.js"></script>
-          <script>DD_belatedPNG.fix("img, .png_bg"); // Fix any <img> or .png_bg bg-images. Also, please read goo.gl/mZiyb </script>
-          <![endif]-->
+<!-- <footer> -->
 
-      <script type="text/javascript" src="{{ STATIC_URL }}js/libs/bootstrap/bootstrap-alert-fixed.js"></script>
+<!-- </footer> -->
 
-      {% block extra_libraries %}
-      {% endblock extra_libraries %}
-      
-      <!-- mathiasbynens.be/notes/async-analytics-snippet Change UA-XXXXX-X to be your sites ID -->
-      <script>
-        var _gaq=[["_setAccount","UA-XXXXX-X"],["_trackPageview"]];
-        (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
-        g.src=("https:"==location.protocol?"//ssl":"//www")+".google-analytics.com/ga.js";
-        s.parentNode.insertBefore(g,s)}(document,"script"));
-      </script>
-      <script>
-        $('html').ajaxSend(function(event, xhr, settings) {
-            function getCookie(name) {
-                var cookieValue = null;
-                if (document.cookie && document.cookie != '') {
-                    var cookies = document.cookie.split(';');
-                    for (var i = 0; i < cookies.length; i++) {
+<!-- JavaScript at the bottom for fast page loading -->
+
+<!-- Grab Google CDNs jQuery, with a protocol relative URL; fall back to local if necessary -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script>window.jQuery || document.write("<script src='{{ STATIC_URL }}/js/libs/jquery-1.7.1.min.js'>\x3C/script>")</script>
+  <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+  <script src="{{ STATIC_URL }}/js/libs/jquery.jdMenu.packed.js"></script>
+  {% if TYPEKIT_URL %}
+  <script type="text/javascript" src="{{ TYPEKIT_URL }}"></script>
+  <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+  {% endif %}
+  <!--[if lt IE 7 ]>
+      <script src="js/libs/dd_belatedpng.js"></script>
+      <script>DD_belatedPNG.fix("img, .png_bg"); // Fix any <img> or .png_bg bg-images. Also, please read goo.gl/mZiyb </script>
+      <![endif]-->
+
+  <script type="text/javascript" src="{{ STATIC_URL }}js/libs/bootstrap/bootstrap-alert-fixed.js"></script>
+
+  {% block extra_libraries %}
+  {% endblock extra_libraries %}
+  
+  <!-- mathiasbynens.be/notes/async-analytics-snippet Change UA-XXXXX-X to be your sites ID -->
+  <script>
+    var _gaq=[["_setAccount","UA-XXXXX-X"],["_trackPageview"]];
+    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
+    g.src=("https:"==location.protocol?"//ssl":"//www")+".google-analytics.com/ga.js";
+    s.parentNode.insertBefore(g,s)}(document,"script"));
+  </script>
+  <script>
+    $('html').ajaxSend(function(event, xhr, settings) {
+    function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+    var cookies = document.cookie.split(';');
+    for (var i = 0; i < cookies.length; i++) {
                         var cookie = jQuery.trim(cookies[i]);
                         // Does this cookie string begin with the name we want?
                         if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                            break;
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
                         }
-                    }
-                }
-                return cookieValue;
-            }
-            if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
-                // Only send the token to relative URLs i.e. locally.
-                xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
-            }
-        });
+                        }
+                        }
+                        return cookieValue;
+                        }
+                        if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                        // Only send the token to relative URLs i.e. locally.
+                        xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+                        }
+                        });
 
-        $(document).ready(function(){
-            $('ul.jd_menu').jdMenu();
-            $('.alert').alert();
-            $('.alert').bind('close', function(){
-                $.post('{% url alerts:acknowledge %}', {pk: $(this).data('id')});
-            });
-        });
-        $(document).bind('click', function() {
-            $('ul.jd_menu ul:visible').jdMenuHide();
-        });
+                        $(document).ready(function(){
+                        $('ul.jd_menu').jdMenu();
+                        $('.alert').alert();
+                        $('.alert').bind('close', function(){
+                        $.post('{% url alerts:acknowledge %}', {pk: $(this).data('id')});
+                        });
+                        });
+                        $(document).bind('click', function() {
+                        $('ul.jd_menu ul:visible').jdMenuHide();
+                        });
 
-    {% block js %}
-    {% endblock js %}
-    </script>
+                        {% block js %}
+                        {% endblock js %}
+                        </script>
 
   </body>
 </html>

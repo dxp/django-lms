@@ -30,12 +30,21 @@ h1 {
     margin-top: 8px;
 }
 
+#logo-container {
+  margin-left: 10px;
+}
+
 #wrapper {
     height: 100%;
 }
 
+#breadcrumbs {
+  margin-left: 10px;
+}
+
 #header {
   margin-bottom: 5px;
+  width: @siteWidth + 30px;
   img {
     max-height: 50px;
     }
@@ -43,8 +52,8 @@ h1 {
 
 #content {
   background: url(../images/background-white.png) no-repeat;
-  padding: 10px;
-  width: @siteWidth - 10;
+  padding-left: 10px;
+  width: @siteWidth + 10;
 
   h1 {
     font-size: 1.5em;
@@ -145,6 +154,10 @@ ul.nav.logged_out,.userbox
 .ie7 .userbox,.ie7 ul.nav.logged_out,.ie8 .userbox,.ie8 ul.nav.logged_out
 {
 	border-bottom-color:#ddd;
+}
+
+#userbox {
+  width: 320px;
 }
 
 .userbox
@@ -369,18 +382,44 @@ form th {
 
 .pagehead {
     margin-bottom: 5px;
+  width: @siteWidth;
 }
 
 .toolbox {
-    min-height: 200px;
-    background-color: #EFEFEF;
-    border: 1px solid #DDD;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.7);
-    line-height: 26px;
-    font-size: 1.05em;
-}
+  min-height: 200px;
+  background-color: #EFEFEF;
+  border: 1px solid #DDD;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.7);
+  line-height: 26px;
+  font-size: 1.05em;
+  overflow: hidden;
+
+  a {
+    height:34px;
+    line-height:26px;
+    font-size:1.1em;
+    color:#666;
+    text-shadow:1px 1px 0 rgba(255,255,255,0.7);
+    display: block;
+    width: 100%;
+    padding-left: 15px;
+    padding-top: 5px;
+    border-bottom: 1px solid #ccc;
+
+    &:hover {
+      border-bottom: 1px solid #003c7b;
+      background-image: -moz-linear-gradient(left, #167fe8, #003c7b);
+      background-image: -webkit-gradient(linear, left center, right center, from(#167fe8), to(#003c7b));
+      /* box-shadow: 0 0 3px 1px rgba(0,0,0,0.75); */
+      color:#fff;
+      /* background-color:#4183C4; */
+      text-decoration:none;
+      text-shadow:1px 1px 0 rgba(0,0,0,0.7);
+      }
+    }
+  }
 
 .toolbox-header{
     border-bottom: 1px solid #ccc;
@@ -388,30 +427,6 @@ form th {
     font-size: 1.25em;
     text-align: center;
     background-color: #cecece
-}
-
-.toolbox a{
-    height:34px;
-    line-height:26px;
-    font-size:1.1em;
-    color:#666;
-    text-shadow:1px 1px 0 rgba(255,255,255,0.7);
-    display: block;
-    width: 173px;
-    padding-left: 15px;
-    padding-top: 5px;
-    border-bottom: 1px solid #ccc;
-}
-
-.toolbox a:hover {
-    border-bottom: 1px solid #003c7b;
-    background-image: -moz-linear-gradient(left, #167fe8, #003c7b);
-    background-image: -webkit-gradient(linear, left center, right center, from(#167fe8), to(#003c7b));
-    /* box-shadow: 0 0 3px 1px rgba(0,0,0,0.75); */
-    color:#fff;
-    /* background-color:#4183C4; */
-    text-decoration:none;
-    text-shadow:1px 1px 0 rgba(0,0,0,0.7);
 }
 
 
