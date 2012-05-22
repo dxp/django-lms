@@ -2,6 +2,7 @@ import datetime
 import itertools
 
 from django import forms
+from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
 from libs.django_utils import render_to_response
@@ -95,13 +96,15 @@ class CourseDropPage(RedirectView):
     permanent = False
 
     def get_redirect_url(self, **kwargs):
-        semesters = Semester.objects.filter(start__lt = datetime.date.today(), end__gt = datetime.date.today())
-        if not semesters:
+        semester = list(Semester.objects.filter(start__lt = datetime.date.today(), end__gt = datetime.date.today())[:1])
+        if not semester:
             # Get the latest semester and use that
-            semesters = Semester.objects.order_by('end')
-        semester = semesters[0]
-        url = reverse('courses:by_semester', kwargs={'pk':semester.id})
-        return url
+            semester = list(Semester.objects.order_by('end')[:1])
+        try:
+            return reverse('courses:by_semester', kwargs={'pk':semester.id})
+        except AttributeError:
+            messages.error(self.request, 'The system has no semesters')
+            return ('/')
 
 class ToggleMembership(View, SingleObjectMixin, JSONResponseMixin):
     queryset = Course.objects.all()

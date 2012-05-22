@@ -39,4 +39,8 @@ class SpringboardTest(test_utils.AuthenticatedTest):
 
         assert(alert in response.context['alerts'])
 
-        
+    def test_defaults(self):
+        response = self.c.get(reverse('springboard'))
+
+        self.assertContains(response, "Admin")
+        self.assertContains(response, "Courses")
