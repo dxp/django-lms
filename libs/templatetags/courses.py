@@ -114,6 +114,6 @@ class MemberCheckNode(template.Node):
             group = Group.objects.get(name='Student')
         except Group.DoesNotExist:
             return ''
-        if request.user in course.members.all():
+        if request.user in course.members:
             return self.nodelist.render(context)
         return ''

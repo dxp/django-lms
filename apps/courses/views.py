@@ -96,15 +96,18 @@ class CourseDropPage(RedirectView):
     permanent = False
 
     def get_redirect_url(self, **kwargs):
-        semester = list(Semester.objects.filter(start__lt = datetime.date.today(), end__gt = datetime.date.today())[:1])
-        if not semester:
-            # Get the latest semester and use that
-            semester = list(Semester.objects.order_by('end')[:1])
         try:
-            return reverse('courses:by_semester', kwargs={'pk':semester.id})
-        except AttributeError:
-            messages.error(self.request, 'The system has no semesters')
-            return ('/')
+            semester = Semester.objects.filter(start__lte = datetime.date.today(), end__gte = datetime.date.today())[0]
+        except IndexError:
+            # Get the latest semester and use that
+            try:
+                semester = Semester.objects.order_by('end')[0]
+            except IndexError:
+                messages.error(self.request, 'The system has no semesters')
+                return ('/')
+
+        return reverse('courses:by_semester', kwargs={'pk':semester.id})
+
 
 class ToggleMembership(View, SingleObjectMixin, JSONResponseMixin):
     queryset = Course.objects.all()
@@ -182,7 +185,7 @@ class AssignmentList(BreadCrumbMixin, ListView):
 
         return context
 
-class AssignmentOverview(DetailView, BreadCrumbMixin):
+class AssignmentOverview(BreadCrumbMixin, DetailView):
     name = "Assignment overview"
     context_object_name = "assignment"
     template_name = "courses/assignment_overview.html"

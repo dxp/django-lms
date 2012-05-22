@@ -22,7 +22,7 @@ class CourseAdminForm(ModelForm):
 
     members = ModelMultipleChoiceField(queryset = User.objects.none(),
                                        required = False,
-                                       widget = FilteredSelectMultiple(_("Faculty"), False) )
+                                       widget = FilteredSelectMultiple(_("Members"), False) )
 
     def __init__(self,*args,**kwargs):
         super (CourseAdminForm,self ).__init__(*args,**kwargs)
