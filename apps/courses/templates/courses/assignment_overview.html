@@ -13,20 +13,23 @@
 </div>
 
 {% if submissions %}
-<h3>Your submitted solutions</h3>
-{% for submission in submissions %}
-<div class="submission">
-  &nbsp;
-  <div class="right">
-    <a class="button delete" href="#" id="submission_{{ submission.id }}">Delete</a>
+  {% ifcoursefaculty %}
+  HERE
+  {% else %}
+  <h3>Your submitted solutions</h3>
+  {% for submission in submissions %}
+  <div class="submission">
+    &nbsp;
+    <div class="right">
+      <a class="button delete" href="#" id="submission_{{ submission.id }}">Delete</a>
+    </div>
+    <div class="left">
+      {{ submission }}
+    </div>
   </div>
-  <div class="left">
-    {{ submission }}
-  </div>
-</div>
-{% endfor %}
+  {% endfor %}
+  {% endifcoursefaculty %}
 {% endif %}
-
 {% endblock assignment_content %}
 
 {% block tools %}

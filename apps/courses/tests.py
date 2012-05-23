@@ -208,6 +208,40 @@ class AssignmentTest(test_utils.AuthenticatedTest):
 
         self.course.members.remove(self.user)
 
+
+    def test_faculty_see_submissions(self):
+        if not self.users:
+            self.extra_users()
+
+        # Create an assignment
+        self.assignment = Assignment(course = self.course,
+                                     title = 'Test Assignment',
+                                     description = 'Test',
+                                     due_date = (datetime.date.today() - one_week).isoformat()
+            )
+
+        self.assignment.save()
+
+        # Submit it
+
+        self.submission = AssignmentSubmission(assignment = self.assignment,
+                                               link = 'http://example.com',
+                                               users = [self.users[0]]
+            )
+        self.submission.save()
+
+        # Set myself as the faculty for the course.
+        self.course.faculty.append(self.user)
+        self.course.save()
+
+        response = self.c.get(reverse('courses:assignment_overview', args = [self.assignment.id]))
+
+        self.assertEquals(len(response.context['submissions']), 1)
+
+        self.course.faculty.remove(self.user)
+        self.course.save()
+
+
     def test_late(self):
         self.assignment = Assignment(course = self.course,
                                      title = 'Test Assignment',

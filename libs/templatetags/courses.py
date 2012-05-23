@@ -38,30 +38,56 @@ class FacultyCheckNode(template.Node):
 
 @register.tag()
 def ifcoursefaculty(parser, token):
-    """ Check to see if the currently logged in user is faculty for this course
-
     """
-    nodelist = parser.parse(('endifcoursefaculty',))
-    parser.delete_first_token()
-    return FacultyCourseCheckNode(nodelist)
+    Check to see if the currently logged in user is faculty for this course
+    """
+
+    # Default nodelist_false so we don't get and error
+    nodelist_false = None
+    nodelist_true = parser.parse(['else', 'endifcoursefaculty'])
+
+    token = parser.next_token()
+    if token.contents == 'else':
+        nodelist_false = parser.parse(['endifcoursefaculty'])
+        parser.delete_first_token()
+    else:
+        nodelist_false = template.NodeList()
+    return FacultyCourseCheckNode(nodelist_true, nodelist_false)
 
 
 class FacultyCourseCheckNode(template.Node):
-    def __init__(self, nodelist):
-        self.nodelist = nodelist
+    def __init__(self, nodelist_true, nodelist_false):
+        self.nodelist_true = nodelist_true
+        self.nodelist_false = nodelist_false
+        
     def render(self, context):
         user = resolve_variable('user', context)
         course = resolve_variable('course', context)
-        if not user.is_authenticated:
+        group, created = Group.objects.get_or_create(name='Faculty')
+
+        if user.is_authenticated:
+            # Not sure if we should be checking for group. Hmmm
+            if group in user.group_list:
+                if user in course.faculty:
+                    return self.nodelist_true.render(context)
+
+        if self.nodelist_false:
+            return self.nodelist_false.render(context)
+        else:
             return ''
-        try:
-            group = Group.objects.get(name='Faculty')
-        except Group.DoesNotExist:
-            return ''
-        if group in user.group_list:
-            if user in course.faculty:
-                return self.nodelist.render(context)
-        return ''
+
+@register.tag()
+def ifcoursemember(parser, token):
+    """
+    Simple check if user is a member of the course
+
+    """
+    nodelist = parser.parse(('endifcoursemember',))
+    parser.delete_first_token()
+    return MemberCheckNode(nodelist)
+
+
+
 
 @register.tag()
 def ifpossiblemember(parser, token):
@@ -91,15 +117,6 @@ class PossibleMemberCheckNode(template.Node):
             return self.nodelist.render(context)
         return ''
 
-@register.tag()
-def ifcoursemember(parser, token):
-    """
-    Simple check if user is a member of the course
-
-    """
-    nodelist = parser.parse(('endifcoursemember',))
-    parser.delete_first_token()
-    return MemberCheckNode(nodelist)
 
 
 class MemberCheckNode(template.Node):

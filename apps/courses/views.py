@@ -200,8 +200,13 @@ class AssignmentOverview(BreadCrumbMixin, DetailView):
         context = super(AssignmentOverview, self).get_context_data(**kwargs)
         context['course'] = self.get_object().course
 
-        # Get any submissions the member has submitted
-        context['submissions'] = AssignmentSubmission.objects.filter(users = self.request.user, assignment = self.get_object())
+        
+        # If the course faculty, return all submissions
+        if self.request.user in self.get_object().course.faculty:
+            context['submissions'] = AssignmentSubmission.objects.filter(assignment = self.get_object())
+        else:
+            # If course member get any submissions the member has submitted
+            context['submissions'] = AssignmentSubmission.objects.filter(users = self.request.user, assignment = self.get_object())
     
         return context
 
