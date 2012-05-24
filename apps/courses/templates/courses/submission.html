@@ -1,0 +1,13 @@
+<div class="submission">
+{% if submission.link %}
+<a href="{{ submission }}" target = "_blank">{{ submission }}</a>
+{% else %}
+  {% if submissions.file %}
+  {{ submission.file }}
+  {% endif %}
+{% endif %}
+{% if submission.notes %}
+<strong>Notes</strong><br>
+{{ submission.notes }}
+{% endif %}
+</div>

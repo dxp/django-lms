@@ -14,17 +14,21 @@
 
 {% if submissions %}
   {% ifcoursefaculty %}
-  HERE
+  <h3>All submitted solutions</h3>
+  {% for submission in submissions %}
+    <div class="left">
+      {% include "courses/submission.html" %}
+    </div>
+  {% endfor %}
   {% else %}
   <h3>Your submitted solutions</h3>
   {% for submission in submissions %}
-  <div class="submission">
-    &nbsp;
+  <div>
     <div class="right">
       <a class="button delete" href="#" id="submission_{{ submission.id }}">Delete</a>
     </div>
     <div class="left">
-      {{ submission }}
+      {% include "courses/submission.html" %}
     </div>
   </div>
   {% endfor %}
