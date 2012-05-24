@@ -2,12 +2,20 @@
 {% if submission.link %}
 <a href="{{ submission }}" target = "_blank">{{ submission }}</a>
 {% else %}
-  {% if submissions.file %}
+  {% if submission.file %}
   {{ submission.file }}
   {% endif %}
 {% endif %}
 {% if submission.notes %}
+<div>
 <strong>Notes</strong><br>
 {{ submission.notes }}
+</div>
 {% endif %}
+<div>
+<strong>Submitted by</strong><br>
+{% for user in submission.users %}
+{{ user.get_full_name }}
+{% endfor %}
+</div>
 </div>
