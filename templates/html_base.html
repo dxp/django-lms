@@ -85,14 +85,16 @@
       {% if breadcrumbs|length > 1 %}
       <div class="row">
         <div id="breadcrumbs" class="span12">
+          <ul class="breadcrumb">
           {% for breadcrumb in breadcrumbs %}
-          {% if breadcrumb.url != '#' %}
-          <a href="{{ breadcrumb.url }}">{{ breadcrumb.name }}</a>
-          {% else %}
-          {{ breadcrumb.name }}
-          {% endif %}
-          {% if not forloop.last %} >> {% endif %}
+            {% if breadcrumb.url != '#' %}
+              <li><a href="{{ breadcrumb.url }}">{{ breadcrumb.name }}</a></li>
+            {% else %}
+              <li class="active">{{ breadcrumb.name }}</li>
+            {% endif %}
+            {% if not forloop.last %} | {% endif %}
           {% endfor %}
+          </ul>
         </div>
         {% endif %}
       </div>

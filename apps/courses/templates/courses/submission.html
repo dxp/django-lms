@@ -1,6 +1,12 @@
 <div class="submission">
+  <div class="by"><em>Submitted by: 
+    {% for user in submission.users %}
+    {{ user.get_full_name }}{% if not forloop.last %}, {% endif %}
+    {% endfor %}
+    </em>
+  </div>
 {% if submission.link %}
-<a href="{{ submission }}" target = "_blank">{{ submission }}</a>
+Link: <a href="{{ submission }}" target = "_blank">{{ submission }}</a>
 {% else %}
   {% if submission.file %}
   {{ submission.file }}
@@ -13,9 +19,5 @@
 </div>
 {% endif %}
 <div>
-<strong>Submitted by</strong><br>
-{% for user in submission.users %}
-{{ user.get_full_name }}
-{% endfor %}
 </div>
 </div>
